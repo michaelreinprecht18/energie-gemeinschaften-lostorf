@@ -215,9 +215,17 @@ input[type="range"] {
   transform: scaleX(1);
 }
 
+.mobile-menu-btn {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .nav-links {
     display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: block;
   }
 
   .mobile-stack {

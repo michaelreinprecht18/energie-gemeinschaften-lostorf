@@ -3,6 +3,7 @@ import Rechner from './components/Rechner'
 import StatsBand from './components/StatsBand'
 import ContactForm from './components/ContactForm'
 import ScrollAnimator from './components/ScrollAnimator'
+import MobileMenu from './components/MobileMenu'
 
 const NAV = [
   { href: '#leg', label: 'LEG' },
@@ -77,6 +78,7 @@ export default function Page() {
               </a>
             ))}
           </div>
+          <MobileMenu />
         </div>
       </nav>
 
