@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEG Trafo-Karte Lostorf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{background:#fff;color:#1A1510;padding:8px 16px;display:flex;align-items:center;gap:14px;flex-shrink:0;border-bottom:2px solid #D9CEB5}
+.logo{font-size:15px;font-weight:700;color:#1A3317;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.hd-info{font-size:11px;color:#9A9089;line-height:1.3}
+.hd-info strong{color:#1A1510}
+.hd-stats{margin-left:auto;display:flex;gap:16px;align-items:center}
+.hd-stat .n{font-size:16px;font-weight:700;line-height:1;font-family:'DM Sans',sans-serif}
+.hd-stat .l{font-size:9px;color:#9A9089;text-transform:uppercase;letter-spacing:.5px}
+.main{display:flex;flex:1;overflow:hidden;min-height:0}
+.sidebar{width:260px;flex-shrink:0;background:#fff;border-right:1px solid #D9CEB5;display:flex;flex-direction:column;overflow:hidden}
+.sb{padding:9px 12px;border-bottom:1px solid #D9CEB5;flex-shrink:0}
+.sb-title{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9A9089;margin-bottom:6px}
+#status-bar{padding:6px 12px;background:#F5F0E8;border-bottom:1px solid #D9CEB5;font-size:11px;color:#9A7B2E;display:flex;align-items:center;gap:8px;flex-shrink:0}
+#status-bar.done{background:#E7F9E4;color:#3A7A30;border-color:#B8D9B4}
+.spin{width:12px;height:12px;border:2px solid #D9CEB5;border-top-color:#9A7B2E;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+#status-bar.done .spin{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tk-scroll{max-height:185px;overflow-y:auto}
+.tk-scroll::-webkit-scrollbar,.pv-scroll::-webkit-scrollbar{width:3px}
+.tk-scroll::-webkit-scrollbar-thumb,.pv-scroll::-webkit-scrollbar-thumb{background:#D9CEB5;border-radius:2px}
+.tk-item{display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:6px;font-size:11px;cursor:pointer;transition:background .1s;margin-bottom:2px;border:1px solid transparent}
+.tk-item:hover{background:#F5F0E8}
+.tk-item.active{background:#F5F0E8;border-color:var(--c)}
+.tk-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.tk-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#5C5248;font-size:11px}
+.tk-stats{text-align:right;flex-shrink:0}
+.tk-cnt{font-size:9px;color:#9A9089;display:block}
+.tk-kw{font-size:9px;color:#9A7B2E;display:block;font-weight:600}
+.tk-item.active .tk-name{color:var(--c);font-weight:600}
+.pv-head{padding:7px 12px 4px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #D9CEB5}
+.pv-head .sb-title{margin:0}
+#pv-search{width:90px;padding:2px 6px;border:1px solid #D9CEB5;border-radius:4px;font-size:10px;color:#1A1510;outline:none;font-family:'Nunito Sans',sans-serif}
+#pv-search:focus{border-color:#9A7B2E}
+.pv-scroll{flex:1;overflow-y:auto}
+.pv-item{padding:5px 12px;border-bottom:1px solid #F0EBE0;cursor:pointer;display:flex;align-items:center;gap:7px;transition:background .1s}
+.pv-item:hover{background:#F5F0E8}
+.pv-item.active{background:#F5F0E8;border-left:3px solid #9A7B2E;padding-left:9px}
+.pv-icon{font-size:13px;flex-shrink:0;line-height:1}
+.pv-body{flex:1;min-width:0}
+.pv-addr{font-size:11px;color:#1A1510;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pv-meta{font-size:10px;color:#9A9089;margin-top:1px}
+.pv-tdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+#pv-empty{padding:20px 12px;text-align:center;font-size:11px;color:#9A9089;display:none}
+.loader-wrap{padding:16px 12px;text-align:center}
+.loader{width:18px;height:18px;border:2px solid #D9CEB5;border-top-color:#9A7B2E;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px}
+.loader-txt{font-size:11px;color:#9A9089}
+.map-wrap{flex:1;position:relative;display:flex;flex-direction:column;min-width:0}
+#map{flex:1}
+#tpanel{position:absolute;bottom:14px;left:14px;background:#fff;border:1px solid #D9CEB5;border-radius:12px;box-shadow:0 4px 20px rgba(26,21,16,.1);padding:11px 14px;min-width:200px;z-index:800;display:none}
+.tp-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.tp-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.tp-name{font-weight:700;font-size:13px;color:#1A1510;font-family:'DM Sans',sans-serif}
+.tp-info{font-size:11px;color:#5C5248}
+.tp-close{position:absolute;top:7px;right:9px;background:none;border:none;cursor:pointer;color:#9A9089;font-size:17px;line-height:1;padding:2px}
+.tp-close:hover{color:#1A1510}
+.leaflet-popup-content-wrapper{border-radius:10px;box-shadow:0 4px 16px rgba(26,21,16,.1)}
+.leaflet-popup-content{margin:9px 13px;font-size:12.5px;line-height:1.5;font-family:'Nunito Sans',sans-serif}
+.pp-title{font-weight:700;font-size:13px;color:#1A1510;margin-bottom:3px;font-family:'DM Sans',sans-serif}
+.pp-badge{display:inline-block;padding:1px 7px;border-radius:20px;font-size:9px;font-weight:700;margin-bottom:3px}
+.pp-pv{background:#F5F0E8;color:#7E6424;border:1px solid #D9CEB5}
+#toast{position:fixed;bottom:16px;right:16px;background:#1A1510;color:#fff;padding:8px 14px;border-radius:8px;font-size:11px;border-left:3px solid #9DD295;box-shadow:0 3px 12px rgba(0,0,0,.2);display:none;z-index:9999}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">⚡ LEG Trafo-Karte Lostorf</div>
+  <div class="hd-info"><strong>21 mögliche Lokale Elektrizitätsgemeinschaften</strong><br>Klick auf Trafo-Kreis oder PV-Anlage für Details</div>
+  <div class="hd-stats">
+    <div class="hd-stat"><div class="n" id="h-pv" style="color:#9A7B2E">–</div><div class="l">PV Anlagen</div></div>
+    <div class="hd-stat"><div class="n" id="h-trafo" style="color:#3A7A30">22</div><div class="l">Trafo-Kreise</div></div>
+    <div class="hd-stat"><div class="n" id="h-match" style="color:#9DD295">–</div><div class="l">Gematcht</div></div>
+  </div>
+</header>
+<div class="main">
+  <div class="sidebar">
+    <div id="status-bar"><div class="spin"></div><span id="status-txt">Lade PV-Daten...</span></div>
+    <div class="sb">
+      <div class="sb-title">Trafo-Kreise (22)</div>
+      <div class="tk-scroll" id="tk-list"></div>
+    </div>
+    <div class="pv-head">
+      <div class="sb-title">PV Anlagen</div>
+      <input type="text" id="pv-search" placeholder="Suche..." oninput="filterPV(this.value)">
+    </div>
+    <div class="pv-scroll">
+      <div class="loader-wrap" id="pv-loader"><div class="loader"></div><div class="loader-txt">Wird geladen...</div></div>
+      <div id="pv-list"></div>
+      <div id="pv-empty">Keine Treffer</div>
+    </div>
+  </div>
+  <div class="map-wrap">
+    <div id="map"></div>
+    <div id="tpanel">
+      <button class="tp-close" onclick="closePanel()">×</button>
+      <div class="tp-header"><div class="tp-dot" id="tp-dot"></div><div class="tp-name" id="tp-name"></div></div>
+      <div class="tp-info" id="tp-info"></div>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+const TRAFO_KREISE=[{name:"01 – Buchenweg 8",color:"#2563eb",addresses:[{"street": "Buchenweg", "nr": "8"}, {"street": "Schulstrasse", "nr": "7"}, {"street": "Schulstrasse", "nr": "17"}, {"street": "Schulstrasse", "nr": "50"}, {"street": "Schulstrasse", "nr": "26"}, {"street": "Schulstrasse", "nr": "34"}, {"street": "Schulstrasse", "nr": "48"}, {"street": "Schulstrasse", "nr": "46"}, {"street": "Schulstrasse", "nr": "9"}, {"street": "Schulstrasse", "nr": "36"}, {"street": "Schulstrasse", "nr": "12"}, {"street": "Schulstrasse", "nr": "8"}, {"street": "Schulstrasse", "nr": "44"}, {"street": "Schulstrasse", "nr": "30"}, {"street": "Schulstrasse", "nr": "18"}, {"street": "Schulstrasse", "nr": "24"}, {"street": "Schulstrasse", "nr": "11"}, {"street": "Schulstrasse", "nr": "10"}, {"street": "Schulstrasse", "nr": "6"}, {"street": "Schulstrasse", "nr": "15"}, {"street": "Schulstrasse", "nr": "40"}, {"street": "Schulstrasse", "nr": "52"}, {"street": "Schulstrasse", "nr": "38"}, {"street": "Schulstrasse", "nr": "13"}, {"street": "Schulstrasse", "nr": "14"}, {"street": "Schulstrasse", "nr": "32"}, {"street": "Schulstrasse", "nr": "22"}, {"street": "Schlossstrasse", "nr": "17"}, {"street": "Läbertenstrasse", "nr": "12"}, {"street": "Läbertenstrasse", "nr": "11"}, {"street": "Läbertenstrasse", "nr": "3"}, {"street": "Läbertenstrasse", "nr": "7"}, {"street": "Läbertenstrasse", "nr": "1"}, {"street": "Läbertenstrasse", "nr": "9"}, {"street": "Läbertenstrasse", "nr": "5"}, {"street": "Läbertenstrasse", "nr": "6"}, {"street": "Läbertenstrasse", "nr": "10"}, {"street": "Läbertenstrasse", "nr": "14"}, {"street": "Läbertenstrasse", "nr": "8"}, {"street": "Läbertenstrasse", "nr": "13"}, {"street": "Läbertenstrasse", "nr": "2"}, {"street": "Holdenackerstrasse", "nr": "8"}, {"street": "Holdenackerstrasse", "nr": "6"}, {"street": "Holdenackerstrasse", "nr": "3"}, {"street": "Holdenackerstrasse", "nr": "5"}, {"street": "Holdenackerstrasse", "nr": "2"}, {"street": "Holdenackerstrasse", "nr": "1"}, {"street": "Holdenackerstrasse", "nr": "4"}, {"street": "Stöcklisrainstrasse", "nr": "22"}, {"street": "Stöcklisrainstrasse", "nr": "10"}, {"street": "Stöcklisrainstrasse", "nr": "24"}, {"street": "Stöcklisrainstrasse", "nr": "19"}, {"street": "Stöcklisrainstrasse", "nr": "11"}, {"street": "Stöcklisrainstrasse", "nr": "23"}, {"street": "Stöcklisrainstrasse", "nr": "9"}, {"street": "Stöcklisrainstrasse", "nr": "7"}, {"street": "Stöcklisrainstrasse", "nr": "15"}, {"street": "Stöcklisrainstrasse", "nr": "16"}, {"street": "Stöcklisrainstrasse", "nr": "18"}, {"street": "Stöcklisrainstrasse", "nr": "12"}, {"street": "Stöcklisrainstrasse", "nr": "14"}, {"street": "Stöcklisrainstrasse", "nr": "5"}, {"street": "Stöcklisrainstrasse", "nr": "6"}, {"street": "Stöcklisrainstrasse", "nr": "8"}, {"street": "Stöcklisrainstrasse", "nr": "17"}, {"street": "Stöcklisrainstrasse", "nr": "4"}, {"street": "Stöcklisrainstrasse", "nr": "3"}, {"street": "Stöcklisrainstrasse", "nr": "20"}, {"street": "Buchenweg", "nr": "4"}, {"street": "Buchenweg", "nr": "2"}, {"street": "Buchenweg", "nr": "3"}, {"street": "Buchenweg", "nr": "6"}, {"street": "Buchenweg", "nr": "5"}, {"street": "Buchenweg", "nr": "1"}, {"street": "Sportplatzstrasse", "nr": "5"}, {"street": "Sportplatzstrasse", "nr": "1"}, {"street": "Sportplatzstrasse", "nr": "3"}]},{name:"02 – Hangstrasse 12",color:"#dc2626",addresses:[{"street": "Hangstrasse", "nr": "12"}, {"street": "Hauptstrasse", "nr": "47"}, {"street": "Hauptstrasse", "nr": "94"}, {"street": "Hauptstrasse", "nr": "86"}, {"street": "Hauptstrasse", "nr": "90"}, {"street": "Hauptstrasse", "nr": "65"}, {"street": "Hauptstrasse", "nr": "88"}, {"street": "Hauptstrasse", "nr": "51"}, {"street": "Hauptstrasse", "nr": "92"}, {"street": "Hauptstrasse", "nr": "55"}, {"street": "Hauptstrasse", "nr": "53"}, {"street": "Hauptstrasse", "nr": "49"}, {"street": "Wartenfelsstrasse", "nr": "46"}, {"street": "Wartenfelsstrasse", "nr": "44"}, {"street": "Wartenfelsstrasse", "nr": "51"}, {"street": "Wartenfelsstrasse", "nr": "54"}, {"street": "Wartenfelsstrasse", "nr": "57"}, {"street": "Wartenfelsstrasse", "nr": "55"}, {"street": "Wartenfelsstrasse", "nr": "50"}, {"street": "Wartenfelsstrasse", "nr": "53"}, {"street": "Wartenfelsstrasse", "nr": "48"}, {"street": "Schlossstrasse", "nr": "22"}, {"street": "Schlossstrasse", "nr": "26"}, {"street": "Schlossstrasse", "nr": "19"}, {"street": "Schlossstrasse", "nr": "21"}, {"street": "Schlossstrasse", "nr": "28"}, {"street": "Hangstrasse", "nr": "11"}, {"street": "Hangstrasse", "nr": "16"}, {"street": "Hangstrasse", "nr": "26"}, {"street": "Hangstrasse", "nr": "14"}, {"street": "Hangstrasse", "nr": "7"}, {"street": "Hangstrasse", "nr": "24"}, {"street": "Hangstrasse", "nr": "28"}, {"street": "Hangstrasse", "nr": "15"}, {"street": "Hangstrasse", "nr": "20"}, {"street": "Hangstrasse", "nr": "18"}, {"street": "Küferweg", "nr": "15"}, {"street": "Küferweg", "nr": "7"}, {"street": "Küferweg", "nr": "9"}, {"street": "Küferweg", "nr": "3"}, {"street": "Küferweg", "nr": "5"}, {"street": "Küferweg", "nr": "1"}, {"street": "Küferweg", "nr": "21"}, {"street": "Küferweg", "nr": "13"}, {"street": "Küferweg", "nr": "17"}, {"street": "Küferweg", "nr": "19"}, {"street": "Küferweg", "nr": "11"}, {"street": "Bovirain", "nr": "2"}, {"street": "Kaltstrasse", "nr": "8"}, {"street": "Kaltstrasse", "nr": "3"}, {"street": "Kaltstrasse", "nr": "1"}, {"street": "Kaltstrasse", "nr": "9"}, {"street": "Kaltstrasse", "nr": "10"}, {"street": "Kaltstrasse", "nr": "6"}]},{name:"03 – Alte Badstrasse 1",color:"#16a34a",addresses:[{"street": "Alte Badstrasse", "nr": "1"}, {"street": "Flüelistrasse", "nr": "1"}, {"street": "Flüelistrasse", "nr": "4"}, {"street": "Flüelistrasse", "nr": "5"}, {"street": "Flüelistrasse", "nr": "3"}, {"street": "Neue Badstrasse", "nr": "6"}, {"street": "Neue Badstrasse", "nr": "3"}, {"street": "Neue Badstrasse", "nr": "1"}, {"street": "Neue Badstrasse", "nr": "4"}, {"street": "Neue Badstrasse", "nr": "2"}, {"street": "Winterhaldenstrasse", "nr": "1"}, {"street": "Alte Badstrasse", "nr": "2"}, {"street": "Alte Badstrasse", "nr": "3"}, {"street": "Alte Badstrasse", "nr": "4"}]},{name:"04 – Rebenstrasse 4",color:"#d97706",addresses:[{"street": "Rebenstrasse", "nr": "4"}, {"street": "Mühleweg", "nr": "6"}, {"street": "Mühleweg", "nr": "14"}, {"street": "Mühleweg", "nr": "10"}, {"street": "Mühleweg", "nr": "1"}, {"street": "Mühleweg", "nr": "4"}, {"street": "Mühleweg", "nr": "8"}, {"street": "Mühleweg", "nr": "2"}, {"street": "Hauptstrasse", "nr": "33"}, {"street": "Hauptstrasse", "nr": "41"}, {"street": "Hauptstrasse", "nr": "68"}, {"street": "Hauptstrasse", "nr": "45"}, {"street": "Hauptstrasse", "nr": "74"}, {"street": "Hauptstrasse", "nr": "43"}, {"street": "Hauptstrasse", "nr": "72"}, {"street": "Hauptstrasse", "nr": "37"}, {"street": "Hauptstrasse", "nr": "35"}, {"street": "Kellengasse", "nr": "1"}, {"street": "Kellengasse", "nr": "2"}, {"street": "Kellengasse", "nr": "3"}, {"street": "Kellengasse", "nr": "6"}, {"street": "Kellengasse", "nr": "4"}, {"street": "Kellengasse", "nr": "8"}, {"street": "Schlossstrasse", "nr": "12"}, {"street": "Schlossstrasse", "nr": "18"}, {"street": "Schlossstrasse", "nr": "16"}, {"street": "Schlossstrasse", "nr": "10"}, {"street": "Schlossstrasse", "nr": "15"}, {"street": "Schlossstrasse", "nr": "20"}, {"street": "Schlossstrasse", "nr": "8"}, {"street": "Schlossstrasse", "nr": "14"}, {"street": "Schlossstrasse", "nr": "6"}, {"street": "Rebenstrasse", "nr": "2"}, {"street": "Bovirain", "nr": "3"}, {"street": "Bovirain", "nr": "5"}, {"street": "Bovirain", "nr": "12"}, {"street": "Bovirain", "nr": "7"}, {"street": "Bovirain", "nr": "6"}, {"street": "Bovirain", "nr": "1"}]},{name:"05 – Bachstrasse 14",color:"#7c3aed",addresses:[{"street": "Bachstrasse", "nr": "14"}, {"street": "Bachstrasse", "nr": "16"}, {"street": "Bachstrasse", "nr": "20"}, {"street": "Bachstrasse", "nr": "22"}, {"street": "Bachstrasse", "nr": "18"}, {"street": "Josef-Reinhartstrasse", "nr": "3"}, {"street": "Josef-Reinhartstrasse", "nr": "13"}, {"street": "Josef-Reinhartstrasse", "nr": "2"}, {"street": "Josef-Reinhartstrasse", "nr": "1"}, {"street": "Josef-Reinhartstrasse", "nr": "15"}, {"street": "Josef-Reinhartstrasse", "nr": "12"}, {"street": "Josef-Reinhartstrasse", "nr": "7"}, {"street": "Josef-Reinhartstrasse", "nr": "6"}, {"street": "Josef-Reinhartstrasse", "nr": "17"}, {"street": "Josef-Reinhartstrasse", "nr": "8"}, {"street": "Josef-Reinhartstrasse", "nr": "10"}, {"street": "Josef-Reinhartstrasse", "nr": "4"}, {"street": "Josef-Reinhartstrasse", "nr": "5"}, {"street": "Josef-Reinhartstrasse", "nr": "9"}, {"street": "Hauptstrasse", "nr": "14"}, {"street": "Hauptstrasse", "nr": "12"}, {"street": "Hauptstrasse", "nr": "16"}, {"street": "Rennweg", "nr": "9"}, {"street": "Rennweg", "nr": "7"}, {"street": "Rennweg", "nr": "5"}, {"street": "Rennweg", "nr": "1"}, {"street": "Rennweg", "nr": "3"}, {"street": "Rennweg", "nr": "10"}, {"street": "Rennweg", "nr": "4"}, {"street": "Rennweg", "nr": "12"}, {"street": "Rennweg", "nr": "8"}, {"street": "Rennweg", "nr": "2"}, {"street": "Rechtenmattstrasse", "nr": "4"}, {"street": "Fuchslochstrasse", "nr": "1"}, {"street": "Hofmattstrasse", "nr": "5"}, {"street": "Hofmattstrasse", "nr": "15"}, {"street": "Hofmattstrasse", "nr": "16"}, {"street": "Hofmattstrasse", "nr": "1"}, {"street": "Hofmattstrasse", "nr": "9"}, {"street": "Hofmattstrasse", "nr": "10"}, {"street": "Hofmattstrasse", "nr": "3"}, {"street": "Hofmattstrasse", "nr": "4"}, {"street": "Hofmattstrasse", "nr": "8"}, {"street": "Hofmattstrasse", "nr": "19"}, {"street": "Hofmattstrasse", "nr": "14"}, {"street": "Hofmattstrasse", "nr": "2"}, {"street": "Hofmattstrasse", "nr": "13"}, {"street": "Hofmattstrasse", "nr": "20"}, {"street": "Hofmattstrasse", "nr": "12"}, {"street": "Hofmattstrasse", "nr": "6"}, {"street": "Hofmattstrasse", "nr": "7"}, {"street": "Hofmattstrasse", "nr": "17"}, {"street": "Hofmattstrasse", "nr": "11"}, {"street": "Neumattstrasse", "nr": "6"}, {"street": "Neumattstrasse", "nr": "4"}, {"street": "Neumattstrasse", "nr": "2"}, {"street": "Mattenstrasse", "nr": "8"}, {"street": "Mattenstrasse", "nr": "3"}, {"street": "Mattenstrasse", "nr": "1"}, {"street": "Mattenstrasse", "nr": "2"}, {"street": "Mattenstrasse", "nr": "4"}, {"street": "Mattenstrasse", "nr": "6"}, {"street": "Mattenstrasse", "nr": "5"}, {"street": "Tannmattstrasse", "nr": "1"}]},{name:"06 – Bachstrasse 30",color:"#0891b2",addresses:[{"street": "Bachstrasse", "nr": "30"}, {"street": "Bachstrasse", "nr": "32"}, {"street": "Bachstrasse", "nr": "40"}, {"street": "Bachstrasse", "nr": "36"}, {"street": "Bachstrasse", "nr": "38"}, {"street": "Bachstrasse", "nr": "42"}, {"street": "Bachstrasse", "nr": "34"}, {"street": "Hauptstrasse", "nr": "10"}, {"street": "Hauptstrasse", "nr": "2"}, {"street": "Hauptstrasse", "nr": "8"}, {"street": "Hauptstrasse", "nr": "6"}, {"street": "Hauptstrasse", "nr": "4"}, {"street": "Pfandstrasse", "nr": "6"}, {"street": "Pfandstrasse", "nr": "14"}, {"street": "Pfandstrasse", "nr": "12"}, {"street": "Pfandstrasse", "nr": "8"}, {"street": "Pfandstrasse", "nr": "4"}, {"street": "Pfandstrasse", "nr": "16"}, {"street": "Pfandstrasse", "nr": "2"}, {"street": "Pfandstrasse", "nr": "10"}, {"street": "Rechtenmattstrasse", "nr": "23"}, {"street": "Rechtenmattstrasse", "nr": "8"}, {"street": "Rechtenmattstrasse", "nr": "25"}, {"street": "Rechtenmattstrasse", "nr": "10"}, {"street": "Rechtenmattstrasse", "nr": "16"}, {"street": "Rechtenmattstrasse", "nr": "14"}, {"street": "Rechtenmattstrasse", "nr": "12"}, {"street": "Rechtenmattstrasse", "nr": "6"}, {"street": "Güterstrasse", "nr": "7"}, {"street": "Güterstrasse", "nr": "3"}, {"street": "Güterstrasse", "nr": "1"}, {"street": "Güterstrasse", "nr": "5"}, {"street": "Fuchslochstrasse", "nr": "2"}, {"street": "Fuchslochstrasse", "nr": "15"}, {"street": "Fuchslochstrasse", "nr": "10"}, {"street": "Buerstrasse", "nr": "1"}, {"street": "Buerstrasse", "nr": "5"}, {"street": "Buerstrasse", "nr": "3"}]},{name:"07 – Belchenstrasse 9",color:"#be185d",addresses:[{"street": "Belchenstrasse", "nr": "9"}, {"street": "Froburgstrasse", "nr": "5"}, {"street": "Froburgstrasse", "nr": "6"}, {"street": "Froburgstrasse", "nr": "1"}, {"street": "Froburgstrasse", "nr": "4"}, {"street": "Froburgstrasse", "nr": "2"}, {"street": "Belchenstrasse", "nr": "1"}, {"street": "Belchenstrasse", "nr": "8"}, {"street": "Belchenstrasse", "nr": "3"}, {"street": "Belchenstrasse", "nr": "7"}, {"street": "Belchenstrasse", "nr": "12"}, {"street": "Belchenstrasse", "nr": "15"}, {"street": "Belchenstrasse", "nr": "5"}, {"street": "Belchenstrasse", "nr": "10"}, {"street": "Belchenstrasse", "nr": "11"}, {"street": "Belchenstrasse", "nr": "6"}, {"street": "Sälistrasse", "nr": "42"}, {"street": "Sälistrasse", "nr": "15"}, {"street": "Sälistrasse", "nr": "25"}, {"street": "Sälistrasse", "nr": "9"}, {"street": "Sälistrasse", "nr": "30"}, {"street": "Sälistrasse", "nr": "31"}, {"street": "Sälistrasse", "nr": "33"}, {"street": "Sälistrasse", "nr": "28"}, {"street": "Sälistrasse", "nr": "34"}, {"street": "Sälistrasse", "nr": "11"}, {"street": "Sälistrasse", "nr": "29"}, {"street": "Sälistrasse", "nr": "36"}, {"street": "Sälistrasse", "nr": "27"}, {"street": "Sälistrasse", "nr": "37"}, {"street": "Bitschlerstrasse", "nr": "1"}, {"street": "Winznauerstrasse", "nr": "47"}, {"street": "Winznauerstrasse", "nr": "44"}, {"street": "Winznauerstrasse", "nr": "34"}, {"street": "Winznauerstrasse", "nr": "51"}, {"street": "Winznauerstrasse", "nr": "42"}, {"street": "Winznauerstrasse", "nr": "36"}, {"street": "Winznauerstrasse", "nr": "26"}, {"street": "Winznauerstrasse", "nr": "43"}, {"street": "Winznauerstrasse", "nr": "18"}, {"street": "Winznauerstrasse", "nr": "53"}, {"street": "Winznauerstrasse", "nr": "32"}, {"street": "Winznauerstrasse", "nr": "45"}, {"street": "Winznauerstrasse", "nr": "30"}, {"street": "Winznauerstrasse", "nr": "49"}, {"street": "Winznauerstrasse", "nr": "24"}, {"street": "Winznauerstrasse", "nr": "22"}, {"street": "Bodenmattstrasse", "nr": "7"}, {"street": "Bodenmattstrasse", "nr": "5"}, {"street": "Bodenmattstrasse", "nr": "9"}, {"street": "Bodenmattstrasse", "nr": "3"}, {"street": "Bodenmattstrasse", "nr": "1"}, {"street": "Räckholdernstrasse", "nr": "12"}, {"street": "Räckholdernstrasse", "nr": "33"}, {"street": "Räckholdernstrasse", "nr": "18"}, {"street": "Räckholdernstrasse", "nr": "16"}, {"street": "Räckholdernstrasse", "nr": "14"}, {"street": "Räckholdernstrasse", "nr": "27"}, {"street": "Räckholdernstrasse", "nr": "22"}, {"street": "Räckholdernstrasse", "nr": "23"}, {"street": "Räckholdernstrasse", "nr": "37"}, {"street": "Räckholdernstrasse", "nr": "41"}, {"street": "Räckholdernstrasse", "nr": "43"}, {"street": "Bornweg", "nr": "6"}, {"street": "Bornweg", "nr": "4"}, {"street": "Bornweg", "nr": "1"}, {"street": "Pfaffletenstrasse", "nr": "2"}, {"street": "Pfaffletenstrasse", "nr": "4"}, {"street": "Pfaffletenstrasse", "nr": "1"}, {"street": "Engelbergstrasse", "nr": "6"}, {"street": "Engelbergstrasse", "nr": "8"}, {"street": "Engelbergstrasse", "nr": "12"}, {"street": "Engelbergstrasse", "nr": "3"}, {"street": "Engelbergstrasse", "nr": "10"}, {"street": "Engelbergstrasse", "nr": "1"}, {"street": "Engelbergstrasse", "nr": "9"}, {"street": "Engelbergstrasse", "nr": "11"}, {"street": "Engelbergstrasse", "nr": "5"}, {"street": "Engelbergstrasse", "nr": "7"}, {"street": "Engelbergstrasse", "nr": "13"}, {"street": "Grundstrasse", "nr": "1"}]},{name:"08 – Birkenstrasse 1",color:"#b45309",addresses:[{"street": "Birkenstrasse", "nr": "1"}, {"street": "Mühlerainstrasse", "nr": "16"}, {"street": "Mühlerainstrasse", "nr": "2"}, {"street": "Mühlerainstrasse", "nr": "12"}, {"street": "Mühlerainstrasse", "nr": "10"}, {"street": "Mühlerainstrasse", "nr": "6"}, {"street": "Mühlerainstrasse", "nr": "18"}, {"street": "Mühlerainstrasse", "nr": "1"}, {"street": "Mühlerainstrasse", "nr": "7"}, {"street": "Mühlerainstrasse", "nr": "3"}, {"street": "Mühlerainstrasse", "nr": "8"}, {"street": "Mühlerainstrasse", "nr": "14"}, {"street": "Mühlerainstrasse", "nr": "4"}, {"street": "Duschletenstrasse", "nr": "41"}, {"street": "Duschletenstrasse", "nr": "52"}, {"street": "Duschletenstrasse", "nr": "39"}, {"street": "Duschletenstrasse", "nr": "50"}, {"street": "Duschletenstrasse", "nr": "54"}, {"street": "Duschletenstrasse", "nr": "48"}, {"street": "Rebenstrasse", "nr": "31"}, {"street": "Rebenstrasse", "nr": "33"}, {"street": "Rebenstrasse", "nr": "35"}, {"street": "Birkenstrasse", "nr": "2"}, {"street": "Birkenstrasse", "nr": "5"}, {"street": "Birkenstrasse", "nr": "8"}, {"street": "Birkenstrasse", "nr": "7"}, {"street": "Birkenstrasse", "nr": "3"}, {"street": "Birkenstrasse", "nr": "4"}, {"street": "Birkenstrasse", "nr": "6"}, {"street": "Paradiesstrasse", "nr": "2"}, {"street": "Paradiesstrasse", "nr": "5"}, {"street": "Paradiesstrasse", "nr": "4"}, {"street": "Paradiesstrasse", "nr": "10"}, {"street": "Paradiesstrasse", "nr": "1"}, {"street": "Paradiesstrasse", "nr": "8"}, {"street": "Paradiesstrasse", "nr": "3"}, {"street": "Paradiesstrasse", "nr": "6"}, {"street": "Lindenstrasse", "nr": "9"}, {"street": "Lindenstrasse", "nr": "10"}, {"street": "Lindenstrasse", "nr": "8"}, {"street": "Lindenstrasse", "nr": "11"}, {"street": "Lindenstrasse", "nr": "7"}, {"street": "Weinbergstrasse", "nr": "1"}, {"street": "Weinbergstrasse", "nr": "5"}, {"street": "Weinbergstrasse", "nr": "7"}, {"street": "Weinbergstrasse", "nr": "8"}, {"street": "Weinbergstrasse", "nr": "6"}, {"street": "Weinbergstrasse", "nr": "4"}, {"street": "Weinbergstrasse", "nr": "3"}]},{name:"09 – Buerstrasse 7",color:"#15803d",addresses:[{"street": "Buerstrasse", "nr": "7"}, {"street": "Fuchslochstrasse", "nr": "9"}, {"street": "Industriestrasse", "nr": "17"}]},{name:"10 – Bündtenmattweg 113",color:"#ea580c",addresses:[{"street": "Bündtenmattweg", "nr": "113"}, {"street": "Mahrenstrasse", "nr": "158"}, {"street": "Mahrenstrasse", "nr": "125"}, {"street": "Mahrenstrasse", "nr": "137"}, {"street": "Mahrenstrasse", "nr": "142"}, {"street": "Mahrenstrasse", "nr": "123"}, {"street": "Mahrenstrasse", "nr": "133"}, {"street": "Mahrenstrasse", "nr": "139"}, {"street": "Mahrenstrasse", "nr": "143"}, {"street": "Mahrenstrasse", "nr": "154"}, {"street": "Mahrenstrasse", "nr": "146"}, {"street": "Mahrenstrasse", "nr": "129"}, {"street": "Mahrenstrasse", "nr": "329"}, {"street": "Mahrenstrasse", "nr": "135"}, {"street": "Mahrenstrasse", "nr": "131"}, {"street": "Mahrenstrasse", "nr": "121"}, {"street": "Mahrenstrasse", "nr": "144"}, {"street": "Mahrenstrasse", "nr": "348"}, {"street": "Mahrenstrasse", "nr": "160"}, {"street": "Längackerstrasse", "nr": "101"}, {"street": "Bündtenmattweg", "nr": "110"}, {"street": "Bündtenmattweg", "nr": "115"}, {"street": "Bündtenmattweg", "nr": "116"}, {"street": "Bündtenmattweg", "nr": "108"}, {"street": "Bündtenmattweg", "nr": "112"}, {"street": "Bündtenmattweg", "nr": "118"}, {"street": "Bündtenmattweg", "nr": "121"}, {"street": "Bündtenmattweg", "nr": "111"}, {"street": "Bündtenmattweg", "nr": "117"}, {"street": "Bündtenmattweg", "nr": "104"}, {"street": "Hübeliweg", "nr": "102"}, {"street": "Hübeliweg", "nr": "105"}, {"street": "Hübeliweg", "nr": "101"}, {"street": "Hübeliweg", "nr": "103"}, {"street": "Obermahren", "nr": "102"}, {"street": "Obermahren", "nr": "103"}, {"street": "Pfifferackerstrasse", "nr": "104"}, {"street": "Pfifferackerstrasse", "nr": "103"}, {"street": "Pfifferackerstrasse", "nr": "102"}, {"street": "Pfifferackerstrasse", "nr": "108"}, {"street": "Pfifferackerstrasse", "nr": "106"}, {"street": "Pfifferackerstrasse", "nr": "101"}, {"street": "Jeppensackstrasse", "nr": "102"}, {"street": "Jeppensackstrasse", "nr": "101"}, {"street": "Rütenenweg", "nr": "104"}, {"street": "Rütenenweg", "nr": "108"}, {"street": "Rütenenweg", "nr": "102"}, {"street": "Rütenenweg", "nr": "106"}, {"street": "Scharsmattenstrasse", "nr": "102"}, {"street": "Wilmatt", "nr": "6"}]},{name:"11 – Chilenackerstrasse 30",color:"#9333ea",addresses:[{"street": "Chilenackerstrasse", "nr": "30"}, {"street": "Sälistrasse", "nr": "2"}, {"street": "Sälistrasse", "nr": "10"}, {"street": "Sälistrasse", "nr": "7"}, {"street": "Sälistrasse", "nr": "5"}, {"street": "Sälistrasse", "nr": "3"}, {"street": "Balmisstrasse", "nr": "14"}, {"street": "Balmisstrasse", "nr": "4"}, {"street": "Balmisstrasse", "nr": "16"}, {"street": "Balmisstrasse", "nr": "20"}, {"street": "Balmisstrasse", "nr": "1"}, {"street": "Balmisstrasse", "nr": "3"}, {"street": "Balmisstrasse", "nr": "2"}, {"street": "Sonnhaldenstrasse", "nr": "5"}, {"street": "Sonnhaldenstrasse", "nr": "23"}, {"street": "Sonnhaldenstrasse", "nr": "21"}, {"street": "Sonnhaldenstrasse", "nr": "1"}, {"street": "Sonnhaldenstrasse", "nr": "13"}, {"street": "Sonnhaldenstrasse", "nr": "17"}, {"street": "Sonnhaldenstrasse", "nr": "24"}, {"street": "Sonnhaldenstrasse", "nr": "6"}, {"street": "Sonnhaldenstrasse", "nr": "10"}, {"street": "Sonnhaldenstrasse", "nr": "15"}, {"street": "Sonnhaldenstrasse", "nr": "20"}, {"street": "Sonnhaldenstrasse", "nr": "18"}, {"street": "Sonnhaldenstrasse", "nr": "2"}, {"street": "Sonnhaldenstrasse", "nr": "9"}, {"street": "Sonnhaldenstrasse", "nr": "11"}, {"street": "Sonnhaldenstrasse", "nr": "25"}, {"street": "Sonnhaldenstrasse", "nr": "14"}, {"street": "Sonnhaldenstrasse", "nr": "19"}, {"street": "Sonnhaldenstrasse", "nr": "4"}, {"street": "Sonnhaldenstrasse", "nr": "26"}, {"street": "Sonnhaldenstrasse", "nr": "8"}, {"street": "Sonnhaldenstrasse", "nr": "28"}, {"street": "Sonnhaldenstrasse", "nr": "3"}, {"street": "Sonnhaldenstrasse", "nr": "22"}, {"street": "Sonnhaldenstrasse", "nr": "16"}, {"street": "Sonnhaldenstrasse", "nr": "7"}, {"street": "Chilenackerstrasse", "nr": "16"}, {"street": "Chilenackerstrasse", "nr": "29"}, {"street": "Chilenackerstrasse", "nr": "32"}, {"street": "Chilenackerstrasse", "nr": "24"}, {"street": "Chilenackerstrasse", "nr": "22"}, {"street": "Chilenackerstrasse", "nr": "18"}, {"street": "Chilenackerstrasse", "nr": "12"}, {"street": "Chilenackerstrasse", "nr": "25"}, {"street": "Chilenackerstrasse", "nr": "26"}, {"street": "Chilenackerstrasse", "nr": "28"}, {"street": "Chilenackerstrasse", "nr": "11"}, {"street": "Chilenackerstrasse", "nr": "19"}, {"street": "Chilenackerstrasse", "nr": "31"}, {"street": "Chilenackerstrasse", "nr": "21"}, {"street": "Chilenackerstrasse", "nr": "23"}, {"street": "Chilenackerstrasse", "nr": "15"}, {"street": "Chilenackerstrasse", "nr": "13"}, {"street": "Chilenackerstrasse", "nr": "14"}, {"street": "Chilenackerstrasse", "nr": "20"}, {"street": "Räckholdernstrasse", "nr": "6"}, {"street": "Räckholdernstrasse", "nr": "8"}, {"street": "Räckholdernstrasse", "nr": "19"}, {"street": "Räckholdernstrasse", "nr": "4"}, {"street": "Räckholdernstrasse", "nr": "17"}, {"street": "Räckholdernstrasse", "nr": "21"}, {"street": "Räckholdernstrasse", "nr": "10"}, {"street": "Bornweg", "nr": "3"}, {"street": "Bornweg", "nr": "4"}, {"street": "Eienstrasse", "nr": "12"}, {"street": "Eienstrasse", "nr": "16"}, {"street": "Eienstrasse", "nr": "2"}, {"street": "Eienstrasse", "nr": "8"}, {"street": "Eienstrasse", "nr": "6"}, {"street": "Eienstrasse", "nr": "14"}, {"street": "Eienstrasse", "nr": "10"}, {"street": "Eihübelstrasse", "nr": "6"}, {"street": "Eihübelstrasse", "nr": "1"}, {"street": "Eihübelstrasse", "nr": "11"}, {"street": "Eihübelstrasse", "nr": "14"}, {"street": "Eihübelstrasse", "nr": "40"}, {"street": "Eihübelstrasse", "nr": "3"}, {"street": "Eihübelstrasse", "nr": "34"}, {"street": "Eihübelstrasse", "nr": "36"}, {"street": "Eihübelstrasse", "nr": "4"}, {"street": "Eihübelstrasse", "nr": "8"}, {"street": "Eihübelstrasse", "nr": "15"}, {"street": "Eihübelstrasse", "nr": "32"}, {"street": "Eihübelstrasse", "nr": "18"}, {"street": "Eihübelstrasse", "nr": "16"}, {"street": "Eihübelstrasse", "nr": "7"}, {"street": "Eihübelstrasse", "nr": "5"}, {"street": "Eihübelstrasse", "nr": "38"}, {"street": "Eihübelstrasse", "nr": "12"}, {"street": "Eihübelstrasse", "nr": "30"}, {"street": "Eihübelstrasse", "nr": "17"}, {"street": "Eihübelstrasse", "nr": "28"}, {"street": "Eihübelstrasse", "nr": "10"}, {"street": "Eihübelstrasse", "nr": "9"}, {"street": "Föhrenstrasse", "nr": "5"}, {"street": "Föhrenstrasse", "nr": "1"}, {"street": "Föhrenstrasse", "nr": "3"}, {"street": "Kirchstrasse", "nr": "15"}, {"street": "Kirchstrasse", "nr": "7"}, {"street": "Kirchstrasse", "nr": "17"}, {"street": "Kirchstrasse", "nr": "5"}, {"street": "Kirchstrasse", "nr": "3"}, {"street": "Kirchstrasse", "nr": "11"}, {"street": "Kirchstrasse", "nr": "9"}, {"street": "Säliblick", "nr": "2"}, {"street": "Säliblick", "nr": "4"}, {"street": "Säliblick", "nr": "6"}, {"street": "Säliblick", "nr": "8"}]},{name:"12 – Chilenackerstrasse 6",color:"#c2410c",addresses:[{"street": "Chilenackerstrasse", "nr": "6"}, {"street": "Chilenackerweg", "nr": "15"}, {"street": "Chilenackerweg", "nr": "10"}, {"street": "Chilenackerweg", "nr": "3"}, {"street": "Chilenackerweg", "nr": "5"}, {"street": "Chilenackerweg", "nr": "13"}, {"street": "Chilenackerweg", "nr": "7"}, {"street": "Chilenackerweg", "nr": "4"}, {"street": "Chilenackerweg", "nr": "1"}, {"street": "Chilenackerweg", "nr": "11"}, {"street": "Chilenackerweg", "nr": "9"}, {"street": "Winznauerstrasse", "nr": "27"}, {"street": "Winznauerstrasse", "nr": "10"}, {"street": "Winznauerstrasse", "nr": "4"}, {"street": "Winznauerstrasse", "nr": "23"}, {"street": "Winznauerstrasse", "nr": "25"}, {"street": "Winznauerstrasse", "nr": "13"}, {"street": "Winznauerstrasse", "nr": "9"}, {"street": "Winznauerstrasse", "nr": "12"}, {"street": "Winznauerstrasse", "nr": "11"}, {"street": "Winznauerstrasse", "nr": "1"}, {"street": "Winznauerstrasse", "nr": "21"}, {"street": "Winznauerstrasse", "nr": "19"}, {"street": "Winznauerstrasse", "nr": "5"}, {"street": "Winznauerstrasse", "nr": "8"}, {"street": "Winznauerstrasse", "nr": "6"}, {"street": "Winznauerstrasse", "nr": "16"}, {"street": "Chilenackerstrasse", "nr": "7"}, {"street": "Chilenackerstrasse", "nr": "2"}, {"street": "Chilenackerstrasse", "nr": "5"}, {"street": "Chilenackerstrasse", "nr": "8"}, {"street": "Chilenackerstrasse", "nr": "9"}, {"street": "Räckholdernstrasse", "nr": "13"}, {"street": "Räckholdernstrasse", "nr": "15"}, {"street": "Wolfackerweg", "nr": "5"}, {"street": "Wolfackerweg", "nr": "6"}, {"street": "Wolfackerweg", "nr": "8"}, {"street": "Wolfackerweg", "nr": "1"}, {"street": "Wolfackerweg", "nr": "4"}, {"street": "Wolfackerweg", "nr": "3"}, {"street": "Wolfackerweg", "nr": "7"}, {"street": "Räckholdernweg", "nr": "3"}, {"street": "Räckholdernweg", "nr": "4"}, {"street": "Räckholdernweg", "nr": "1"}, {"street": "Räckholdernweg", "nr": "2"}]},{name:"13 – Chälenstrasse 21",color:"#047857",addresses:[{"street": "Chälenstrasse", "nr": "21"}, {"street": "Hauptstrasse", "nr": "17"}, {"street": "Hauptstrasse", "nr": "11"}, {"street": "Hauptstrasse", "nr": "5"}, {"street": "Hauptstrasse", "nr": "15"}, {"street": "Hauptstrasse", "nr": "7"}, {"street": "Hauptstrasse", "nr": "3"}, {"street": "Hauptstrasse", "nr": "1"}, {"street": "Hauptstrasse", "nr": "9"}, {"street": "Mahrenstrasse", "nr": "10"}, {"street": "Mahrenstrasse", "nr": "3"}, {"street": "Mahrenstrasse", "nr": "5"}, {"street": "Mahrenstrasse", "nr": "1"}, {"street": "Kirchmattstrasse", "nr": "9"}, {"street": "Kirchmattstrasse", "nr": "22"}, {"street": "Kirchmattstrasse", "nr": "3"}, {"street": "Kirchmattstrasse", "nr": "26"}, {"street": "Kirchmattstrasse", "nr": "15"}, {"street": "Kirchmattstrasse", "nr": "5"}, {"street": "Kirchmattstrasse", "nr": "13"}, {"street": "Kirchmattstrasse", "nr": "11"}, {"street": "Kirchmattstrasse", "nr": "28"}, {"street": "Kirchmattstrasse", "nr": "20"}, {"street": "Kirchmattstrasse", "nr": "18"}, {"street": "Kirchmattstrasse", "nr": "14"}, {"street": "Kirchmattstrasse", "nr": "12"}, {"street": "Kirchmattstrasse", "nr": "16"}, {"street": "Kirchmattstrasse", "nr": "1"}, {"street": "Kirchmattstrasse", "nr": "2"}, {"street": "Kirchmattstrasse", "nr": "8"}, {"street": "Kirchmattstrasse", "nr": "7"}, {"street": "Kirchmattstrasse", "nr": "24"}, {"street": "Kirchmattstrasse", "nr": "10"}, {"street": "Im Mätteli", "nr": "4"}, {"street": "Im Mätteli", "nr": "2"}, {"street": "Im Mätteli", "nr": "6"}, {"street": "Im Mätteli", "nr": "8"}, {"street": "Lätthübelstrasse", "nr": "6"}, {"street": "Lätthübelstrasse", "nr": "12"}, {"street": "Lätthübelstrasse", "nr": "10"}, {"street": "Lätthübelstrasse", "nr": "9"}, {"street": "Lätthübelstrasse", "nr": "3"}, {"street": "Lätthübelstrasse", "nr": "2"}, {"street": "Lätthübelstrasse", "nr": "8"}, {"street": "Lätthübelstrasse", "nr": "7"}, {"street": "Lätthübelstrasse", "nr": "4"}, {"street": "Lätthübelstrasse", "nr": "5"}, {"street": "Räckholdernstrasse", "nr": "3"}, {"street": "Lerchenweg", "nr": "4"}, {"street": "Lerchenweg", "nr": "9"}, {"street": "Lerchenweg", "nr": "5"}, {"street": "Lerchenweg", "nr": "1"}, {"street": "Lerchenweg", "nr": "7"}, {"street": "Lerchenweg", "nr": "2"}, {"street": "Lerchenweg", "nr": "3"}, {"street": "Eihübelstrasse", "nr": "22"}, {"street": "Eihübelstrasse", "nr": "26"}, {"street": "Eihübelstrasse", "nr": "24"}, {"street": "Eihübelstrasse", "nr": "20"}, {"street": "Eihübelweg", "nr": "1"}, {"street": "Föhrenstrasse", "nr": "4"}, {"street": "Föhrenstrasse", "nr": "9"}, {"street": "Föhrenstrasse", "nr": "2"}, {"street": "Föhrenstrasse", "nr": "7"}, {"street": "Kirchstrasse", "nr": "19"}, {"street": "Kirchstrasse", "nr": "14"}, {"street": "Kirchstrasse", "nr": "4"}, {"street": "Kirchstrasse", "nr": "20"}, {"street": "Kirchstrasse", "nr": "24"}, {"street": "Kirchstrasse", "nr": "28"}, {"street": "Kirchstrasse", "nr": "12"}, {"street": "Kirchstrasse", "nr": "22"}, {"street": "Kirchstrasse", "nr": "16"}, {"street": "Kirchstrasse", "nr": "18"}, {"street": "Kirchstrasse", "nr": "21"}, {"street": "Kirchstrasse", "nr": "23"}, {"street": "Kirchstrasse", "nr": "26"}, {"street": "Chälenstrasse", "nr": "5"}, {"street": "Chälenstrasse", "nr": "23"}, {"street": "Chälenstrasse", "nr": "12"}, {"street": "Chälenstrasse", "nr": "3"}, {"street": "Chälenstrasse", "nr": "14"}, {"street": "Chälenstrasse", "nr": "19"}, {"street": "Chälenstrasse", "nr": "16"}, {"street": "Chälenstrasse", "nr": "17"}, {"street": "Chälenstrasse", "nr": "29"}, {"street": "Chälenstrasse", "nr": "1"}, {"street": "Chälenstrasse", "nr": "10"}, {"street": "Chälenstrasse", "nr": "8"}, {"street": "Chälenstrasse", "nr": "27"}, {"street": "Chälenstrasse", "nr": "25"}, {"street": "Chälenstrasse", "nr": "7"}, {"street": "Frank-Buchserstrasse", "nr": "2"}, {"street": "Frank-Buchserstrasse", "nr": "1"}, {"street": "Frank-Buchserstrasse", "nr": "5"}, {"street": "Frank-Buchserstrasse", "nr": "3"}, {"street": "Frank-Buchserstrasse", "nr": "11"}, {"street": "Frank-Buchserstrasse", "nr": "9"}, {"street": "Frank-Buchserstrasse", "nr": "7"}, {"street": "Frank-Buchserstrasse", "nr": "6"}]},{name:"14 – Hauptstrasse 20",color:"#b91c1c",addresses:[{"street": "Hauptstrasse", "nr": "20"}, {"street": "Stüsslingerstrasse", "nr": "12"}, {"street": "Stüsslingerstrasse", "nr": "2"}, {"street": "Stüsslingerstrasse", "nr": "22"}, {"street": "Stüsslingerstrasse", "nr": "23"}, {"street": "Stüsslingerstrasse", "nr": "14"}, {"street": "Stüsslingerstrasse", "nr": "4"}, {"street": "Stüsslingerstrasse", "nr": "6"}, {"street": "Stüsslingerstrasse", "nr": "10"}, {"street": "Stüsslingerstrasse", "nr": "19"}, {"street": "Stüsslingerstrasse", "nr": "15"}, {"street": "Stüsslingerstrasse", "nr": "17"}, {"street": "Stüsslingerstrasse", "nr": "16"}, {"street": "Bachstrasse", "nr": "10"}, {"street": "Bachstrasse", "nr": "4"}, {"street": "Bachstrasse", "nr": "1"}, {"street": "Bachstrasse", "nr": "8"}, {"street": "Bachstrasse", "nr": "12"}, {"street": "Bachstrasse", "nr": "6"}, {"street": "Hauptstrasse", "nr": "26"}, {"street": "Hauptstrasse", "nr": "18"}, {"street": "Duschletenstrasse", "nr": "5"}, {"street": "Duschletenstrasse", "nr": "2"}, {"street": "Duschletenstrasse", "nr": "7"}, {"street": "Duschletenstrasse", "nr": "4"}, {"street": "Wengistrasse", "nr": "12"}, {"street": "Wengistrasse", "nr": "4"}, {"street": "Wengistrasse", "nr": "2"}, {"street": "Wengistrasse", "nr": "5"}, {"street": "Wengistrasse", "nr": "3"}, {"street": "Wengistrasse", "nr": "6"}, {"street": "Wengistrasse", "nr": "8"}, {"street": "Wengistrasse", "nr": "9"}, {"street": "Wengistrasse", "nr": "7"}, {"street": "Wengistrasse", "nr": "10"}, {"street": "Giesshübelstrasse", "nr": "9"}, {"street": "Giesshübelstrasse", "nr": "8"}, {"street": "Gartenstrasse", "nr": "14"}, {"street": "Gartenstrasse", "nr": "1"}, {"street": "Gartenstrasse", "nr": "4"}, {"street": "Gartenstrasse", "nr": "8"}, {"street": "Gartenstrasse", "nr": "6"}, {"street": "Gartenstrasse", "nr": "12"}, {"street": "Gartenstrasse", "nr": "16"}, {"street": "Gartenstrasse", "nr": "5"}, {"street": "Gartenstrasse", "nr": "13"}, {"street": "Gartenstrasse", "nr": "7"}, {"street": "Gartenstrasse", "nr": "9"}, {"street": "Gartenstrasse", "nr": "3"}, {"street": "Gartenstrasse", "nr": "10"}, {"street": "Gartenstrasse", "nr": "19"}, {"street": "Gartenstrasse", "nr": "11"}, {"street": "Pilatusstrasse", "nr": "2"}, {"street": "Rigistrasse", "nr": "14"}, {"street": "Rigistrasse", "nr": "9"}, {"street": "Rigistrasse", "nr": "15"}, {"street": "Rigistrasse", "nr": "11"}, {"street": "Rigistrasse", "nr": "3"}, {"street": "Rigistrasse", "nr": "7"}, {"street": "Rigistrasse", "nr": "20"}, {"street": "Rigistrasse", "nr": "5"}, {"street": "Rigistrasse", "nr": "16"}, {"street": "Rigistrasse", "nr": "22"}, {"street": "Rigistrasse", "nr": "1"}, {"street": "Rigistrasse", "nr": "13"}, {"street": "Rigistrasse", "nr": "18"}, {"street": "Rigistrasse", "nr": "2"}, {"street": "Rigistrasse", "nr": "12"}, {"street": "Rigistrasse", "nr": "10"}, {"street": "Rigistrasse", "nr": "24"}, {"street": "Rigistrasse", "nr": "8"}, {"street": "Schlattstrasse", "nr": "1"}, {"street": "Schlattstrasse", "nr": "5"}, {"street": "Schlattstrasse", "nr": "3"}, {"street": "Schlattstrasse", "nr": "2"}]},{name:"15 – Höhenweg 6",color:"#4f46e5",addresses:[{"street": "Höhenweg", "nr": "6"}, {"street": "Höhenweg", "nr": "20"}, {"street": "Höhenweg", "nr": "1"}, {"street": "Höhenweg", "nr": "18"}, {"street": "Höhenweg", "nr": "14"}, {"street": "Höhenweg", "nr": "23"}, {"street": "Höhenweg", "nr": "27"}, {"street": "Höhenweg", "nr": "17"}, {"street": "Höhenweg", "nr": "13"}, {"street": "Höhenweg", "nr": "22"}, {"street": "Höhenweg", "nr": "25"}, {"street": "Höhenweg", "nr": "16"}, {"street": "Höhenweg", "nr": "8"}, {"street": "Höhenweg", "nr": "21"}, {"street": "Höhenweg", "nr": "7"}, {"street": "Höhenweg", "nr": "4"}, {"street": "Höhenweg", "nr": "12"}, {"street": "Höhenweg", "nr": "10"}, {"street": "Höhenweg", "nr": "15"}, {"street": "Höhenweg", "nr": "9"}, {"street": "Höhenweg", "nr": "11"}, {"street": "Höhenweg", "nr": "3"}, {"street": "Höhenweg", "nr": "19"}, {"street": "Höhenweg", "nr": "2"}, {"street": "Höhenweg", "nr": "5"}, {"street": "Panoramastrasse", "nr": "8"}, {"street": "Panoramastrasse", "nr": "10"}, {"street": "Panoramastrasse", "nr": "2"}, {"street": "Panoramastrasse", "nr": "11"}, {"street": "Panoramastrasse", "nr": "9"}, {"street": "Panoramastrasse", "nr": "5"}, {"street": "Rebenstrasse", "nr": "39"}, {"street": "Rebenstrasse", "nr": "37"}, {"street": "Paradiesstrasse", "nr": "13"}, {"street": "Paradiesstrasse", "nr": "16"}, {"street": "Paradiesstrasse", "nr": "28"}, {"street": "Paradiesstrasse", "nr": "15"}, {"street": "Paradiesstrasse", "nr": "11"}, {"street": "Paradiesstrasse", "nr": "20"}, {"street": "Paradiesstrasse", "nr": "27"}, {"street": "Paradiesstrasse", "nr": "30"}, {"street": "Paradiesstrasse", "nr": "25"}, {"street": "Paradiesstrasse", "nr": "14"}, {"street": "Paradiesstrasse", "nr": "18"}, {"street": "Paradiesstrasse", "nr": "23"}, {"street": "Paradiesstrasse", "nr": "12"}, {"street": "Paradiesstrasse", "nr": "24"}, {"street": "Paradiesstrasse", "nr": "9"}, {"street": "Rebenfeldstrasse", "nr": "26"}, {"street": "Rebenfeldstrasse", "nr": "12"}, {"street": "Rebenfeldstrasse", "nr": "24"}, {"street": "Rebenfeldstrasse", "nr": "28"}, {"street": "Rebenfeldstrasse", "nr": "8"}, {"street": "Rebenfeldstrasse", "nr": "10"}, {"street": "Reitistrasse", "nr": "2"}, {"street": "Reitistrasse", "nr": "5"}, {"street": "Reitistrasse", "nr": "10"}, {"street": "Reitistrasse", "nr": "4"}, {"street": "Reitistrasse", "nr": "8"}, {"street": "Reitistrasse", "nr": "12"}, {"street": "Reitistrasse", "nr": "6"}, {"street": "Reitistrasse", "nr": "7"}, {"street": "Reitistrasse", "nr": "3"}]},{name:"16 – Industriestrasse 1",color:"#0e7490",addresses:[{"street": "Industriestrasse", "nr": "1"}, {"street": "Eibachstrasse", "nr": "2"}, {"street": "Eibachstrasse", "nr": "4"}, {"street": "Industriestrasse", "nr": "3"}]},{name:"17 – Juraweg 17",color:"#a21caf",addresses:[{"street": "Juraweg", "nr": "17"}, {"street": "Hauptstrasse", "nr": "58"}, {"street": "Hauptstrasse", "nr": "44"}, {"street": "Hauptstrasse", "nr": "23"}, {"street": "Hauptstrasse", "nr": "29"}, {"street": "Hauptstrasse", "nr": "25"}, {"street": "Hauptstrasse", "nr": "52"}, {"street": "Hauptstrasse", "nr": "56"}, {"street": "Hauptstrasse", "nr": "48"}, {"street": "Hauptstrasse", "nr": "19"}, {"street": "Hauptstrasse", "nr": "54"}, {"street": "Hauptstrasse", "nr": "31"}, {"street": "Hauptstrasse", "nr": "50"}, {"street": "Hauptstrasse", "nr": "42"}, {"street": "Hauptstrasse", "nr": "21"}, {"street": "Hauptstrasse", "nr": "46"}, {"street": "Schulstrasse", "nr": "3"}, {"street": "Schulstrasse", "nr": "4"}, {"street": "Schulstrasse", "nr": "2"}, {"street": "Zehntenweg", "nr": "12"}, {"street": "Zehntenweg", "nr": "10"}, {"street": "Zehntenweg", "nr": "13"}, {"street": "Zehntenweg", "nr": "5"}, {"street": "Zehntenweg", "nr": "11"}, {"street": "Zehntenweg", "nr": "8"}, {"street": "Zehntenweg", "nr": "3"}, {"street": "Zehntenweg", "nr": "4"}, {"street": "Zehntenweg", "nr": "9"}, {"street": "Zehntenweg", "nr": "14"}, {"street": "Zehntenweg", "nr": "1"}, {"street": "Zehntenweg", "nr": "7"}, {"street": "Mahrenstrasse", "nr": "2"}, {"street": "Mahrenstrasse", "nr": "6"}, {"street": "Mahrenstrasse", "nr": "8"}, {"street": "Mahrenstrasse", "nr": "4"}, {"street": "Schlossstrasse", "nr": "9"}, {"street": "Schlossstrasse", "nr": "7"}, {"street": "Schlossstrasse", "nr": "1"}, {"street": "Schlossstrasse", "nr": "2"}, {"street": "Schlossstrasse", "nr": "11"}, {"street": "Schlossstrasse", "nr": "4"}, {"street": "Schlossstrasse", "nr": "5"}, {"street": "Schlossstrasse", "nr": "3"}, {"street": "Schlossstrasse", "nr": "13"}, {"street": "Dorfplatz", "nr": "4"}, {"street": "Dorfplatz", "nr": "2"}, {"street": "Metzgergässli", "nr": "1"}, {"street": "Metzgergässli", "nr": "4"}, {"street": "Metzgergässli", "nr": "2"}, {"street": "Juraweg", "nr": "7"}, {"street": "Juraweg", "nr": "9"}, {"street": "Juraweg", "nr": "1"}, {"street": "Juraweg", "nr": "3"}, {"street": "Juraweg", "nr": "5"}, {"street": "Juraweg", "nr": "15"}, {"street": "Juraweg", "nr": "2"}, {"street": "Juraweg", "nr": "19"}, {"street": "Fliederweg", "nr": "6"}, {"street": "Fliederweg", "nr": "3"}, {"street": "Fliederweg", "nr": "1"}, {"street": "Fliederweg", "nr": "5"}, {"street": "Chälenwegli", "nr": "1"}, {"street": "Sandgrubenstrasse", "nr": "1"}, {"street": "Sandgrubenstrasse", "nr": "9"}, {"street": "Sandgrubenstrasse", "nr": "3"}, {"street": "Sandgrubenstrasse", "nr": "5"}, {"street": "Schulweg", "nr": "2"}]},{name:"18 – Längackerstrasse 106",color:"#92400e",addresses:[{"street": "Längackerstrasse", "nr": "106"}, {"street": "Mahrenstrasse", "nr": "120"}, {"street": "Mahrenstrasse", "nr": "119"}, {"street": "Mahrenstrasse", "nr": "108"}, {"street": "Mahrenstrasse", "nr": "138"}, {"street": "Mahrenstrasse", "nr": "130"}, {"street": "Mahrenstrasse", "nr": "122"}, {"street": "Mahrenstrasse", "nr": "110"}, {"street": "Mahrenstrasse", "nr": "113"}, {"street": "Mahrenstrasse", "nr": "126"}, {"street": "Mahrenstrasse", "nr": "109"}, {"street": "Mahrenstrasse", "nr": "107"}, {"street": "Mahrenstrasse", "nr": "114"}, {"street": "Mahrenstrasse", "nr": "128"}, {"street": "Mahrenstrasse", "nr": "117"}, {"street": "Mahrenstrasse", "nr": "118"}, {"street": "Mahrenstrasse", "nr": "124"}, {"street": "Mahrenstrasse", "nr": "115"}, {"street": "Mahrenstrasse", "nr": "134"}, {"street": "Mahrenstrasse", "nr": "116"}, {"street": "Mahrenstrasse", "nr": "111"}, {"street": "Mahrenstrasse", "nr": "112"}, {"street": "Längackerstrasse", "nr": "105"}, {"street": "Längackerstrasse", "nr": "103"}, {"street": "Längackerstrasse", "nr": "108"}, {"street": "Längackerstrasse", "nr": "104"}, {"street": "Längackerstrasse", "nr": "107"}, {"street": "Schärenackerweg", "nr": "101"}]},{name:"19 – Mahrenstrasse 100",color:"#065f46",addresses:[{"street": "Mahrenstrasse", "nr": "100"}, {"street": "Mahrenstrasse", "nr": "106"}, {"street": "Mahrenstrasse", "nr": "105"}, {"street": "Mahrenstrasse", "nr": "104"}, {"street": "Mahrenstrasse", "nr": "102"}, {"street": "Mahrenstrasse", "nr": "103"}, {"street": "Rotrütiweg", "nr": "3"}, {"street": "Rotrütiweg", "nr": "1"}, {"street": "Rotrütiweg", "nr": "5"}]},{name:"20 – Duschletenstrasse 18",color:"#1d4ed8",addresses:[{"street": "Duschletenstrasse", "nr": "18"}, {"street": "Stüsslingerstrasse", "nr": "1"}, {"street": "Stüsslingerstrasse", "nr": "5"}, {"street": "Stüsslingerstrasse", "nr": "7"}, {"street": "Hauptstrasse", "nr": "32"}, {"street": "Hauptstrasse", "nr": "40"}, {"street": "Hauptstrasse", "nr": "28"}, {"street": "Hauptstrasse", "nr": "34"}, {"street": "Hauptstrasse", "nr": "38"}, {"street": "Hauptstrasse", "nr": "36"}, {"street": "Hauptstrasse", "nr": "30"}, {"street": "Wartenfelsstrasse", "nr": "6"}, {"street": "Wartenfelsstrasse", "nr": "13"}, {"street": "Wartenfelsstrasse", "nr": "10"}, {"street": "Wartenfelsstrasse", "nr": "2"}, {"street": "Wartenfelsstrasse", "nr": "15"}, {"street": "Wartenfelsstrasse", "nr": "7"}, {"street": "Wartenfelsstrasse", "nr": "9"}, {"street": "Wartenfelsstrasse", "nr": "1"}, {"street": "Wartenfelsstrasse", "nr": "8"}, {"street": "Wartenfelsstrasse", "nr": "4"}, {"street": "Wartenfelsstrasse", "nr": "11"}, {"street": "Wartenfelsstrasse", "nr": "12"}, {"street": "Wartenfelsstrasse", "nr": "14"}, {"street": "Duschletenstrasse", "nr": "10"}, {"street": "Duschletenstrasse", "nr": "24"}, {"street": "Duschletenstrasse", "nr": "27"}, {"street": "Duschletenstrasse", "nr": "28"}, {"street": "Duschletenstrasse", "nr": "20"}, {"street": "Duschletenstrasse", "nr": "23"}, {"street": "Duschletenstrasse", "nr": "25"}, {"street": "Duschletenstrasse", "nr": "11"}, {"street": "Duschletenstrasse", "nr": "21"}, {"street": "Duschletenstrasse", "nr": "15"}, {"street": "Duschletenstrasse", "nr": "16"}, {"street": "Duschletenstrasse", "nr": "22"}, {"street": "Duschletenstrasse", "nr": "12"}, {"street": "Duschletenstrasse", "nr": "14"}, {"street": "Duschletenstrasse", "nr": "13"}, {"street": "Trottenackerstrasse", "nr": "4"}, {"street": "Trottenackerstrasse", "nr": "6"}, {"street": "Trottenackerstrasse", "nr": "19"}, {"street": "Trottenackerstrasse", "nr": "5"}, {"street": "Trottenackerstrasse", "nr": "3"}, {"street": "Trottenackerstrasse", "nr": "17"}, {"street": "Trottenackerstrasse", "nr": "14"}, {"street": "Trottenackerstrasse", "nr": "2"}, {"street": "Trottenackerstrasse", "nr": "12"}, {"street": "Trottenackerstrasse", "nr": "10"}, {"street": "Trottenackerstrasse", "nr": "9"}, {"street": "Trottenackerstrasse", "nr": "1"}, {"street": "Trottenackerstrasse", "nr": "16"}, {"street": "Giesshübelstrasse", "nr": "2"}, {"street": "Giesshübelstrasse", "nr": "6"}, {"street": "Giesshübelstrasse", "nr": "5"}, {"street": "Giesshübelstrasse", "nr": "3"}, {"street": "Giesshübelstrasse", "nr": "1"}, {"street": "Giesshübelstrasse", "nr": "4"}, {"street": "Giesshübelstrasse", "nr": "7"}, {"street": "Büechlenstrasse", "nr": "8"}, {"street": "Büechlenstrasse", "nr": "2"}, {"street": "Büechlenstrasse", "nr": "9"}, {"street": "Büechlenstrasse", "nr": "10"}, {"street": "Büechlenstrasse", "nr": "6"}, {"street": "Büechlenstrasse", "nr": "12"}]},{name:"21 – Duschletenstrasse 35",color:"#86198f",addresses:[{"street": "Duschletenstrasse", "nr": "35"}, {"street": "Hauptstrasse", "nr": "64"}, {"street": "Hauptstrasse", "nr": "66"}, {"street": "Hauptstrasse", "nr": "62"}, {"street": "Hauptstrasse", "nr": "60"}, {"street": "Wartenfelsstrasse", "nr": "36"}, {"street": "Wartenfelsstrasse", "nr": "29"}, {"street": "Wartenfelsstrasse", "nr": "19"}, {"street": "Wartenfelsstrasse", "nr": "23"}, {"street": "Wartenfelsstrasse", "nr": "32"}, {"street": "Wartenfelsstrasse", "nr": "26"}, {"street": "Wartenfelsstrasse", "nr": "21"}, {"street": "Wartenfelsstrasse", "nr": "16"}, {"street": "Wartenfelsstrasse", "nr": "34"}, {"street": "Wartenfelsstrasse", "nr": "22"}, {"street": "Wartenfelsstrasse", "nr": "28"}, {"street": "Wartenfelsstrasse", "nr": "17"}, {"street": "Wartenfelsstrasse", "nr": "20"}, {"street": "Wartenfelsstrasse", "nr": "33"}, {"street": "Wartenfelsstrasse", "nr": "31"}, {"street": "Wartenfelsstrasse", "nr": "27"}, {"street": "Duschletenstrasse", "nr": "36"}, {"street": "Duschletenstrasse", "nr": "42"}, {"street": "Duschletenstrasse", "nr": "37"}, {"street": "Duschletenstrasse", "nr": "38"}, {"street": "Duschletenstrasse", "nr": "32"}, {"street": "Duschletenstrasse", "nr": "31"}, {"street": "Duschletenstrasse", "nr": "29"}, {"street": "Duschletenstrasse", "nr": "30"}, {"street": "Duschletenstrasse", "nr": "40"}, {"street": "Duschletenstrasse", "nr": "34"}, {"street": "Trottenackerstrasse", "nr": "48"}, {"street": "Trottenackerstrasse", "nr": "28"}, {"street": "Trottenackerstrasse", "nr": "29"}, {"street": "Trottenackerstrasse", "nr": "18"}, {"street": "Trottenackerstrasse", "nr": "24"}, {"street": "Trottenackerstrasse", "nr": "26"}, {"street": "Trottenackerstrasse", "nr": "53"}, {"street": "Trottenackerstrasse", "nr": "52"}, {"street": "Dubenrainstrasse", "nr": "5"}, {"street": "Dubenrainstrasse", "nr": "7"}, {"street": "Dubenrainstrasse", "nr": "10"}, {"street": "Dubenrainstrasse", "nr": "4"}, {"street": "Dubenrainstrasse", "nr": "3"}, {"street": "Dubenrainstrasse", "nr": "1"}, {"street": "Dubenrainstrasse", "nr": "2"}, {"street": "Dubenrainstrasse", "nr": "8"}, {"street": "Dubenrainstrasse", "nr": "15"}, {"street": "Büechlenstrasse", "nr": "1"}, {"street": "Büechlenstrasse", "nr": "3"}, {"street": "Büechlenstrasse", "nr": "5"}, {"street": "Haselweg", "nr": "1"}, {"street": "Rössligasse", "nr": "3"}, {"street": "Rössligasse", "nr": "1"}, {"street": "Rössligasse", "nr": "5"}, {"street": "Rössligasse", "nr": "2"}]},{name:"22 – Hangstrasse 1",color:"#78350f",addresses:[{"street": "Hangstrasse", "nr": "1"}, {"street": "Hauptstrasse", "nr": "76"}, {"street": "Wartenfelsstrasse", "nr": "37"}, {"street": "Wartenfelsstrasse", "nr": "45"}, {"street": "Wartenfelsstrasse", "nr": "38"}, {"street": "Wartenfelsstrasse", "nr": "43"}, {"street": "Wartenfelsstrasse", "nr": "40"}, {"street": "Wartenfelsstrasse", "nr": "39"}, {"street": "Kellengasse", "nr": "16"}, {"street": "Kellengasse", "nr": "9"}, {"street": "Kellengasse", "nr": "10"}, {"street": "Kellengasse", "nr": "11"}, {"street": "Kellengasse", "nr": "5"}, {"street": "Kellengasse", "nr": "12"}, {"street": "Rebenstrasse", "nr": "12"}, {"street": "Rebenstrasse", "nr": "17"}, {"street": "Rebenstrasse", "nr": "3"}, {"street": "Rebenstrasse", "nr": "16"}, {"street": "Rebenstrasse", "nr": "22"}, {"street": "Rebenstrasse", "nr": "5"}, {"street": "Rebenstrasse", "nr": "9"}, {"street": "Rebenstrasse", "nr": "8"}, {"street": "Rebenstrasse", "nr": "13"}, {"street": "Rebenstrasse", "nr": "10"}, {"street": "Rebenstrasse", "nr": "19"}, {"street": "Rebenstrasse", "nr": "29"}, {"street": "Rebenstrasse", "nr": "25"}, {"street": "Rebenstrasse", "nr": "14"}, {"street": "Rebenstrasse", "nr": "27"}, {"street": "Rebenstrasse", "nr": "11"}, {"street": "Rebenstrasse", "nr": "15"}, {"street": "Rebenstrasse", "nr": "18"}, {"street": "Rebenstrasse", "nr": "20"}, {"street": "Hangstrasse", "nr": "4"}, {"street": "Hangstrasse", "nr": "3"}, {"street": "Hangstrasse", "nr": "2"}, {"street": "Lindenstrasse", "nr": "5"}, {"street": "Lindenstrasse", "nr": "6"}, {"street": "Lindenstrasse", "nr": "1"}, {"street": "Lindenstrasse", "nr": "3"}, {"street": "Lindenstrasse", "nr": "4"}, {"street": "Lindenstrasse", "nr": "2"}, {"street": "Rebenfeldstrasse", "nr": "7"}, {"street": "Rebenfeldstrasse", "nr": "30"}, {"street": "Rebenfeldstrasse", "nr": "22"}, {"street": "Rebenfeldstrasse", "nr": "38"}, {"street": "Rebenfeldstrasse", "nr": "20"}, {"street": "Rebenfeldstrasse", "nr": "32"}, {"street": "Rebenfeldstrasse", "nr": "1"}, {"street": "Rebenfeldstrasse", "nr": "3"}, {"street": "Kaltstrasse", "nr": "11"}, {"street": "Weinbergstrasse", "nr": "2"}]}];
+const BFE_URL='https://api3.geo.admin.ch/rest/services/api/MapServer/find?layer=ch.bfe.elektrizitaetsproduktionsanlagen&searchField=address&searchText=Lostorf&contains=true&returnGeometry=true&lang=de&sr=4326';
+const GEO_URL='https://api3.geo.admin.ch/rest/services/api/SearchServer';
+const CACHE_PV='pv_lostorf_v8';
+const CACHE_GEO='geo_cache_v4';
+
+let pvData=[],pvMarkers={},activeTrafoName=null,activeMarkers=[],geoCache={};
+
+const map=L.map('map').setView([47.448,7.948],14);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
+
+function pvIcon(color){
+  const glow=color?`0 0 0 4px ${color}30,`:'';
+  return L.divIcon({
+    html:`<div style="width:22px;height:22px;background:#f0c040;border:2px solid #92400e;border-radius:50%;box-shadow:${glow}0 2px 8px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1">☀</div>`,
+    className:'',iconSize:[22,22],iconAnchor:[11,11]
+  });
+}
+function houseIcon(color){
+  return L.divIcon({
+    html:`<div style="width:15px;height:15px;background:${color};border:2.5px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4)"></div>`,
+    className:'',iconSize:[15,15],iconAnchor:[7,7]
+  });
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function loadGeoCache(){try{geoCache=JSON.parse(localStorage.getItem(CACHE_GEO)||'{}')}catch(e){}}
+function saveGeoCache(){try{localStorage.setItem(CACHE_GEO,JSON.stringify(geoCache))}catch(e){}}
+
+async function geocode(street,nr,ort){
+  const k=street+'|'+nr;
+  if(geoCache[k]) return geoCache[k];
+  try{
+    const q=encodeURIComponent(street+' '+nr+' '+ort);
+    const r=await fetch(GEO_URL+'?searchText='+q+'&type=locations&limit=1&sr=4326');
+    const d=await r.json();
+    if(d.results&&d.results.length){
+      const a=d.results[0].attrs;
+      if(a.lat&&a.lon){geoCache[k]={lat:a.lat,lon:a.lon};return geoCache[k];}
+    }
+  }catch(e){}
+  return null;
+}
+
+function norm(s){return(s||'').toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/[^a-z0-9]/g,'');}
+function normNr(s){return norm((s||'').replace(/[a-zA-Z]+$/,''));}
+
+const PV_REMAP={
+  'wartenfelsstrasse|24': {street:'Wartenfelsstrasse', nr:'20'},
+  'zehntenweg|2':         {street:'Zehntenweg',        nr:'4'},
+  'hangstrasse|10':       {street:'Hangstrasse',       nr:'16'},
+  'hauptstrasse|32':      {street:'Hauptstrasse',      nr:'34'},
+  'trottenackerstrasse|5':{street:'Hauptstrasse',      nr:'34'},
+  'mahrenstrasse|140':    {street:'Mahrenstrasse',     nr:'142'},
+  'bornweg|5':            {street:'Bornweg',           nr:'3'},
+  'laebertenstrasse|15':  {street:'Juraweg',           nr:'17'},
+  'saelisstrasse|34':     {street:'Sälisstrasse',      nr:'34'},
+};
+
+function findTrafo(pv){
+  if(!pv.street) return null;
+  const ps=norm(pv.street);
+  const rawNr=(pv.nr||'').split(/[\s+]/)[0];
+  const pn=norm(rawNr), pnBase=normNr(rawNr);
+  const remap=PV_REMAP[ps+'|'+pnBase]||PV_REMAP[ps+'|'+pn];
+  const ls=remap?norm(remap.street):ps;
+  const ln=remap?norm(remap.nr):pn;
+  const lnB=remap?normNr(remap.nr):pnBase;
+  for(const tk of TRAFO_KREISE){
+    if(tk.addresses.some(a=>{
+      if(norm(a.street)!==ls) return false;
+      const an=norm(a.nr),anB=normNr(a.nr);
+      return an===ln||an===lnB||anB===ln||anB===lnB;
+    })) return tk;
+  }
+  return null;
+}
+
+function parsePV(f,lon,lat){
+  const addr=f.attributes.address||'';
+  const clean=addr.split(',')[0].trim().replace(/\s*\+\s*\S.*$/,'').trim();
+  const m=clean.match(/^(.+?)\s+(\d+\S*)$/);
+  return{id:f.id,address:addr,street:m?m[1].trim():'',nr:m?m[2].trim():'',lat,lon,
+    power:parseFloat(f.attributes.total_power)||0,date:(f.attributes.beginning_of_operation||'').split('.').pop()};
+}
+
+async function loadPV(){
+  try{
+    const c=JSON.parse(localStorage.getItem(CACHE_PV)||'null');
+    if(c&&c.length>20){pvData=c;renderAll();setStatus('done',pvData.length+' PV-Anlagen (Cache)');return;}
+  }catch(e){}
+  try{
+    const r=await fetch(BFE_URL);
+    const d=await r.json();
+    const results=(d.results||[]).filter(f=>(f.attributes.address||'').includes('4654'));
+    const withGeo=results.filter(f=>f.geometry);
+    const noGeo=results.filter(f=>!f.geometry);
+    for(const f of withGeo) pvData.push(parsePV(f,f.geometry.x,f.geometry.y));
+    renderAll();
+    setStatus('loading',pvData.length+' geladen, '+noGeo.length+' werden geocodiert...');
+    for(let i=0;i<noGeo.length;i+=5){
+      const batch=noGeo.slice(i,i+5);
+      const res=await Promise.all(batch.map(async f=>{
+        const addr=f.attributes.address||'';
+        const q=encodeURIComponent(addr.split(',')[0]+' Lostorf');
+        try{
+          const r2=await fetch(GEO_URL+'?searchText='+q+'&type=locations&limit=1&sr=4326');
+          const d2=await r2.json();
+          if(d2.results&&d2.results.length){const a=d2.results[0].attrs;if(a.lat&&a.lon)return parsePV(f,a.lon,a.lat);}
+        }catch(e){}
+        return null;
+      }));
+      for(const pv of res){if(!pv)continue;pvData.push(pv);addPVMarker(pv);addPVItem(pv);}
+      setStatus('loading',pvData.length+' geladen...');
+      await sleep(300);
+    }
+    try{localStorage.setItem(CACHE_PV,JSON.stringify(pvData));}catch(e){}
+    const matched=pvData.filter(p=>findTrafo(p)).length;
+    document.getElementById('h-pv').textContent=pvData.length;
+    document.getElementById('h-match').textContent=matched;
+    setStatus('done',pvData.length+' PV-Anlagen · '+matched+' Trafo-Kreise gematcht');
+  }catch(e){setStatus('done','Fehler beim Laden – Netzwerk prüfen');}
+}
+
+function renderAll(){
+  document.getElementById('pv-loader').style.display='none';
+  document.getElementById('pv-list').innerHTML='';
+  pvData.forEach(pv=>{addPVMarker(pv);addPVItem(pv);});
+  document.getElementById('h-pv').textContent=pvData.length;
+  document.getElementById('h-match').textContent=pvData.filter(p=>findTrafo(p)).length;
+  buildTrafoList();
+}
+
+function addPVMarker(pv){
+  if(!pv.lat||!pv.lon) return;
+  const tk=findTrafo(pv);
+  const m=L.marker([pv.lat,pv.lon],{icon:pvIcon(tk?tk.color:null),zIndexOffset:500}).addTo(map);
+  const addr=pv.address.split(',')[0];
+  const btn=tk?`<div style="margin-top:6px"><button onclick="window.showTrafo('${tk.name.replace(/'/g,"\\'")}');map.closePopup()" style="padding:3px 10px;border-radius:5px;border:1px solid ${tk.color};background:${tk.color}18;color:${tk.color};font-size:11px;cursor:pointer;font-weight:600">Trafo: ${tk.name} →</button></div>`
+    :`<div style="font-size:10px;color:#ef4444;margin-top:3px">Kein Trafo-Kreis gefunden</div>`;
+  m.bindPopup(`<div class="pp-title">☀️ ${addr}</div><span class="pp-badge pp-pv">PV ANLAGE</span><br><span style="font-size:11px;color:#5C5248"><b>${pv.power} kW</b> · ${pv.date||'–'}</span>${btn}`);
+  m.on('click',()=>selectPV(pv));
+  pvMarkers[pv.id]=m;
+}
+
+function addPVItem(pv){
+  const tk=findTrafo(pv);
+  const el=document.createElement('div');
+  el.className='pv-item';
+  el.id='pvi-'+pv.id;
+  el.dataset.addr=(pv.address||'').toLowerCase();
+  el.innerHTML=`<div class="pv-icon">☀️</div><div class="pv-body"><div class="pv-addr">${pv.address.split(',')[0]}</div><div class="pv-meta">${pv.power} kW · ${pv.date||'–'}</div></div><div class="pv-tdot" style="background:${tk?tk.color:'transparent'}"></div>`;
+  el.addEventListener('click',()=>selectPV(pv));
+  document.getElementById('pv-list').appendChild(el);
+}
+
+function filterPV(q){
+  const lq=q.toLowerCase();
+  let n=0;
+  document.querySelectorAll('.pv-item').forEach(el=>{
+    const show=!q||el.dataset.addr.includes(lq);
+    el.style.display=show?'':'none';
+    if(show)n++;
+  });
+  document.getElementById('pv-empty').style.display=n===0?'block':'none';
+}
+
+function selectPV(pv){
+  document.querySelectorAll('.pv-item.active').forEach(e=>e.classList.remove('active'));
+  const li=document.getElementById('pvi-'+pv.id);
+  if(li){li.classList.add('active');li.scrollIntoView({block:'nearest'});}
+  if(pv.lat) map.panTo([pv.lat,pv.lon],{animate:true});
+  const tk=findTrafo(pv);
+  if(tk) showTrafo(tk.name);
+  else{clearTrafo();toast('⚠️ Kein Trafo-Kreis für diese PV-Anlage');}
+}
+
+window.showTrafo=async function(name){
+  const tk=TRAFO_KREISE.find(t=>t.name===name);
+  if(!tk) return;
+  clearTrafo();
+  map.closePopup();
+  activeTrafoName=name;
+  document.querySelectorAll('.tk-item').forEach(c=>{
+    c.classList.toggle('active',c.dataset.name===name);
+    if(c.dataset.name===name) c.style.setProperty('--c',tk.color);
+  });
+  const panel=document.getElementById('tpanel');
+  panel.style.display='block';
+  document.getElementById('tp-dot').style.background=tk.color;
+  document.getElementById('tp-name').textContent=name;
+  document.getElementById('tp-info').textContent=tk.addresses.length+' Adressen · wird geladen...';
+  let placed=0;
+  const bounds=[];
+  for(let i=0;i<tk.addresses.length;i+=6){
+    const batch=tk.addresses.slice(i,i+6);
+    const res=await Promise.all(batch.map(a=>geocode(a.street,a.nr,'Lostorf')));
+    for(let j=0;j<batch.length;j++){
+      const pos=res[j];if(!pos)continue;
+      const m=L.marker([pos.lat,pos.lon],{icon:houseIcon(tk.color)}).addTo(map);
+      m.bindPopup(`<div class="pp-title">${batch[j].street} ${batch[j].nr}</div><span class="pp-badge" style="background:${tk.color}18;color:${tk.color};border:1px solid ${tk.color}60">Trafo: ${name}</span>`);
+      activeMarkers.push(m);bounds.push([pos.lat,pos.lon]);placed++;
+    }
+    document.getElementById('tp-info').textContent=tk.addresses.length+' Adressen · '+placed+' platziert';
+    await sleep(200);
+  }
+  saveGeoCache();
+  document.getElementById('tp-info').textContent=tk.addresses.length+' Adressen · '+placed+' auf Karte';
+  const all=[...bounds];
+  pvData.forEach(pv=>{if(pv.lat&&findTrafo(pv)&&findTrafo(pv).name===name)all.push([pv.lat,pv.lon]);});
+  if(all.length>1) map.fitBounds(all,{padding:[50,50]});
+  else if(all.length===1) map.setView(all[0],16);
+};
+
+function clearTrafo(){
+  activeMarkers.forEach(m=>map.removeLayer(m));
+  activeMarkers=[];activeTrafoName=null;
+  document.querySelectorAll('.tk-item').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tpanel').style.display='none';
+}
+window.closePanel=clearTrafo;
+
+function buildTrafoList(){
+  const el=document.getElementById('tk-list');
+  el.innerHTML='';
+  TRAFO_KREISE.forEach(tk=>{
+    const pvs=pvData.filter(p=>findTrafo(p)&&findTrafo(p).name===tk.name);
+    const totalKw=pvs.reduce((s,p)=>s+p.power,0);
+    const kwStr=totalKw>0?(totalKw>=1000?(totalKw/1000).toFixed(1)+' MW':Math.round(totalKw)+' kW'):'';
+    const pvStr=pvs.length>0?pvs.length+' PV':'';
+    const d=document.createElement('div');
+    d.className='tk-item';d.dataset.name=tk.name;
+    d.innerHTML=`
+      <div class="tk-dot" style="background:${tk.color}"></div>
+      <div class="tk-name">${tk.name}</div>
+      <div class="tk-stats">
+        ${pvStr?`<span class="tk-cnt">${pvStr}</span>`:'<span class="tk-cnt">'+tk.addresses.length+' Adr.</span>'}
+        ${kwStr?`<span class="tk-kw">${kwStr}</span>`:''}
+      </div>`;
+    d.addEventListener('click',()=>showTrafo(tk.name));
+    el.appendChild(d);
+  });
+}
+
+function setStatus(type,msg){
+  const bar=document.getElementById('status-bar');
+  bar.className=type==='done'?'done':'';
+  document.getElementById('status-txt').textContent=msg;
+}
+let _tt;
+function toast(msg){clearTimeout(_tt);const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';_tt=setTimeout(()=>t.style.display='none',3500);}
+
+loadGeoCache();
+buildTrafoList();
+loadPV();
+</script>
+</body>
+</html>

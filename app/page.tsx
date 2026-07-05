@@ -233,13 +233,30 @@ export default function Page() {
           </div>
 
           {/* Quellenangabe */}
-          <p style={{ fontSize: 12, color: '#B8AFA8', fontFamily: 'var(--font-nunito)' }}>
+          <p style={{ fontSize: 12, color: '#B8AFA8', fontFamily: 'var(--font-nunito)', marginBottom: 48 }}>
             Quelle:{' '}
             <a href="https://www.lokalerstrom.ch/" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>
               lokalerstrom.ch
             </a>
             {' '}· Bundesgesetz über die Stromversorgung (StromVG)
           </p>
+
+          {/* LEG Trafo-Karte */}
+          <div className="scroll-fade" style={{ marginBottom: 8 }}>
+            <h3 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 22, color: '#1A1510', marginBottom: 8 }}>
+              LEG Trafo-Karte Lostorf
+            </h3>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 20 }}>
+              Die 22 möglichen Trafo-Kreise in Lostorf — klick auf einen Kreis, um alle Adressen und bestehende PV-Anlagen anzuzeigen.
+            </p>
+          </div>
+          <div className="scroll-fade scroll-fade-d1" style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid #D9CEB5', boxShadow: '0 4px 24px rgba(26,21,16,0.07)' }}>
+            <iframe
+              title="LEG Trafo-Karte Lostorf"
+              src="/leg-karte.html"
+              style={{ width: '100%', height: 700, border: 'none', display: 'block' }}
+            />
+          </div>
         </div>
       </section>
 
