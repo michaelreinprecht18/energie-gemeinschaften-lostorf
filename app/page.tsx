@@ -1,5 +1,8 @@
-import { Sun, Users, Zap, MapPin, Leaf, Mail, Phone, ArrowRight, Check, ChevronDown } from 'lucide-react'
+import { Sun, Users, Zap, MapPin, Leaf, ArrowRight, Check, ChevronDown } from 'lucide-react'
 import Rechner from './components/Rechner'
+import StatsBand from './components/StatsBand'
+import ContactForm from './components/ContactForm'
+import ScrollAnimator from './components/ScrollAnimator'
 
 const NAV = [
   { href: '#leg', label: 'LEG' },
@@ -18,7 +21,7 @@ const S = {
     display: 'inline-block',
     fontSize: 11,
     fontWeight: 600,
-    letterSpacing: '0.1em',
+    letterSpacing: '0.12em',
     textTransform: 'uppercase' as const,
     color: '#9A7B2E',
     fontFamily: 'var(--font-nunito)',
@@ -27,9 +30,9 @@ const S = {
   h2: {
     fontFamily: 'var(--font-baskerville)',
     fontWeight: 500,
-    fontSize: 'clamp(28px, 4vw, 40px)',
+    fontSize: 'clamp(28px, 4vw, 42px)',
     color: '#1A1510',
-    lineHeight: 1.2,
+    lineHeight: 1.15,
     marginBottom: 16,
   },
   lead: {
@@ -37,13 +40,13 @@ const S = {
     fontSize: 18,
     fontWeight: 300,
     color: '#5C5248',
-    lineHeight: 1.7,
+    lineHeight: 1.75,
     maxWidth: 640,
   },
   card: {
     background: '#FFFFFF',
     border: '1px solid #D9CEB5',
-    borderRadius: 12,
+    borderRadius: 14,
     padding: '28px 24px',
   } as React.CSSProperties,
   divider: { borderTop: '1px solid #D9CEB5', margin: '0' } as React.CSSProperties,
@@ -56,11 +59,12 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function Page() {
   return (
     <>
+      <ScrollAnimator />
+
       {/* ─── Navigation ─── */}
-      <nav style={{
+      <nav className="nav-glass" style={{
         position: 'sticky', top: 0, zIndex: 50,
-        background: '#FFFFFF',
-        borderBottom: '1px solid #D9CEB5',
+        borderBottom: '1px solid rgba(217, 206, 181, 0.6)',
       }}>
         <div style={{ ...S.container, height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <a href="#" style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, color: '#1A1510', fontSize: 15, lineHeight: 1.3, whiteSpace: 'nowrap' }}>
@@ -68,7 +72,7 @@ export default function Page() {
           </a>
           <div className="nav-links" style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
             {NAV.map(l => (
-              <a key={l.href} href={l.href} style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248' }}>
+              <a key={l.href} href={l.href} className="nav-link" style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248' }}>
                 {l.label}
               </a>
             ))}
@@ -88,7 +92,10 @@ export default function Page() {
         position: 'relative',
       }}>
         <div style={{ maxWidth: 760 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 32, color: '#9A7B2E' }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 32, color: '#9A7B2E',
+            animation: 'fadeSlideUp 0.7s ease 0.1s both',
+          }}>
             <Sun size={18} />
             <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 12, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
               Solarstrom lokal erzeugt. Gemeinsam genutzt.
@@ -102,6 +109,7 @@ export default function Page() {
             color: '#1A1510',
             lineHeight: 1.1,
             marginBottom: 24,
+            animation: 'fadeSlideUp 0.7s ease 0.25s both',
           }}>
             Energiegemeinschaften<br />Lostorf
           </h1>
@@ -112,17 +120,20 @@ export default function Page() {
             fontWeight: 500,
             color: '#1A1510',
             lineHeight: 1.7,
-            marginBottom: 40,
             maxWidth: 580,
             margin: '0 auto 40px',
+            animation: 'fadeSlideUp 0.7s ease 0.4s both',
           }}>
             Lokal produzierter Solarstrom, der nicht selbst verbraucht wird, soll in Lostorf bleiben — und der Gemeinde zugutekommen.
             Wo immer möglich als vZEV, ansonsten als LEG. Lostorf hat das Potenzial für 21 Quartier-LEG.
             Nutzen wir diesen wertvollen Strom gemeinsam.
           </p>
 
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="#leg" style={{
+          <div style={{
+            display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap',
+            animation: 'fadeSlideUp 0.7s ease 0.55s both',
+          }}>
+            <a href="#leg" className="btn-primary" style={{
               background: '#9DD295', color: '#1A1510',
               fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 15,
               padding: '14px 32px', borderRadius: 8,
@@ -130,9 +141,9 @@ export default function Page() {
             }}>
               Was ist eine LEG? <ArrowRight size={16} />
             </a>
-            <a href="#rechner" style={{
+            <a href="#rechner" className="btn-secondary" style={{
               background: 'transparent', color: '#1A1510',
-              border: '1px solid #D9CEB5',
+              border: '1.5px solid #D9CEB5',
               fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 15,
               padding: '14px 32px', borderRadius: 8,
             }}>
@@ -142,8 +153,9 @@ export default function Page() {
         </div>
 
         <a href="#leg" style={{
-          position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)',
-          color: '#D9CEB5', animation: 'bounce 2s infinite',
+          position: 'absolute', bottom: 32, left: '50%',
+          color: '#9A7B2E', animation: 'bounce 2s infinite',
+          opacity: 0.7,
         }}>
           <ChevronDown size={28} />
         </a>
@@ -154,31 +166,33 @@ export default function Page() {
       {/* ─── LEG ─── */}
       <section id="leg" style={{ ...S.sectionPad, background: '#FFFFFF' }}>
         <div style={S.container}>
-          <SectionLabel>Lokale Elektrizitätsgemeinschaft</SectionLabel>
-          <h2 style={S.h2}>Was ist eine LEG?</h2>
-          <p style={{ ...S.lead, marginBottom: 56 }}>
-            Seit der Revision des Schweizer Energiegesetzes ermöglicht die <strong>Lokale Elektrizitätsgemeinschaft (LEG)</strong> bis
-            zu 100 Haushalte und Betriebe innerhalb eines lokalen Netzgebiets, gemeinsam lokal produzierten
-            Solarstrom zu nutzen und abzurechnen.
-          </p>
+          <div className="scroll-fade">
+            <SectionLabel>Lokale Elektrizitätsgemeinschaft</SectionLabel>
+            <h2 style={S.h2}>Was ist eine LEG?</h2>
+            <p style={{ ...S.lead, marginBottom: 56 }}>
+              Seit der Revision des Schweizer Energiegesetzes ermöglicht die <strong>Lokale Elektrizitätsgemeinschaft (LEG)</strong> bis
+              zu 100 Haushalte und Betriebe innerhalb eines lokalen Netzgebiets, gemeinsam lokal produzierten
+              Solarstrom zu nutzen und abzurechnen.
+            </p>
+          </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20, marginBottom: 56 }}>
             {[
-              { icon: <Sun size={22} color="#9A7B2E" />, title: 'Lokal produziert', text: 'Strom wird in der Gemeinschaft produziert und verbraucht – kurze Wege, kein langer Transport.' },
-              { icon: <Users size={22} color="#9A7B2E" />, title: 'Gemeinsam profitieren', text: 'Produzenten erhalten bessere Vergütung, Konsumenten zahlen weniger als den üblichen Netzpreis.' },
-              { icon: <Zap size={22} color="#9A7B2E" />, title: 'Netzgebühren sparen', text: 'Lokal gehandelter Strom belastet das übergeordnete Netz weniger – das reduziert die Netzkosten.' },
-              { icon: <Leaf size={22} color="#9A7B2E" />, title: 'CO₂ einsparen', text: 'Jede selbst verbrauchte Kilowattstunde Solarstrom verdrängt fossile Energie aus dem Netz.' },
+              { icon: <Sun size={22} color="#9A7B2E" />, title: 'Lokal produziert', text: 'Strom wird in der Gemeinschaft produziert und verbraucht – kurze Wege, kein langer Transport.', delay: 'scroll-fade scroll-fade-d1' },
+              { icon: <Users size={22} color="#9A7B2E" />, title: 'Gemeinsam profitieren', text: 'Produzenten erhalten bessere Vergütung, Konsumenten zahlen weniger als den üblichen Netzpreis.', delay: 'scroll-fade scroll-fade-d2' },
+              { icon: <Zap size={22} color="#9A7B2E" />, title: 'Netzgebühren sparen', text: 'Lokal gehandelter Strom belastet das übergeordnete Netz weniger – das reduziert die Netzkosten.', delay: 'scroll-fade scroll-fade-d3' },
+              { icon: <Leaf size={22} color="#9A7B2E" />, title: 'CO₂ einsparen', text: 'Jede selbst verbrauchte Kilowattstunde Solarstrom verdrängt fossile Energie aus dem Netz.', delay: 'scroll-fade scroll-fade-d4' },
             ].map(c => (
-              <div key={c.title} style={S.card}>
+              <div key={c.title} className={`hover-lift ${c.delay}`} style={S.card}>
                 <div style={{ marginBottom: 14 }}>{c.icon}</div>
-                <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>{c.title}</div>
-                <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.6 }}>{c.text}</div>
+                <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>{c.title}</div>
+                <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>{c.text}</div>
               </div>
             ))}
           </div>
 
-          <div style={{ ...S.card, borderLeft: '3px solid #9A7B2E' }}>
-            <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 17, color: '#1A1510', marginBottom: 12 }}>
+          <div className="scroll-fade hover-lift" style={{ ...S.card, borderLeft: '3px solid #9A7B2E' }}>
+            <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 12 }}>
               Wer kann mitmachen?
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 8 }}>
@@ -203,13 +217,15 @@ export default function Page() {
       {/* ─── vZEV ─── */}
       <section id="vzev" style={{ ...S.sectionPad, background: '#E7F9E4' }}>
         <div style={S.container}>
-          <SectionLabel>Virtueller Zusammenschluss</SectionLabel>
-          <h2 style={S.h2}>Was ist ein vZEV?</h2>
-          <p style={{ ...S.lead, marginBottom: 48 }}>
-            Der <strong>virtuelle Zusammenschluss zum Eigenverbrauch (vZEV)</strong> ist das bewährte Vorgängermodell
-            zur LEG. Er erlaubt Gebäudeeigentümern mit Photovoltaikanlage, den produzierten Strom direkt
-            mit Mietparteien oder Nachbargebäuden im selben Netzgebiet zu teilen.
-          </p>
+          <div className="scroll-fade">
+            <SectionLabel>Virtueller Zusammenschluss</SectionLabel>
+            <h2 style={S.h2}>Was ist ein vZEV?</h2>
+            <p style={{ ...S.lead, marginBottom: 48 }}>
+              Der <strong>virtuelle Zusammenschluss zum Eigenverbrauch (vZEV)</strong> ist das bewährte Vorgängermodell
+              zur LEG. Er erlaubt Gebäudeeigentümern mit Photovoltaikanlage, den produzierten Strom direkt
+              mit Mietparteien oder Nachbargebäuden im selben Netzgebiet zu teilen.
+            </p>
+          </div>
 
           <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
             {[
@@ -222,6 +238,8 @@ export default function Page() {
                   'Direkte Abrechnung über den Netzbetreiber',
                   'Einfache Struktur, klare Verhältnisse',
                 ],
+                highlight: false,
+                delay: 'scroll-fade scroll-fade-d1',
               },
               {
                 title: 'LEG',
@@ -233,14 +251,15 @@ export default function Page() {
                   'Stärkt das lokale Energiesystem',
                 ],
                 highlight: true,
+                delay: 'scroll-fade scroll-fade-d2',
               },
             ].map(col => (
-              <div key={col.title} style={{
+              <div key={col.title} className={`hover-lift ${col.delay}`} style={{
                 ...S.card,
-                border: col.highlight ? '1px solid #9A7B2E' : '1px solid #D9CEB5',
+                border: col.highlight ? '1.5px solid #9A7B2E' : '1px solid #D9CEB5',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-                  <span style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 20, color: '#1A1510' }}>{col.title}</span>
+                  <span style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 20, color: '#1A1510' }}>{col.title}</span>
                   <span style={{
                     fontSize: 11, fontWeight: 600, padding: '2px 10px', borderRadius: 20,
                     background: col.highlight ? '#9A7B2E' : '#E7F9E4',
@@ -252,7 +271,7 @@ export default function Page() {
                   {col.points.map(p => (
                     <div key={p} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
                       <Check size={14} color="#9A7B2E" style={{ marginTop: 2, flexShrink: 0 }} />
-                      <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.5 }}>{p}</span>
+                      <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.55 }}>{p}</span>
                     </div>
                   ))}
                 </div>
@@ -267,14 +286,16 @@ export default function Page() {
       {/* ─── Rechner ─── */}
       <section id="rechner" style={{ ...S.sectionPad, background: '#FFFFFF' }}>
         <div style={S.container}>
-          <div style={{ textAlign: 'center', marginBottom: 56 }}>
+          <div className="scroll-fade" style={{ textAlign: 'center', marginBottom: 56 }}>
             <SectionLabel>Sparrechner</SectionLabel>
             <h2 style={{ ...S.h2, marginBottom: 12 }}>Was bringt mir die LEG?</h2>
             <p style={{ ...S.lead, margin: '0 auto' }}>
               Verschiebe die Regler und sieh, wie viel lokal erzeugter Solarstrom du nutzen könntest.
             </p>
           </div>
-          <Rechner />
+          <div className="scroll-fade scroll-fade-d1">
+            <Rechner />
+          </div>
         </div>
       </section>
 
@@ -283,13 +304,15 @@ export default function Page() {
       {/* ─── PV-Karte ─── */}
       <section id="pv-karte" style={{ ...S.sectionPad, background: '#E7F9E4' }}>
         <div style={S.container}>
-          <SectionLabel>Solaranlagen in Lostorf</SectionLabel>
-          <h2 style={{ ...S.h2, marginBottom: 12 }}>PV-Karte Lostorf</h2>
-          <p style={{ ...S.lead, marginBottom: 40 }}>
-            Übersicht der bestehenden Photovoltaikanlagen in der Gemeinde Lostorf.
-            Die Karte zeigt den aktuellen Ausbauzustand der lokalen Solarinfrastruktur.
-          </p>
-          <div style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid #D9CEB5', height: 420 }}>
+          <div className="scroll-fade">
+            <SectionLabel>Solaranlagen in Lostorf</SectionLabel>
+            <h2 style={{ ...S.h2, marginBottom: 12 }}>PV-Karte Lostorf</h2>
+            <p style={{ ...S.lead, marginBottom: 40 }}>
+              Übersicht der bestehenden Photovoltaikanlagen in der Gemeinde Lostorf.
+              Die Karte zeigt den aktuellen Ausbauzustand der lokalen Solarinfrastruktur.
+            </p>
+          </div>
+          <div className="scroll-fade scroll-fade-d1" style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid #D9CEB5', height: 420, boxShadow: '0 4px 24px rgba(26,21,16,0.07)' }}>
             <iframe
               title="Solaranlagen Lostorf"
               src="https://www.openstreetmap.org/export/embed.html?bbox=7.930%2C47.375%2C7.990%2C47.408&layer=mapnik"
@@ -297,7 +320,7 @@ export default function Page() {
               loading="lazy"
             />
           </div>
-          <p style={{ marginTop: 10, fontSize: 12, color: '#D9CEB5', fontFamily: 'var(--font-nunito)' }}>
+          <p style={{ marginTop: 10, fontSize: 12, color: '#C0B8B0', fontFamily: 'var(--font-nunito)' }}>
             Kartendaten © <a href="https://www.openstreetmap.org/copyright" style={{ color: '#9A7B2E' }}>OpenStreetMap</a>-Mitwirkende
           </p>
         </div>
@@ -309,7 +332,7 @@ export default function Page() {
       <section id="energiestadt" style={{ ...S.sectionPad, background: '#FFFFFF' }}>
         <div style={S.container}>
           <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
-            <div>
+            <div className="scroll-fade">
               <SectionLabel>Lostorf</SectionLabel>
               <h2 style={S.h2}>Energiestadt Lostorf</h2>
               <p style={{ ...S.lead, marginBottom: 32 }}>
@@ -332,14 +355,38 @@ export default function Page() {
                 ))}
               </div>
             </div>
-            <div style={{ ...S.card, background: '#E7F9E4', textAlign: 'center', padding: '48px 32px' }}>
-              <MapPin size={40} color="#9A7B2E" style={{ margin: '0 auto 16px' }} />
-              <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 28, color: '#1A1510', marginBottom: 8 }}>
+
+            <div className="scroll-fade scroll-fade-d2 hover-lift" style={{
+              background: 'linear-gradient(135deg, #1A3317 0%, #2C4A28 100%)',
+              borderRadius: 16,
+              padding: '48px 32px',
+              textAlign: 'center',
+              border: 'none',
+            }}>
+              <div style={{
+                width: 64, height: 64, borderRadius: '50%',
+                background: 'rgba(157,210,149,0.15)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                margin: '0 auto 20px',
+              }}>
+                <MapPin size={32} color="#9DD295" />
+              </div>
+              <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 500, fontSize: 30, color: '#E7F9E4', marginBottom: 6 }}>
                 Lostorf
               </div>
-              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.6 }}>
-                Kanton Solothurn<br />
-                Gemeinde mit Weitblick
+              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#6B9968', marginBottom: 28, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                Kanton Solothurn
+              </div>
+              <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+                {[
+                  { val: '21', desc: 'LEG Potenzial' },
+                  { val: 'Energiestadt', desc: 'Label Träger' },
+                ].map(s => (
+                  <div key={s.val}>
+                    <div style={{ fontFamily: 'var(--font-baskerville)', fontSize: 22, fontWeight: 500, color: '#9DD295' }}>{s.val}</div>
+                    <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 12, color: '#6B9968' }}>{s.desc}</div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -350,43 +397,23 @@ export default function Page() {
 
       {/* ─── Kontakt ─── */}
       <section id="kontakt" style={{ ...S.sectionPad, background: '#E7F9E4' }}>
-        <div style={{ ...S.container, textAlign: 'center', maxWidth: 680 }}>
-          <SectionLabel>Kontakt</SectionLabel>
-          <h2 style={S.h2}>Fragen zur LEG oder vZEV?</h2>
-          <p style={{ ...S.lead, margin: '0 auto 48px' }}>
-            Ob du eine Solaranlage hast oder einfach günstigeren lokalen Strom beziehen möchtest —
-            melde dich, wir beantworten gerne deine Fragen.
-          </p>
-
-          <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, maxWidth: 520, margin: '0 auto' }}>
-            <a href="mailto:info@energiegemeinschaft-lostorf.ch" style={{
-              ...S.card,
-              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
-              padding: '32px 20px',
-            }}>
-              <Mail size={24} color="#9A7B2E" />
-              <span style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 16, color: '#1A1510' }}>E-Mail</span>
-              <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#5C5248', textAlign: 'center' }}>
-                info@energiegemeinschaft-lostorf.ch
-              </span>
-            </a>
-            <a href="tel:+41000000000" style={{
-              ...S.card,
-              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
-              padding: '32px 20px',
-            }}>
-              <Phone size={24} color="#9A7B2E" />
-              <span style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 16, color: '#1A1510' }}>Telefon</span>
-              <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#5C5248', textAlign: 'center' }}>
-                Kontaktnummer folgt
-              </span>
-            </a>
+        <div style={{ ...S.container, maxWidth: 760 }}>
+          <div className="scroll-fade" style={{ textAlign: 'center', marginBottom: 48 }}>
+            <SectionLabel>Kontakt</SectionLabel>
+            <h2 style={S.h2}>Fragen zur LEG oder vZEV?</h2>
+            <p style={{ ...S.lead, margin: '0 auto' }}>
+              Du möchtest eine vZEV oder LEG gründen oder einer bestehenden Gemeinschaft beitreten?
+              Wir begleiten dich auf dem Weg — melde dich, wir helfen dir gerne weiter.
+            </p>
+          </div>
+          <div className="scroll-fade scroll-fade-d1">
+            <ContactForm />
           </div>
         </div>
       </section>
 
       {/* ─── Footer ─── */}
-      <footer style={{ background: '#2C4A28', color: '#B8D9B4', padding: '40px 24px', textAlign: 'center' }}>
+      <footer style={{ background: '#1A3317', color: '#B8D9B4', padding: '40px 24px', textAlign: 'center' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
           <span style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 15, color: '#E7F9E4' }}>
             Energiegemeinschaften Lostorf
