@@ -175,18 +175,24 @@ export default function Page() {
               <SectionLabel>Lokale Elektrizitätsgemeinschaft</SectionLabel>
               <h2 style={S.h2}>Was ist eine LEG?</h2>
               <p style={{ ...S.lead, marginBottom: 20 }}>
-                Eine <strong>Lokale Elektrizitätsgemeinschaft (LEG)</strong> schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen — ohne Umweg über grosse Energiekonzerne.
+                Eine <strong>Lokale Elektrizitätsgemeinschaft (LEG)</strong> schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen.
               </p>
-              <p style={{ ...S.lead, fontSize: 16, marginBottom: 0 }}>
-                Alle Teilnehmenden müssen im Einzugsgebiet desselben Verteilnetzbetreibers angeschlossen sein (bis Netzebene 5, NE5). Den Tarif für den Lokalstrom können Produzenten und Konsumenten frei vereinbaren. Ab 2026 können LEG offiziell gegründet werden.
+              <p style={{ ...S.lead, fontSize: 16, marginBottom: 20 }}>
+                Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu <strong>40 % reduzieren</strong> — ein erheblicher Vorteil für alle Beteiligten. Ab 2026 können LEG in der Schweiz offiziell gegründet werden.
+              </p>
+              <p style={{ ...S.lead, fontSize: 16, marginBottom: 0, fontWeight: 600, color: '#1A3317' }}>
+                Lostorf hat das Potenzial für <strong>21 lokale Elektrizitätsgemeinschaften</strong>.
               </p>
             </div>
             <div className="scroll-fade scroll-fade-d1">
               <img
-                src="/images/iStock_solarpannels.jpg"
-                alt="Solaranlagen für lokale Energiegemeinschaft Lostorf"
-                style={{ width: '100%', height: 340, objectFit: 'cover', borderRadius: 16, display: 'block' }}
+                src="/images/leg-schema-bkw.png"
+                alt="Schema einer Lokalen Elektrizitätsgemeinschaft (LEG)"
+                style={{ width: '100%', borderRadius: 16, display: 'block' }}
               />
+              <p style={{ marginTop: 8, fontSize: 11, color: '#9A9089', fontFamily: 'var(--font-nunito)' }}>
+                Grafik: <a href="https://www.bkw.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>bkw.ch</a>
+              </p>
             </div>
           </div>
 
@@ -272,65 +278,28 @@ export default function Page() {
 
             <div className="scroll-fade scroll-fade-d1">
               <img
-                src="/images/vzev-schema.png"
+                src="/images/vzev-schema-bkw.png"
                 alt="Schema eines virtuellen Zusammenschlusses zum Eigenverbrauch (vZEV)"
                 style={{ width: '100%', borderRadius: 16, display: 'block' }}
               />
               <p style={{ marginTop: 8, fontSize: 11, color: '#9A9089', fontFamily: 'var(--font-nunito)' }}>
-                Grafik: <a href="https://www.lokalerstrom.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>lokalerstrom.ch</a>
+                Grafik: <a href="https://www.bkw.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>bkw.ch</a>
               </p>
             </div>
           </div>
 
-          {/* vZEV vs LEG Vergleich */}
-          <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+          {/* vZEV Vorteile */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
             {[
-              {
-                title: 'vZEV',
-                badge: 'Bewährt',
-                points: [
-                  'Bestehendes Modell, seit Jahren in Betrieb',
-                  'Mindestens 2 Teilnehmende, eine PV-Anlage',
-                  'Gleicher Netzanschlusspunkt Pflicht',
-                  'Einfache Struktur, klare Verhältnisse',
-                ],
-                highlight: false,
-                delay: 'scroll-fade scroll-fade-d1',
-              },
-              {
-                title: 'LEG',
-                badge: 'Neu ab 2026',
-                points: [
-                  'Bis 100 Teilnehmende im lokalen Netz',
-                  'Gebäudeübergreifend & gemeindebreit (NE5)',
-                  'Frei vereinbarte Tarife möglich',
-                  'Stärkt das lokale Energiesystem',
-                ],
-                highlight: true,
-                delay: 'scroll-fade scroll-fade-d2',
-              },
-            ].map(col => (
-              <div key={col.title} className={`hover-lift ${col.delay}`} style={{
-                ...S.card,
-                border: col.highlight ? '1.5px solid #9A7B2E' : '1px solid #D9CEB5',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-                  <span style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 20, color: '#1A1510' }}>{col.title}</span>
-                  <span style={{
-                    fontSize: 11, fontWeight: 600, padding: '2px 10px', borderRadius: 20,
-                    background: col.highlight ? '#9A7B2E' : '#E7F9E4',
-                    color: col.highlight ? '#FFFFFF' : '#5C5248',
-                    fontFamily: 'var(--font-nunito)',
-                  }}>{col.badge}</span>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {col.points.map(p => (
-                    <div key={p} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                      <Check size={14} color="#9A7B2E" style={{ marginTop: 2, flexShrink: 0 }} />
-                      <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.55 }}>{p}</span>
-                    </div>
-                  ))}
-                </div>
+              { icon: <Zap size={22} color="#9A7B2E" />, title: 'Vorteil 1', desc: 'Kommt noch.', delay: 'scroll-fade scroll-fade-d1' },
+              { icon: <Sun size={22} color="#9A7B2E" />, title: 'Vorteil 2', desc: 'Kommt noch.', delay: 'scroll-fade scroll-fade-d2' },
+              { icon: <Users size={22} color="#9A7B2E" />, title: 'Vorteil 3', desc: 'Kommt noch.', delay: 'scroll-fade scroll-fade-d3' },
+              { icon: <Leaf size={22} color="#9A7B2E" />, title: 'Vorteil 4', desc: 'Kommt noch.', delay: 'scroll-fade scroll-fade-d4' },
+            ].map(item => (
+              <div key={item.title} className={`hover-lift ${item.delay}`} style={S.card}>
+                <div style={{ marginBottom: 14 }}>{item.icon}</div>
+                <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>{item.title}</div>
+                <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>{item.desc}</div>
               </div>
             ))}
           </div>
