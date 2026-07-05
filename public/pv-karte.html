@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solaranlagen Lostorf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#E7F9E4; --surface:#fff; --surface2:#F0FAF0; --border:#D9CEB5; --border2:#C4B89A;
+    --text:#1A1510; --text2:#5C5248; --text3:#9A9089;
+    --accent:#9A7B2E; --accent-bg:#F5F0E8; --accent-t:#7E6424;
+    --green:#3A7A30; --green-bg:#D4F0CE;
+    --bar:#9DD295; --bar-h:#82C97A; --bar-sel:#9A7B2E;
+    --r:10px; --rl:16px;
+  }
+  body { font-family:'Nunito Sans','Helvetica Neue',Arial,sans-serif; background:var(--bg); color:var(--text); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  .page { max-width:980px; margin:0 auto; padding:2rem 1.5rem 2.5rem; }
+
+  .header { margin-bottom:1.1rem; display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .header-left h1 { font-family:'DM Sans',sans-serif; font-size:22px; font-weight:500; letter-spacing:-0.3px; margin-bottom:3px; color:var(--text); }
+  .header-left p { color:var(--text2); font-size:13px; }
+  .reload-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; font-size:13px; font-weight:600; font-family:'Nunito Sans',sans-serif; cursor:pointer; border:1.5px solid var(--border2); border-radius:var(--r); background:var(--surface); color:var(--text2); transition:border-color .15s,color .15s,background .15s; white-space:nowrap; flex-shrink:0; }
+  .reload-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-bg); }
+  .reload-btn.loading .btn-icon { display:inline-block; animation:spin .7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  .source-box { background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:var(--r); padding:.9rem 1.1rem; margin-top:1.75rem; font-size:12px; color:var(--text2); line-height:1.8; }
+  .source-box a { color:var(--accent); text-decoration:none; word-break:break-all; }
+  .source-box a:hover { text-decoration:underline; }
+  .src-row { display:flex; gap:8px; }
+  .src-row + .src-row { margin-top:2px; }
+  .src-lbl { min-width:80px; color:var(--text3); flex-shrink:0; font-weight:500; }
+  .live-badge { display:inline-flex; align-items:center; gap:5px; background:var(--green-bg); border:1px solid #a8d5b5; color:var(--green); border-radius:20px; padding:2px 9px; font-size:11px; font-weight:500; vertical-align:middle; }
+  .live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); }
+
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:1.75rem; }
+  @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr);}}
+  .stat { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:.875rem 1rem; }
+  .stat-label { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; font-family:'Nunito Sans',sans-serif; }
+  .stat-val { font-size:22px; font-weight:500; font-family:'DM Sans',sans-serif; color:var(--text); }
+  .stat-sub { font-size:11px; color:var(--text3); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  .chart-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--rl); padding:1.25rem 1.25rem .75rem; margin-bottom:1.25rem; }
+  .chart-title { font-size:12px; font-weight:600; color:var(--text2); margin-bottom:1.25rem; display:flex; align-items:center; justify-content:space-between; font-family:'Nunito Sans',sans-serif; letter-spacing:.04em; text-transform:uppercase; }
+  .chart-hint { font-size:11px; color:var(--text3); font-weight:400; }
+  .chart-outer { display:flex; align-items:flex-end; gap:3px; height:240px; padding-top:20px; }
+  .bar-col { flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; cursor:pointer; position:relative; padding-bottom:22px; }
+  .bar-stack { width:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; flex:1; }
+  .bar-count { font-size:9.5px; font-weight:700; color:var(--text2); line-height:1; margin-bottom:3px; transition:color .15s; white-space:nowrap; }
+  .bar { width:100%; background:var(--bar); border-radius:3px 3px 0 0; transition:background .15s; min-height:4px; }
+  .bar-year { position:absolute; bottom:0; left:0; right:0; font-size:9px; color:var(--text3); text-align:center; height:20px; line-height:20px; white-space:nowrap; overflow:hidden; }
+  .bar-col:hover .bar { background:var(--bar-h); }
+  .bar-col:hover .bar-count { color:var(--accent-t); }
+  .bar-col.active .bar { background:var(--bar-sel); }
+  .bar-col.active .bar-count { color:var(--bar-sel); font-size:10.5px; }
+  .bar-col.active .bar-year { color:var(--bar-sel); font-weight:700; }
+
+  .filter-bar { display:flex; gap:8px; align-items:center; margin-bottom:.75rem; flex-wrap:wrap; }
+  .search-wrap { position:relative; flex:1; min-width:180px; max-width:280px; }
+  .search-icon { position:absolute; left:9px; top:50%; transform:translateY(-50%); color:var(--text3); font-size:14px; pointer-events:none; }
+  input[type=text] { width:100%; padding:7px 10px 7px 30px; border:1px solid var(--border2); border-radius:var(--r); background:var(--surface); color:var(--text); font-size:13px; outline:none; transition:border-color .15s; }
+  input[type=text]:focus { border-color:var(--accent); }
+  .pwr-filters { display:flex; gap:6px; flex-wrap:wrap; }
+  .pwr-btn { padding:5px 11px; font-size:12px; font-weight:500; cursor:pointer; border:1px solid var(--border2); border-radius:20px; background:var(--surface); color:var(--text2); transition:background .15s,color .15s,border-color .15s; white-space:nowrap; }
+  .pwr-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .pwr-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .year-badge { display:inline-flex; align-items:center; gap:6px; background:#fef0e6; border:1px solid #f0b07a; color:#8a3a10; border-radius:20px; padding:4px 10px 4px 12px; font-size:12px; font-weight:500; }
+  .year-badge button { background:none; border:none; cursor:pointer; font-size:16px; color:#8a3a10; line-height:1; padding:0; }
+  .result-count { margin-left:auto; font-size:12px; color:var(--text3); white-space:nowrap; }
+
+  .status-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--rl); padding:3rem 2rem; text-align:center; margin-bottom:1.25rem; }
+  .status-box.is-error { border-color:#f0b07a; background:#fef8f3; }
+  .spinner { width:32px; height:32px; border:3px solid var(--border2); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; margin:0 auto 1rem; }
+  .status-title { font-weight:500; margin-bottom:4px; }
+  .status-sub { font-size:12px; color:var(--text3); margin-bottom:.5rem; }
+  .status-url { font-size:11px; color:var(--text3); font-family:monospace; word-break:break-all; margin-top:.5rem; }
+  .retry-btn { margin-top:1rem; padding:7px 16px; font-size:12px; font-weight:500; border:1px solid var(--border2); border-radius:var(--r); background:var(--surface); color:var(--text2); cursor:pointer; }
+  .retry-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+  .tbl-wrap { background:var(--surface); border:1px solid var(--border); border-radius:var(--rl); overflow:hidden; overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:13px; table-layout:fixed; }
+  thead th { background:var(--surface2); padding:9px 12px; text-align:left; font-size:11px; font-weight:600; font-family:'Nunito Sans',sans-serif; color:var(--text2); text-transform:uppercase; letter-spacing:.4px; border-bottom:1px solid var(--border); cursor:pointer; user-select:none; white-space:nowrap; }
+  thead th:hover { color:var(--text); }
+  thead th.sorted { color:var(--accent); }
+  th:nth-child(1){width:40px;text-align:center}
+  th:nth-child(2){width:auto}
+  th:nth-child(3){width:100px}
+  th:nth-child(4){width:110px;text-align:right}
+  th:nth-child(5){width:58px;text-align:center}
+  tbody tr { border-bottom:1px solid var(--border); }
+  tbody tr:last-child { border-bottom:none; }
+  tbody tr:hover { background:var(--surface2); }
+  td { padding:8px 12px; vertical-align:middle; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  td:nth-child(1){text-align:center;color:var(--text3);font-size:11px}
+  td:nth-child(4){text-align:right;font-variant-numeric:tabular-nums}
+  td:nth-child(5){text-align:center}
+  .sort-arrow { margin-left:3px; opacity:.4; font-size:10px; }
+  .sorted .sort-arrow { opacity:1; }
+  .map-link { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:6px; border:1px solid var(--border2); color:var(--text3); text-decoration:none; font-size:13px; transition:background .15s,color .15s,border-color .15s; }
+  .map-link:hover { background:var(--accent-bg); color:var(--accent-t); border-color:#9ac5ef; }
+  .empty { padding:2.5rem; text-align:center; color:var(--text3); font-size:13px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>Solaranlagen Gemeinde Lostorf</h1>
+      <p>Registrierte Elektrizitätsproduktionsanlagen (Photovoltaik), Kanton Solothurn</p>
+    </div>
+    <button class="reload-btn" id="reloadBtn" onclick="loadData()">
+      <span class="btn-icon">↻</span> Daten aktualisieren
+    </button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Anlagen total</div><div class="stat-val" id="stat-count">—</div><div class="stat-sub">Gemeinde Lostorf</div></div>
+    <div class="stat"><div class="stat-label">Gesamtleistung</div><div class="stat-val" id="stat-power">—</div><div class="stat-sub" id="stat-power-sub">—</div></div>
+    <div class="stat"><div class="stat-label">Grösste Anlage</div><div class="stat-val" id="stat-largest">—</div><div class="stat-sub" id="stat-largest-sub">—</div></div>
+    <div class="stat"><div class="stat-label">Neueste Anlage</div><div class="stat-val" id="stat-newest">—</div><div class="stat-sub" id="stat-newest-sub">—</div></div>
+  </div>
+
+  <div class="chart-section">
+    <div class="chart-title">
+      <span>Neu installierte Anlagen pro Jahr</span>
+      <span class="chart-hint">Auf einen Balken klicken zum Filtern</span>
+    </div>
+    <div class="chart-outer" id="chart"></div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="search" placeholder="Adresse suchen…">
+    </div>
+    <div class="pwr-filters">
+      <button class="pwr-btn" data-min="7">&gt; 7 kW</button>
+      <button class="pwr-btn" data-min="14">&gt; 14 kW</button>
+      <button class="pwr-btn" data-min="30">&gt; 30 kW</button>
+    </div>
+    <div id="yearBadge" style="display:none">
+      <div class="year-badge">
+        <span id="yearBadgeText"></span>
+        <button onclick="clearYear()" title="Filter entfernen">×</button>
+      </div>
+    </div>
+    <span class="result-count" id="countLabel">—</span>
+  </div>
+
+  <div id="statusBox" class="status-box">
+    <div class="spinner"></div>
+    <div class="status-title">Daten werden geladen…</div>
+    <div class="status-sub">Abfrage via geo.admin.ch API (JSONP)</div>
+  </div>
+
+  <div class="tbl-wrap" id="tableWrap" style="display:none">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th data-col="address" class="sorted">Adresse <span class="sort-arrow">↑</span></th>
+          <th data-col="date">Inbetrieb <span class="sort-arrow"></span></th>
+          <th data-col="power">Leistung <span class="sort-arrow"></span></th>
+          <th title="Auf map.geo.admin.ch öffnen">Karte</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="source-box">
+    <div class="src-row"><span class="src-lbl">Quelle</span><span>Bundesamt für Energie BFE — <em>Elektrizitätsproduktionsanlagen der Schweiz</em>. Datenbasis: Schweizerisches Herkunftsnachweissystem, betrieben von <a href="https://www.pronovo.ch" target="_blank">Pronovo AG</a>. Enthält alle in Betrieb befindlichen Anlagen &gt; 2 kW.</span></div>
+    <div class="src-row"><span class="src-lbl">API</span><span><a href="https://api3.geo.admin.ch/rest/services/api/MapServer/find?layer=ch.bfe.elektrizitaetsproduktionsanlagen&searchField=address&searchText=Lostorf&contains=true&returnGeometry=true&lang=de" target="_blank">api3.geo.admin.ch — MapServer/find (ch.bfe.elektrizitaetsproduktionsanlagen)</a></span></div>
+    <div class="src-row"><span class="src-lbl">Metadaten</span><span><a href="https://inspire-geoportal.ec.europa.eu/srv/api/records/e5a00bdb-5022-4856-ad4a-d1afe7bf38b0?language=ger" target="_blank">inspire-geoportal.ec.europa.eu — Elektrizitätsproduktionsanlagen (e5a00bdb-5022-4856-ad4a-d1afe7bf38b0)</a></span></div>
+    <div class="src-row"><span class="src-lbl">Stand</span><span id="standLabel">wird geladen…</span></div>
+  </div>
+
+</div>
+<script>
+const LAYER   = 'ch.bfe.elektrizitaetsproduktionsanlagen';
+const API_URL = `https://api3.geo.admin.ch/rest/services/api/MapServer/find?layer=${LAYER}&searchField=address&searchText=Lostorf&contains=true&returnGeometry=true&lang=de`;
+const MONTHS  = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+
+let DATA = [], activeYear = null, sortCol = 'date', sortAsc = true, minPower = 0;
+let jsonpTimeout = null;
+
+function loadData() {
+  setLoading(true);
+  const old = document.getElementById('_jsonp');
+  if (old) old.remove();
+  if (jsonpTimeout) clearTimeout(jsonpTimeout);
+  window._geoCallback = function(data) {
+    clearTimeout(jsonpTimeout);
+    document.getElementById('_jsonp').remove();
+    delete window._geoCallback;
+    processData(data);
+  };
+  const script = document.createElement('script');
+  script.id  = '_jsonp';
+  script.src = `${API_URL}&callback=_geoCallback`;
+  script.onerror = () => showError('Script konnte nicht geladen werden.', script.src);
+  document.head.appendChild(script);
+  jsonpTimeout = setTimeout(() => {
+    if (window._geoCallback) {
+      delete window._geoCallback;
+      showError('Zeitüberschreitung — API hat nicht geantwortet.', script.src);
+    }
+  }, 15000);
+}
+
+function processData(json) {
+  const results = json.results || [];
+  DATA = results
+    .filter(f => {
+      const addr = (f.attributes?.address || '');
+      const afterComma = addr.includes(',') ? addr.split(',').slice(1).join(',') : '';
+      return afterComma.toLowerCase().includes('lostorf');
+    })
+    .map(f => {
+      const attr = f.attributes || {};
+      const fullAddr = attr.address || '';
+      const streetPart = fullAddr.split(',')[0].trim();
+      const x03 = f.geometry?.x;
+      const y03 = f.geometry?.y;
+      const x95 = x03 ? String(Math.round(x03 + 2000000)) : null;
+      const y95 = y03 ? String(Math.round(y03 + 1000000)) : null;
+      return {
+        id:      String(f.featureId || f.id || ''),
+        address: streetPart,
+        fullAddress: fullAddr,
+        date:    parseApiDate(attr.beginning_of_operation),
+        power:   parsePower(attr.total_power),
+        x:       x95,
+        y:       y95,
+      };
+    })
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  const now = new Date();
+  const ts  = `${pad(now.getDate())}.${pad(now.getMonth()+1)}.${now.getFullYear()}, ${pad(now.getHours())}:${pad(now.getMinutes())} Uhr`;
+  document.getElementById('standLabel').innerHTML =
+    `Live-Daten via geo.admin.ch API — geladen: ${ts} &nbsp;<span class="live-badge"><span class="live-dot"></span>Live</span>`;
+
+  updateStats();
+  buildChart();
+  setLoading(false);
+  render();
+
+  // Notify parent of full content height for iframe auto-sizing
+  setTimeout(() => {
+    const h = document.body.scrollHeight;
+    window.parent.postMessage({ type: 'pvkarte-height', height: h }, '*');
+  }, 100);
+}
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function parseApiDate(s) {
+  if (!s) return '0000-00-00';
+  const p = s.split('.');
+  return p.length === 3 ? `${p[2]}-${pad(p[1])}-${pad(p[0])}` : s;
+}
+
+function fmtDate(iso) {
+  const p = iso.split('-');
+  return p.length === 3 ? `${p[2]}.${p[1]}.${p[0]}` : iso;
+}
+
+function parsePower(s) {
+  return parseFloat((s || '0').replace(',', '.')) || 0;
+}
+
+function mapUrl(r) {
+  const cx = r.x || '2637558';
+  const cy = r.y || '1248500';
+  return `https://map.geo.admin.ch/#/map?lang=de&center=${cx},${cy}&z=11.387&topic=ech&layers=${LAYER}@features=${r.id}&bgLayer=ch.swisstopo.swissimage&featureInfo=default`;
+}
+
+function updateStats() {
+  if (!DATA.length) return;
+  const totalPower = DATA.reduce((s, r) => s + r.power, 0);
+  const largest    = DATA.reduce((m, r) => r.power > m.power ? r : m, DATA[0]);
+  const newest     = DATA.reduce((m, r) => r.date  > m.date  ? r : m, DATA[0]);
+  const dp = newest.date.split('-');
+  document.getElementById('stat-count').textContent      = DATA.length;
+  document.getElementById('stat-power').textContent      = (totalPower / 1000).toFixed(2) + ' MW';
+  document.getElementById('stat-power-sub').textContent  = Math.round(totalPower).toLocaleString('de-CH') + ' kW installiert';
+  document.getElementById('stat-largest').textContent    = Math.round(largest.power) + ' kW';
+  document.getElementById('stat-largest-sub').textContent = largest.address;
+  document.getElementById('stat-newest').textContent     = MONTHS[parseInt(dp[1]) - 1] + ' ' + dp[0];
+  document.getElementById('stat-newest-sub').textContent = newest.address;
+}
+
+function buildChart() {
+  const el = document.getElementById('chart');
+  el.innerHTML = '';
+  const yearMap = {};
+  DATA.forEach(r => { const y = r.date.slice(0,4); yearMap[y] = (yearMap[y]||0) + 1; });
+  const years = Object.entries(yearMap).sort((a,b) => a[0].localeCompare(b[0]));
+  const maxN  = Math.max(...years.map(y => y[1]));
+  years.forEach(([year, count]) => {
+    const barH = Math.max(Math.round((count / maxN) * 180), 4);
+    const col  = document.createElement('div');
+    col.className    = 'bar-col';
+    col.dataset.year = year;
+    col.innerHTML    = `<div class="bar-stack"><div class="bar-count">${count}</div><div class="bar" style="height:${barH}px"></div></div><div class="bar-year">${year}</div>`;
+    col.addEventListener('click', () => toggleYear(year));
+    el.appendChild(col);
+  });
+}
+
+function toggleYear(year) {
+  if (activeYear === year) { clearYear(); return; }
+  activeYear = year;
+  document.querySelectorAll('.bar-col').forEach(c => c.classList.toggle('active', c.dataset.year === year));
+  document.getElementById('yearBadge').style.display = 'block';
+  document.getElementById('yearBadgeText').textContent = `Jahr ${year}`;
+  render();
+}
+function clearYear() {
+  activeYear = null;
+  document.querySelectorAll('.bar-col').forEach(c => c.classList.remove('active'));
+  document.getElementById('yearBadge').style.display = 'none';
+  render();
+}
+
+function render() {
+  const s    = document.getElementById('search').value.toLowerCase();
+  let   rows = DATA.filter(r =>
+    (!s          || r.address.toLowerCase().includes(s)) &&
+    (!activeYear || r.date.startsWith(activeYear)) &&
+    r.power > minPower
+  );
+  rows.sort((a, b) => {
+    const av = a[sortCol], bv = b[sortCol];
+    if (typeof av === 'number') return sortAsc ? av - bv : bv - av;
+    return sortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+  document.getElementById('countLabel').textContent = `${rows.length} Anlagen`;
+  const tbody = document.getElementById('tbody');
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty">Keine Anlagen gefunden.</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map((r, i) => `<tr>
+    <td>${i+1}</td>
+    <td title="${r.fullAddress}">${r.address}</td>
+    <td>${fmtDate(r.date)}</td>
+    <td>${r.power.toFixed(2)} kW</td>
+    <td><a class="map-link" href="${mapUrl(r)}" target="_blank" title="${r.address} auf Karte">↗</a></td>
+  </tr>`).join('');
+}
+
+function setLoading(on) {
+  document.getElementById('reloadBtn').classList.toggle('loading', on);
+  document.getElementById('statusBox').style.display  = on ? 'block' : 'none';
+  document.getElementById('tableWrap').style.display  = on ? 'none'  : 'block';
+  if (on) {
+    document.getElementById('statusBox').className = 'status-box';
+    document.getElementById('statusBox').innerHTML = `
+      <div class="spinner"></div>
+      <div class="status-title">Daten werden geladen…</div>
+      <div class="status-sub">Abfrage via geo.admin.ch API</div>`;
+  }
+}
+
+function showError(msg, url) {
+  document.getElementById('reloadBtn').classList.remove('loading');
+  document.getElementById('statusBox').style.display = 'block';
+  document.getElementById('tableWrap').style.display = 'none';
+  document.getElementById('statusBox').className = 'status-box is-error';
+  document.getElementById('statusBox').innerHTML = `
+    <div class="status-title">Fehler beim Laden</div>
+    <div class="status-sub">${msg}</div>
+    ${url ? `<div class="status-url">${url}</div>` : ''}
+    <button class="retry-btn" onclick="loadData()">Erneut versuchen</button>`;
+}
+
+document.querySelectorAll('thead th[data-col]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.col;
+    if (sortCol === col) sortAsc = !sortAsc; else { sortCol = col; sortAsc = true; }
+    document.querySelectorAll('thead th').forEach(t => {
+      t.classList.remove('sorted');
+      if (t.querySelector('.sort-arrow')) t.querySelector('.sort-arrow').textContent = '';
+    });
+    th.classList.add('sorted');
+    th.querySelector('.sort-arrow').textContent = sortAsc ? '↑' : '↓';
+    render();
+  });
+});
+
+document.querySelectorAll('.pwr-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const val = parseInt(btn.dataset.min);
+    if (minPower === val) { minPower = 0; btn.classList.remove('active'); }
+    else { minPower = val; document.querySelectorAll('.pwr-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input', render);
+document.querySelector('thead th[data-col="address"]').querySelector('.sort-arrow').textContent = '↑';
+
+loadData();
+</script>
+</body>
+</html>

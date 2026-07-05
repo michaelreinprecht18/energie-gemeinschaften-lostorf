@@ -178,7 +178,7 @@ export default function Page() {
                 Eine <strong>Lokale Elektrizitätsgemeinschaft (LEG)</strong> schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen.
               </p>
               <p style={{ ...S.lead, fontSize: 16, marginBottom: 20 }}>
-                Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu <strong>40 % reduzieren</strong> — ein erheblicher Vorteil für alle Beteiligten. Ab 2026 können LEG in der Schweiz offiziell gegründet werden.
+                Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu <strong>40 % reduzieren</strong> — ein erheblicher Vorteil für alle Beteiligten.
               </p>
               <p style={{ ...S.lead, fontSize: 16, marginBottom: 0, fontWeight: 600, color: '#1A3317' }}>
                 Lostorf hat das Potenzial für <strong>21 lokale Elektrizitätsgemeinschaften</strong>.
@@ -199,10 +199,10 @@ export default function Page() {
           {/* Feature Cards */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20, marginBottom: 56 }}>
             {[
-              { icon: <Sun size={22} color="#9A7B2E" />, title: 'Lokalstrom direkt handeln', text: 'Produzenten verkaufen ihren Überschussstrom direkt an Verbraucher im selben Netzgebiet — frei vereinbarter Tarif, keine Mittelsmänner.', delay: 'scroll-fade scroll-fade-d1' },
+              { icon: <Sun size={22} color="#9A7B2E" />, title: 'Lokalstrom direkt handeln', text: 'Produzenten verkaufen ihren Überschussstrom direkt an Verbraucher im selben Netzgebiet.', delay: 'scroll-fade scroll-fade-d1' },
               { icon: <Users size={22} color="#9A7B2E" />, title: 'Beide Seiten profitieren', text: 'Produzenten erzielen mehr als den üblichen Einspeisevergütungssatz. Konsumenten zahlen weniger als den Netzstrompreis.', delay: 'scroll-fade scroll-fade-d2' },
               { icon: <Zap size={22} color="#9A7B2E" />, title: 'Reduzierte Netzkosten', text: 'Lokal gehandelter Strom durchläuft nur das Niederspannungsnetz. Der Verteilnetzbetreiber verrechnet deshalb reduzierte Netznutzungskosten.', delay: 'scroll-fade scroll-fade-d3' },
-              { icon: <Leaf size={22} color="#9A7B2E" />, title: 'Klimaschutz im Quartier', text: 'Jede lokal verbrauchte Kilowattstunde Solarstrom ersetzt Energie aus fossilen Quellen und stärkt die Versorgungssicherheit vor Ort.', delay: 'scroll-fade scroll-fade-d4' },
+              { icon: <Leaf size={22} color="#9A7B2E" />, title: 'Reduziert den Netzausbau', text: 'Lokal erzeugter Solarstrom wird direkt vor Ort im Quartier verbraucht und reduziert damit den Bedarf an kostspieligem Netzausbau.', delay: 'scroll-fade scroll-fade-d4' },
             ].map(c => (
               <div key={c.title} className={`hover-lift ${c.delay}`} style={S.card}>
                 <div style={{ marginBottom: 14 }}>{c.icon}</div>
@@ -329,25 +329,21 @@ export default function Page() {
       {/* ─── PV-Karte ─── */}
       <section id="pv-karte" style={{ ...S.sectionPad, background: '#E7F9E4' }}>
         <div style={S.container}>
-          <div className="scroll-fade">
+          <div className="scroll-fade" style={{ marginBottom: 32 }}>
             <SectionLabel>Solaranlagen in Lostorf</SectionLabel>
             <h2 style={{ ...S.h2, marginBottom: 12 }}>PV-Karte Lostorf</h2>
-            <p style={{ ...S.lead, marginBottom: 40 }}>
-              Übersicht der bestehenden Photovoltaikanlagen in der Gemeinde Lostorf.
-              Die Karte zeigt den aktuellen Ausbauzustand der lokalen Solarinfrastruktur.
+            <p style={{ ...S.lead }}>
+              Alle registrierten Photovoltaikanlagen der Gemeinde Lostorf — live aus der Datenbank des Bundesamts für Energie.
             </p>
           </div>
-          <div className="scroll-fade scroll-fade-d1" style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid #D9CEB5', height: 420, boxShadow: '0 4px 24px rgba(26,21,16,0.07)' }}>
+          <div className="scroll-fade scroll-fade-d1" style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid #D9CEB5', boxShadow: '0 4px 24px rgba(26,21,16,0.07)' }}>
             <iframe
+              id="pvkarteFrame"
               title="Solaranlagen Lostorf"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=7.930%2C47.375%2C7.990%2C47.408&layer=mapnik"
-              style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
-              loading="lazy"
+              src="/pv-karte.html"
+              style={{ width: '100%', height: 1100, border: 'none', display: 'block' }}
             />
           </div>
-          <p style={{ marginTop: 10, fontSize: 12, color: '#C0B8B0', fontFamily: 'var(--font-nunito)' }}>
-            Kartendaten © <a href="https://www.openstreetmap.org/copyright" style={{ color: '#9A7B2E' }}>OpenStreetMap</a>-Mitwirkende
-          </p>
         </div>
       </section>
 
