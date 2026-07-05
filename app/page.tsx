@@ -26,7 +26,7 @@ const S = {
   },
   h2: {
     fontFamily: 'var(--font-baskerville)',
-    fontWeight: 700,
+    fontWeight: 500,
     fontSize: 'clamp(28px, 4vw, 40px)',
     color: '#1A1510',
     lineHeight: 1.2,
@@ -64,7 +64,7 @@ export default function Page() {
       }}>
         <div style={{ ...S.container, height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <a href="#" style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, color: '#1A1510', fontSize: 15, lineHeight: 1.3, whiteSpace: 'nowrap' }}>
-            Energie Gemeinschaften <span style={{ color: '#9A7B2E' }}>Lostorf</span>
+            Energiegemeinschaften <span style={{ color: '#9A7B2E' }}>Lostorf</span>
           </a>
           <div className="nav-links" style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
             {NAV.map(l => (
@@ -97,13 +97,13 @@ export default function Page() {
 
           <h1 style={{
             fontFamily: 'var(--font-baskerville)',
-            fontWeight: 700,
+            fontWeight: 500,
             fontSize: 'clamp(36px, 6vw, 68px)',
             color: '#1A1510',
             lineHeight: 1.1,
             marginBottom: 24,
           }}>
-            Energie Gemeinschaften<br />Lostorf
+            Energiegemeinschaften<br />Lostorf
           </h1>
 
           <p style={{
@@ -389,7 +389,7 @@ export default function Page() {
       <footer style={{ background: '#2C4A28', color: '#B8D9B4', padding: '40px 24px', textAlign: 'center' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
           <span style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 15, color: '#E7F9E4' }}>
-            Energie Gemeinschaften Lostorf
+            Energiegemeinschaften Lostorf
           </span>
           <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, lineHeight: 1.7 }}>
             <strong style={{ color: '#E7F9E4', fontWeight: 600 }}>Impressum:</strong>{' '}

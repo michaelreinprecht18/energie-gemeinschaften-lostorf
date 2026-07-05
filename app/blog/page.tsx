@@ -5,7 +5,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Blog – Energie Gemeinschaften Lostorf',
+  title: 'Blog – Energiegemeinschaften Lostorf',
   description: 'Artikel und Neuigkeiten rund um LEG, vZEV und Solarstrom in Lostorf.',
 }
 
@@ -37,7 +37,7 @@ export default function BlogPage() {
       <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: '#FFFFFF', borderBottom: '1px solid #D9CEB5' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link href="/" style={{ fontFamily: S.serif, fontWeight: 700, color: '#1A1510', fontSize: 15, whiteSpace: 'nowrap' }}>
-            Energie Gemeinschaften <span style={{ color: '#9A7B2E' }}>Lostorf</span>
+            Energiegemeinschaften <span style={{ color: '#9A7B2E' }}>Lostorf</span>
           </Link>
           <Link href="/" style={{ fontFamily: S.sans, fontSize: 14, color: '#5C5248', display: 'flex', alignItems: 'center', gap: 6 }}>
             ← Zurück zur Hauptseite
@@ -50,7 +50,7 @@ export default function BlogPage() {
         <span style={{ fontFamily: S.sans, fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9A7B2E' }}>
           Aktuelles
         </span>
-        <h1 style={{ fontFamily: S.serif, fontWeight: 700, fontSize: 'clamp(28px, 4vw, 42px)', color: '#1A1510', marginTop: 12, marginBottom: 16, lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: S.serif, fontWeight: 500, fontSize: 'clamp(28px, 4vw, 42px)', color: '#1A1510', marginTop: 12, marginBottom: 16, lineHeight: 1.2 }}>
           Blog
         </h1>
         <p style={{ fontFamily: S.sans, fontSize: 17, fontWeight: 300, color: '#5C5248', maxWidth: 520, margin: '0 auto' }}>
@@ -78,7 +78,7 @@ export default function BlogPage() {
                   {post.author && <span style={{ color: '#D9CEB5', margin: '0 8px' }}>·</span>}
                   {post.author}
                 </div>
-                <h2 style={{ fontFamily: S.serif, fontWeight: 700, fontSize: 22, color: '#1A1510', marginBottom: 10, lineHeight: 1.3 }}>
+                <h2 style={{ fontFamily: S.serif, fontWeight: 500, fontSize: 22, color: '#1A1510', marginBottom: 10, lineHeight: 1.3 }}>
                   {post.title}
                 </h2>
                 {post.description && (
@@ -97,7 +97,7 @@ export default function BlogPage() {
 
       <footer style={{ background: '#2C4A28', color: '#B8D9B4', padding: '32px 24px', textAlign: 'center' }}>
         <span style={{ fontFamily: S.serif, fontWeight: 700, fontSize: 14, color: '#E7F9E4' }}>
-          Energie Gemeinschaften Lostorf
+          Energiegemeinschaften Lostorf
         </span>
       </footer>
     </>

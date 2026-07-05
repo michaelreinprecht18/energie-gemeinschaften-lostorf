@@ -1,10 +1,9 @@
 import type { Metadata } from 'next'
-import { Libre_Baskerville, Nunito_Sans } from 'next/font/google'
+import { DM_Sans, Nunito_Sans } from 'next/font/google'
 import './globals.css'
 
-const baskerville = Libre_Baskerville({
-  weight: ['400', '700'],
-  style: ['normal', 'italic'],
+const baskerville = DM_Sans({
+  weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
   variable: '--font-baskerville',
   display: 'swap',
@@ -18,7 +17,7 @@ const nunito = Nunito_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Energie Gemeinschaften Lostorf',
+  title: 'Energiegemeinschaften Lostorf',
   description: 'Informationsplattform für lokal produzierten Solarstrom in Lostorf – vZEV & LEG',
 }
 

@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const raw = fs.readFileSync(path.join(BLOG_DIR, `${slug}.mdx`), 'utf8')
   const { data } = matter(raw)
-  return { title: `${data.title} – Energie Gemeinschaften Lostorf`, description: data.description }
+  return { title: `${data.title} – Energiegemeinschaften Lostorf`, description: data.description }
 }
 
 const S = {
@@ -35,7 +35,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: '#FFFFFF', borderBottom: '1px solid #D9CEB5' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link href="/" style={{ fontFamily: S.serif, fontWeight: 700, color: '#1A1510', fontSize: 15, whiteSpace: 'nowrap' }}>
-            Energie Gemeinschaften <span style={{ color: '#9A7B2E' }}>Lostorf</span>
+            Energiegemeinschaften <span style={{ color: '#9A7B2E' }}>Lostorf</span>
           </Link>
           <Link href="/blog" style={{ fontFamily: S.sans, fontSize: 14, color: '#5C5248' }}>
             ← Alle Artikel
@@ -50,7 +50,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           {data.author && <span style={{ color: '#D9CEB5', margin: '0 8px' }}>·</span>}
           {data.author}
         </div>
-        <h1 style={{ fontFamily: S.serif, fontWeight: 700, fontSize: 'clamp(26px, 4vw, 44px)', color: '#1A1510', lineHeight: 1.2, maxWidth: 720, margin: '0 auto 16px' }}>
+        <h1 style={{ fontFamily: S.serif, fontWeight: 500, fontSize: 'clamp(26px, 4vw, 44px)', color: '#1A1510', lineHeight: 1.2, maxWidth: 720, margin: '0 auto 16px' }}>
           {data.title}
         </h1>
         {data.description && (
@@ -78,7 +78,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
       <footer style={{ background: '#2C4A28', color: '#B8D9B4', padding: '32px 24px', textAlign: 'center' }}>
         <span style={{ fontFamily: S.serif, fontWeight: 700, fontSize: 14, color: '#E7F9E4' }}>
-          Energie Gemeinschaften Lostorf
+          Energiegemeinschaften Lostorf
         </span>
       </footer>
     </>
