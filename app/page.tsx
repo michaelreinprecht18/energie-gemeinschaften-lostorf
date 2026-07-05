@@ -168,22 +168,35 @@ export default function Page() {
       {/* ─── LEG ─── */}
       <section id="leg" style={{ ...S.sectionPad, background: '#FFFFFF' }}>
         <div style={S.container}>
-          <div className="scroll-fade">
-            <SectionLabel>Lokale Elektrizitätsgemeinschaft</SectionLabel>
-            <h2 style={S.h2}>Was ist eine LEG?</h2>
-            <p style={{ ...S.lead, marginBottom: 56 }}>
-              Seit der Revision des Schweizer Energiegesetzes ermöglicht die <strong>Lokale Elektrizitätsgemeinschaft (LEG)</strong> bis
-              zu 100 Haushalte und Betriebe innerhalb eines lokalen Netzgebiets, gemeinsam lokal produzierten
-              Solarstrom zu nutzen und abzurechnen.
-            </p>
+
+          {/* Intro: Text + Bild */}
+          <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 56, alignItems: 'center', marginBottom: 64 }}>
+            <div className="scroll-fade">
+              <SectionLabel>Lokale Elektrizitätsgemeinschaft</SectionLabel>
+              <h2 style={S.h2}>Was ist eine LEG?</h2>
+              <p style={{ ...S.lead, marginBottom: 20 }}>
+                Eine <strong>Lokale Elektrizitätsgemeinschaft (LEG)</strong> schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen — ohne Umweg über grosse Energiekonzerne.
+              </p>
+              <p style={{ ...S.lead, fontSize: 16, marginBottom: 0 }}>
+                Alle Teilnehmenden müssen im Einzugsgebiet desselben Verteilnetzbetreibers angeschlossen sein (bis Netzebene 5, NE5). Den Tarif für den Lokalstrom können Produzenten und Konsumenten frei vereinbaren. Ab 2026 können LEG offiziell gegründet werden.
+              </p>
+            </div>
+            <div className="scroll-fade scroll-fade-d1">
+              <img
+                src="/images/iStock_solarpannels.jpg"
+                alt="Solaranlagen für lokale Energiegemeinschaft Lostorf"
+                style={{ width: '100%', height: 340, objectFit: 'cover', borderRadius: 16, display: 'block' }}
+              />
+            </div>
           </div>
 
+          {/* Feature Cards */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20, marginBottom: 56 }}>
             {[
-              { icon: <Sun size={22} color="#9A7B2E" />, title: 'Lokal produziert', text: 'Strom wird in der Gemeinschaft produziert und verbraucht – kurze Wege, kein langer Transport.', delay: 'scroll-fade scroll-fade-d1' },
-              { icon: <Users size={22} color="#9A7B2E" />, title: 'Gemeinsam profitieren', text: 'Produzenten erhalten bessere Vergütung, Konsumenten zahlen weniger als den üblichen Netzpreis.', delay: 'scroll-fade scroll-fade-d2' },
-              { icon: <Zap size={22} color="#9A7B2E" />, title: 'Netzgebühren sparen', text: 'Lokal gehandelter Strom belastet das übergeordnete Netz weniger – das reduziert die Netzkosten.', delay: 'scroll-fade scroll-fade-d3' },
-              { icon: <Leaf size={22} color="#9A7B2E" />, title: 'CO₂ einsparen', text: 'Jede selbst verbrauchte Kilowattstunde Solarstrom verdrängt fossile Energie aus dem Netz.', delay: 'scroll-fade scroll-fade-d4' },
+              { icon: <Sun size={22} color="#9A7B2E" />, title: 'Lokalstrom direkt handeln', text: 'Produzenten verkaufen ihren Überschussstrom direkt an Verbraucher im selben Netzgebiet — frei vereinbarter Tarif, keine Mittelsmänner.', delay: 'scroll-fade scroll-fade-d1' },
+              { icon: <Users size={22} color="#9A7B2E" />, title: 'Beide Seiten profitieren', text: 'Produzenten erzielen mehr als den üblichen Einspeisevergütungssatz. Konsumenten zahlen weniger als den Netzstrompreis.', delay: 'scroll-fade scroll-fade-d2' },
+              { icon: <Zap size={22} color="#9A7B2E" />, title: 'Reduzierte Netzkosten', text: 'Lokal gehandelter Strom durchläuft nur das Niederspannungsnetz. Der Verteilnetzbetreiber verrechnet deshalb reduzierte Netznutzungskosten.', delay: 'scroll-fade scroll-fade-d3' },
+              { icon: <Leaf size={22} color="#9A7B2E" />, title: 'Klimaschutz im Quartier', text: 'Jede lokal verbrauchte Kilowattstunde Solarstrom ersetzt Energie aus fossilen Quellen und stärkt die Versorgungssicherheit vor Ort.', delay: 'scroll-fade scroll-fade-d4' },
             ].map(c => (
               <div key={c.title} className={`hover-lift ${c.delay}`} style={S.card}>
                 <div style={{ marginBottom: 14 }}>{c.icon}</div>
@@ -193,14 +206,15 @@ export default function Page() {
             ))}
           </div>
 
-          <div className="scroll-fade hover-lift" style={{ ...S.card, borderLeft: '3px solid #9A7B2E' }}>
+          {/* Wer kann mitmachen */}
+          <div className="scroll-fade hover-lift" style={{ ...S.card, borderLeft: '3px solid #9A7B2E', marginBottom: 24 }}>
             <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 12 }}>
               Wer kann mitmachen?
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 8 }}>
               {[
-                'Haushalte mit eigenem Solarstrom',
-                'Mieterinnen und Mieter',
+                'Haushalte mit Solaranlage (Produzenten)',
+                'Mieterinnen und Mieter (Konsumenten)',
                 'Gewerbebetriebe im Netzgebiet',
                 'Gemeinden und öffentliche Gebäude',
               ].map(item => (
@@ -211,6 +225,15 @@ export default function Page() {
               ))}
             </div>
           </div>
+
+          {/* Quellenangabe */}
+          <p style={{ fontSize: 12, color: '#B8AFA8', fontFamily: 'var(--font-nunito)' }}>
+            Quelle:{' '}
+            <a href="https://www.lokalerstrom.ch/" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>
+              lokalerstrom.ch
+            </a>
+            {' '}· Bundesgesetz über die Stromversorgung (StromVG)
+          </p>
         </div>
       </section>
 
@@ -219,16 +242,47 @@ export default function Page() {
       {/* ─── vZEV ─── */}
       <section id="vzev" style={{ ...S.sectionPad, background: '#E7F9E4' }}>
         <div style={S.container}>
-          <div className="scroll-fade">
-            <SectionLabel>Virtueller Zusammenschluss</SectionLabel>
-            <h2 style={S.h2}>Was ist ein vZEV?</h2>
-            <p style={{ ...S.lead, marginBottom: 48 }}>
-              Der <strong>virtuelle Zusammenschluss zum Eigenverbrauch (vZEV)</strong> ist das bewährte Vorgängermodell
-              zur LEG. Er erlaubt Gebäudeeigentümern mit Photovoltaikanlage, den produzierten Strom direkt
-              mit Mietparteien oder Nachbargebäuden im selben Netzgebiet zu teilen.
-            </p>
+
+          {/* Intro: Text + Vergleich */}
+          <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 56, alignItems: 'start', marginBottom: 48 }}>
+            <div className="scroll-fade">
+              <SectionLabel>Virtueller Zusammenschluss</SectionLabel>
+              <h2 style={S.h2}>Was ist ein vZEV?</h2>
+              <p style={{ ...S.lead, marginBottom: 20 }}>
+                Ein <strong>virtueller Zusammenschluss zum Eigenverbrauch (vZEV)</strong> ist eine Eigenverbrauchsgemeinschaft, in der mindestens zwei Strombezüger gemeinsam mit mindestens einer Photovoltaikanlage lokal produzierten Solarstrom innerhalb der Nachbarschaft nutzen.
+              </p>
+              <p style={{ ...S.lead, fontSize: 16, marginBottom: 20 }}>
+                Voraussetzung ist, dass alle Teilnehmenden am gleichen Netzanschlusspunkt angeschlossen sind. Der vZEV erhöht die Wirtschaftlichkeit von PV-Anlagen, senkt die Stromkosten der Beteiligten und ermöglicht eine effizientere Nutzung des produzierten Solarstroms.
+              </p>
+              <a
+                href="https://www.primeo-energie.ch/geschaeftskunden/photovoltaik/energiegemeinschaften/vzev.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  background: '#9DD295', color: '#1A1510',
+                  fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 14,
+                  padding: '12px 24px', borderRadius: 8, marginTop: 8,
+                }}
+              >
+                Prüfen ob vZEV bei dir möglich ist <ArrowRight size={15} />
+              </a>
+            </div>
+
+            <div className="scroll-fade scroll-fade-d1">
+              <img
+                src="/images/vzev-schema.png"
+                alt="Schema eines virtuellen Zusammenschlusses zum Eigenverbrauch (vZEV)"
+                style={{ width: '100%', borderRadius: 16, display: 'block' }}
+              />
+              <p style={{ marginTop: 8, fontSize: 11, color: '#9A9089', fontFamily: 'var(--font-nunito)' }}>
+                Grafik: <a href="https://www.lokalerstrom.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>lokalerstrom.ch</a>
+              </p>
+            </div>
           </div>
 
+          {/* vZEV vs LEG Vergleich */}
           <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
             {[
               {
@@ -236,8 +290,8 @@ export default function Page() {
                 badge: 'Bewährt',
                 points: [
                   'Bestehendes Modell, seit Jahren in Betrieb',
-                  'Ideal für Mehrfamilienhäuser mit PV',
-                  'Direkte Abrechnung über den Netzbetreiber',
+                  'Mindestens 2 Teilnehmende, eine PV-Anlage',
+                  'Gleicher Netzanschlusspunkt Pflicht',
                   'Einfache Struktur, klare Verhältnisse',
                 ],
                 highlight: false,
@@ -245,11 +299,11 @@ export default function Page() {
               },
               {
                 title: 'LEG',
-                badge: 'Neu',
+                badge: 'Neu ab 2026',
                 points: [
                   'Bis 100 Teilnehmende im lokalen Netz',
-                  'Gebäudeübergreifend & gemeindebreit',
-                  'Flexiblere Tarifgestaltung möglich',
+                  'Gebäudeübergreifend & gemeindebreit (NE5)',
+                  'Frei vereinbarte Tarife möglich',
                   'Stärkt das lokale Energiesystem',
                 ],
                 highlight: true,
