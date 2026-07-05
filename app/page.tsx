@@ -91,7 +91,7 @@ export default function Page() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 32, color: '#9A7B2E' }}>
             <Sun size={18} />
             <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 12, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-              Lokal. Sauber. Gemeinsam.
+              Solarstrom lokal erzeugt. Gemeinsam genutzt.
             </span>
           </div>
 
