@@ -1,4 +1,4 @@
-import { Sun, Users, Zap, MapPin, Leaf, ArrowRight, Check, ChevronDown } from 'lucide-react'
+import { Sun, Users, Zap, Leaf, ArrowRight, Check, ChevronDown, Car, Droplets, MessageCircle } from 'lucide-react'
 import Rechner from './components/Rechner'
 import StatsBand from './components/StatsBand'
 import ContactForm from './components/ContactForm'
@@ -383,63 +383,90 @@ export default function Page() {
       {/* ─── Energiestadt ─── */}
       <section id="energiestadt" style={{ ...S.sectionPad, background: '#FFFFFF' }}>
         <div style={S.container}>
-          <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
+          <div className="mobile-stack" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 32, marginBottom: 24 }}>
             <div className="scroll-fade">
               <SectionLabel>Lostorf</SectionLabel>
               <h2 style={S.h2}>Energiestadt Lostorf</h2>
-              <p style={{ ...S.lead, marginBottom: 32 }}>
-                Lostorf engagiert sich aktiv für eine nachhaltige Energiezukunft.
-                Das Energiestadt-Label zeichnet Gemeinden aus, die in den Bereichen
-                Raumplanung, Gebäude, Versorgung, Mobilität und interne Organisation
-                vorbildliche Massnahmen umsetzen.
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {[
-                  'Förderung erneuerbarer Energien',
-                  'Energieeffiziente Gebäude und Infrastruktur',
-                  'Lokale Energiegemeinschaften als Vorzeigemodell',
-                  'Langfristige Klimaschutzziele',
-                ].map(item => (
-                  <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <Leaf size={15} color="#9A7B2E" />
-                    <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 15, color: '#5C5248' }}>{item}</span>
-                  </div>
-                ))}
-              </div>
             </div>
+            <img
+              src="/images/energiestadt-lostorf-logo.png"
+              alt="Logo Energiestadt Lostorf"
+              className="scroll-fade scroll-fade-d1"
+              style={{ maxWidth: 220, width: '100%', height: 'auto', flexShrink: 0 }}
+            />
+          </div>
 
-            <div className="scroll-fade scroll-fade-d2 hover-lift" style={{
-              background: 'linear-gradient(135deg, #1A3317 0%, #2C4A28 100%)',
-              borderRadius: 16,
-              padding: '48px 32px',
-              textAlign: 'center',
-              border: 'none',
-            }}>
-              <div style={{
-                width: 64, height: 64, borderRadius: '50%',
-                background: 'rgba(157,210,149,0.15)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 20px',
-              }}>
-                <MapPin size={32} color="#9DD295" />
-              </div>
-              <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 500, fontSize: 30, color: '#E7F9E4', marginBottom: 6 }}>
-                Lostorf
-              </div>
-              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#6B9968', marginBottom: 28, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                Kanton Solothurn
-              </div>
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
-                {[
-                  { val: '21', desc: 'LEG Potenzial' },
-                  { val: 'Energiestadt', desc: 'Label Träger' },
-                ].map(s => (
-                  <div key={s.val}>
-                    <div style={{ fontFamily: 'var(--font-baskerville)', fontSize: 22, fontWeight: 500, color: '#9DD295' }}>{s.val}</div>
-                    <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 12, color: '#6B9968' }}>{s.desc}</div>
+          <div className="scroll-fade">
+            <p style={{ ...S.lead, marginBottom: 20, maxWidth: 'none' }}>
+              Lostorf ist seit dem <strong>12. März 2024</strong> offiziell Energiestadt und damit Teil des
+              Netzwerks Energiestädte Kanton Solothurn — gemeinsam mit Biberist, Grenchen, Oensingen, Olten und
+              Solothurn. Eine eigens gegründete <strong>Arbeitsgruppe Energiestadt</strong> setzt seither laufend
+              neue Massnahmen für einen sparsameren Energieverbrauch und den Ausbau erneuerbarer Energien um.
+            </p>
+            <p style={{ ...S.lead, fontSize: 16, marginBottom: 32, maxWidth: 'none' }}>
+              Aktuelle Projekte der Arbeitsgruppe:
+            </p>
+            <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 24 }}>
+              {[
+                'E-Car-Sharing bei der Migrol-Tankstelle — seit November 2025 buchbar über die Mobility-App',
+                'Intelligente Strassenbeleuchtung — Teststrecke an der Sandgrubenstrasse mit bewegungsgesteuerten LED-Kandelabern',
+                'Themenabende zu Heizungsersatz, energetischer Sanierung und Photovoltaik mit Fachreferaten und Marktständen',
+                'Energie- und Klimastrategie in Erarbeitung — für verbindliche, langfristige Ziele',
+              ].map(item => (
+                <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                  <Leaf size={15} color="#9A7B2E" style={{ marginTop: 3, flexShrink: 0 }} />
+                  <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 15, color: '#5C5248' }}>{item}</span>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#9A9089' }}>
+              Die Arbeitsgruppe freut sich über neue Ideen — Kontakt:{' '}
+              <a href="mailto:energiestadt@lostorf.ch" style={{ color: '#9A7B2E' }}>energiestadt@lostorf.ch</a>
+            </p>
+          </div>
+
+          {/* Handlungsfelder Aktivitätenprogramm 2024-2028 */}
+          <div style={{ marginTop: 56 }}>
+            <h3 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 20, color: '#1A1510', marginBottom: 8 }}>
+              Handlungsfelder im Aktivitätenprogramm 2024–2028
+            </h3>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 28, maxWidth: 'none' }}>
+              Der Gemeinderat hat dazu ein Aktivitätenprogramm mit 27 konkreten Massnahmen beschlossen — ein Auszug
+              nach Themen:
+            </p>
+            <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+              {[
+                {
+                  icon: <Zap size={22} color="#9A7B2E" />,
+                  title: 'Energie & Gebäude',
+                  items: ['PV-Anlage und Wärmeverbund am Gemeindehaus', 'Energetische Sanierung von Kindergarten, Schulhaus und Alterszentrum DRH', 'Zertifizierter Ökostrom für alle Gemeindeanlagen'],
+                },
+                {
+                  icon: <Car size={22} color="#9A7B2E" />,
+                  title: 'Mobilität',
+                  items: ['E-Car-Sharing bei der Migrol-Tankstelle', 'Prüfung von Bike+Ride-Anlagen', 'Busverbindung nach Olten'],
+                },
+                {
+                  icon: <Droplets size={22} color="#9A7B2E" />,
+                  title: 'Natur & Gewässer',
+                  items: ['Konzept für den Gewässerunterhalt', 'Biodiversitätsprojekt «Legat Brügger»', 'Neophyten- und Clean-Up-Days'],
+                },
+                {
+                  icon: <MessageCircle size={22} color="#9A7B2E" />,
+                  title: 'Information & Beteiligung',
+                  items: ['Infostand am Dorfmäret', 'Jährliches Nachhaltigkeitsforum', 'Regelmässige Beiträge im 3Rosenblatt'],
+                },
+              ].map(cat => (
+                <div key={cat.title} className="hover-lift" style={S.card}>
+                  <div style={{ marginBottom: 14 }}>{cat.icon}</div>
+                  <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 16, color: '#1A1510', marginBottom: 10 }}>{cat.title}</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {cat.items.map(i => (
+                      <div key={i} style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#5C5248', lineHeight: 1.5 }}>{i}</div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
