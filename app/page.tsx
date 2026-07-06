@@ -1,7 +1,8 @@
-import { Sun, Users, Zap, Leaf, ArrowRight, Check, ChevronDown, Car, Droplets, MessageCircle } from 'lucide-react'
+import { Sun, Users, Zap, Leaf, ArrowRight, Check, ChevronDown, Car, Droplets, MessageCircle, Percent } from 'lucide-react'
 import Rechner from './components/Rechner'
 import StatsBand from './components/StatsBand'
 import ContactForm from './components/ContactForm'
+import EmailLink from './components/EmailLink'
 import ScrollAnimator from './components/ScrollAnimator'
 import MobileMenu from './components/MobileMenu'
 
@@ -248,6 +249,55 @@ export default function Page() {
               style={{ width: '100%', height: 700, border: 'none', display: 'block' }}
             />
           </div>
+
+          {/* LEG in Lostorf */}
+          <div style={{ marginTop: 56 }}>
+            <h3 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 20, color: '#1A1510', marginBottom: 8 }}>
+              LEG in Lostorf
+            </h3>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 28, maxWidth: 'none' }}>
+              Übersicht der aktiven und in Gründung befindlichen Lokalen Elektrizitätsgemeinschaften.
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 340px))', gap: 20 }}>
+              {[
+                { name: 'LEG Schulstrasse', tag: 'Quartier-LEG', status: 'In Gründung', leistung: '28 kWp', mitglieder: '3 Mitglieder', verhaeltnis: 'Unbekannt' },
+              ].map(leg => (
+                <div key={leg.name} className="hover-lift" style={S.card}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
+                    <span style={{ background: '#E7F9E4', color: '#2D7A27', fontFamily: 'var(--font-nunito)', fontSize: 12, fontWeight: 700, padding: '4px 12px', borderRadius: 20 }}>
+                      {leg.tag}
+                    </span>
+                    <span style={{ background: 'rgba(154,123,46,0.12)', color: '#9A7B2E', fontFamily: 'var(--font-nunito)', fontSize: 12, fontWeight: 700, padding: '4px 12px', borderRadius: 20 }}>
+                      {leg.status}
+                    </span>
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 19, color: '#1A1510', marginBottom: 16 }}>
+                    {leg.name}
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {[
+                      { icon: <Zap size={14} color="#2D7A27" />, text: `${leg.leistung} Leistung` },
+                      { icon: <Users size={14} color="#2D7A27" />, text: leg.mitglieder },
+                      { icon: <Percent size={14} color="#2D7A27" />, text: `LEG-Verhältnis: ${leg.verhaeltnis}` },
+                    ].map((s, i) => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#E7F9E4', borderRadius: 20, padding: '8px 14px' }}>
+                        {s.icon}
+                        <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, fontWeight: 600, color: '#2D7A27' }}>{s.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <a href="#kontakt" className="btn-primary" style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: '#9DD295', color: '#1A1510',
+              fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 15,
+              padding: '14px 32px', borderRadius: 8, marginTop: 28,
+            }}>
+              Ich will auch dabei sein <ArrowRight size={16} />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -421,7 +471,7 @@ export default function Page() {
             </div>
             <p style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#9A9089' }}>
               Die Arbeitsgruppe freut sich über neue Ideen — Kontakt:{' '}
-              <a href="mailto:energiestadt@lostorf.ch" style={{ color: '#9A7B2E' }}>energiestadt@lostorf.ch</a>
+              <EmailLink encoded="ZW5lcmdpZXN0YWR0QGxvc3RvcmYuY2g=" style={{ color: '#9A7B2E' }} />
             </p>
           </div>
 

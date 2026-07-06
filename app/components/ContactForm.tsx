@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { Send, CheckCircle } from 'lucide-react'
+import EmailLink from './EmailLink'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
@@ -154,7 +155,8 @@ export default function ContactForm() {
 
       {status === 'error' && (
         <p style={{ marginTop: 12, fontSize: 14, color: '#C0392B', fontFamily: 'var(--font-nunito), system-ui, sans-serif', textAlign: 'center' }}>
-          Etwas ist schiefgelaufen. Bitte versuche es nochmals oder schreib uns direkt an ai@reinprecht.ch.
+          Etwas ist schiefgelaufen. Bitte versuche es nochmals oder schreib uns direkt an{' '}
+          <EmailLink encoded="YWlAcmVpbnByZWNodC5jaA==" style={{ color: '#C0392B', textDecoration: 'underline' }} />.
         </p>
       )}
 
