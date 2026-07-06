@@ -127,7 +127,7 @@ export default function Page() {
             animation: 'fadeSlideUp 0.7s ease 0.4s both',
           }}>
             Lokal produzierter Solarstrom, der nicht selbst verbraucht wird, soll in Lostorf bleiben — und der Gemeinde zugutekommen.
-            Wo immer möglich als vZEV, ansonsten als LEG. Lostorf hat das Potenzial für 21 Quartier-LEG.
+            Wo immer möglich als vZEV, ansonsten als LEG. Lostorf hat das Potenzial für 22 Quartier-LEG.
             Nutzen wir diesen wertvollen Strom gemeinsam.
           </p>
 
@@ -181,7 +181,7 @@ export default function Page() {
                 Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu <strong>40 % reduzieren</strong> — ein erheblicher Vorteil für alle Beteiligten.
               </p>
               <p style={{ ...S.lead, fontSize: 16, marginBottom: 0, fontWeight: 600, color: '#1A3317' }}>
-                Lostorf hat das Potenzial für <strong>21 lokale Elektrizitätsgemeinschaften</strong>.
+                Lostorf hat das Potenzial für <strong>22 lokale Elektrizitätsgemeinschaften</strong>.
               </p>
             </div>
             <div className="scroll-fade scroll-fade-d1">
