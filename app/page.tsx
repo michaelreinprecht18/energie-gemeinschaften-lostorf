@@ -182,7 +182,7 @@ export default function Page() {
                 Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu <strong>40 % reduzieren</strong> — ein erheblicher Vorteil für alle Beteiligten.
               </p>
               <p style={{ ...S.lead, fontSize: 16, marginBottom: 0, fontWeight: 600, color: '#1A3317' }}>
-                Lostorf hat das Potenzial für <strong>22 lokale Elektrizitätsgemeinschaften</strong>.
+                Lostorf hat das Potenzial für <strong>22 Quartier Elektrizitätsgemeinschaften</strong>.
               </p>
             </div>
             <div className="scroll-fade scroll-fade-d1">
