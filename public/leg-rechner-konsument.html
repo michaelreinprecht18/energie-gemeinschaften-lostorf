@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEG Konsumenten-Rechner | Solar Lostorf</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,600;6..12,700;6..12,800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #F5F7F2;
+      --card:      #FFFFFF;
+      --card2:     #F0F3EC;
+      --border:    #D9CEB5;
+      --border2:   #C4B89A;
+      --blue:      #9A7B2E;
+      --blue-dim:  rgba(154,123,46,0.10);
+      --blue-glow: rgba(154,123,46,0.20);
+      --green:     #2D7A27;
+      --green-dim: #E7F9E4;
+      --amber:     #7A6030;
+      --leg-col:   #3A7A30;
+      --leg-dim:   rgba(58,122,48,0.10);
+      --text:      #1A1510;
+      --text2:     #5C5248;
+      --text3:     #8A7E78;
+      --white:     #FFFFFF;
+      --radius:    16px;
+      --radius-sm: 10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── TOP NAV ── */
+    .top-nav {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .top-nav-brand {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #1A1510;
+      letter-spacing: -0.01em;
+    }
+    .top-nav-back {
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #5C5248;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: #fff;
+      transition: background 0.15s, color 0.15s;
+    }
+    .top-nav-back:hover { background: var(--bg); color: var(--text); }
+
+    /* ── HEADER ── */
+    .site-header {
+      padding: 48px 24px 40px;
+      text-align: center;
+      background: #E7F9E4;
+      border-bottom: 1px solid var(--border);
+    }
+    .header-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px; height: 56px;
+      background: rgba(154,123,46,0.12);
+      border: 1px solid rgba(154,123,46,0.30);
+      border-radius: 16px;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+    .site-header h1 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #1A1510;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .site-header h1 .accent { color: #9A7B2E; }
+    .header-sub {
+      margin-top: 10px;
+      color: #5C5248;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.65;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-top: 16px;
+      transition: border-color 0.2s;
+      box-shadow: 0 1px 4px rgba(26,21,16,0.05);
+    }
+    .card:hover { border-color: var(--border2); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .step-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9A7B2E;
+      background: rgba(154,123,46,0.10);
+      border: 1px solid rgba(154,123,46,0.22);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1A1510;
+    }
+
+    /* ── LABELS & INPUTS ── */
+    .field-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #5C5248;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 7px;
+      margin-top: 18px;
+    }
+    .field-label:first-of-type { margin-top: 0; }
+
+    input[type=number], select {
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: #1A1510;
+      background: var(--card2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type=number]:focus, select:focus {
+      border-color: #9A7B2E;
+      box-shadow: 0 0 0 3px rgba(154,123,46,0.18);
+    }
+    input.price-input { width: 120px; }
+    input.kwh-input   { width: 160px; }
+    select.wide       { width: 100%; }
+    select#monate     { width: 180px; }
+
+    option { background: var(--card2); color: var(--text); }
+
+    /* ── RADIO CARDS ── */
+    .radio-cards { display: flex; gap: 10px; flex-wrap: wrap; }
+    .radio-card { flex: 1; min-width: 150px; }
+    .radio-card input[type=radio] { display: none; }
+    .radio-card label {
+      display: block;
+      padding: 16px 14px;
+      background: var(--card2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .rc-icon { display: block; font-size: 1.6rem; margin-bottom: 6px; }
+    .rc-label { display: block; font-size: 0.9rem; font-weight: 600; color: #1A1510; }
+    .rc-sub { display: block; font-size: 0.75rem; color: #5C5248; margin-top: 3px; }
+    .radio-card input:checked + label {
+      background: rgba(154,123,46,0.08);
+      border-color: #9A7B2E;
+      box-shadow: 0 0 0 1px #9A7B2E;
+    }
+    .radio-card input:checked + label .rc-label { color: #9A7B2E; }
+    .radio-card label:hover { border-color: #9A7B2E; }
+
+    /* ── GRID ── */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width:580px){ .grid2 { grid-template-columns: 1fr; } }
+
+    .col-panel {
+      background: var(--card2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+    }
+    .col-panel.leg-panel {
+      background: rgba(58,122,48,0.08);
+      border-color: rgba(58,122,48,0.30);
+    }
+    .col-panel-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #5C5248;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .col-panel.leg-panel .col-panel-title { color: #2D7A27; border-color: rgba(58,122,48,0.20); }
+
+    /* ── LEG PRICE BOX ── */
+    .leg-price-box {
+      margin-top: 18px;
+      background: rgba(58,122,48,0.08);
+      border: 1.5px solid rgba(58,122,48,0.22);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+    }
+    .leg-price-box-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #2D7A27;
+      margin-bottom: 16px;
+    }
+    .leg-price-row { display: flex; gap: 28px; flex-wrap: wrap; }
+    .diff-tag { margin-top: 6px; font-size: 0.8rem; font-weight: 500; }
+    .diff-note {
+      margin-top: 6px;
+      font-size: 0.76rem;
+      color: #5C5248;
+      line-height: 1.55;
+    }
+    .info-note {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: #5C5248;
+      line-height: 1.6;
+      padding: 12px 14px;
+      background: rgba(26,21,16,0.04);
+      border-radius: 8px;
+      border-left: 2px solid rgba(58,122,48,0.40);
+    }
+    .unit-tag {
+      font-size: 0.75rem;
+      color: var(--text3);
+      margin-top: 4px;
+    }
+
+    /* ── BUTTON ── */
+    .btn-calc {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #9A7B2E;
+      color: #FFFFFF;
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 14px 32px;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      margin-top: 24px;
+      letter-spacing: 0.02em;
+      transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 20px rgba(154,123,46,0.30);
+    }
+    .btn-calc:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(154,123,46,0.30); }
+    .btn-calc:active { transform: translateY(0); }
+
+    /* ── RESULT ── */
+    #result { margin-top: 32px; }
+    .result-title-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px; flex-wrap: wrap; gap: 8px;
+    }
+    .result-title-bar h2 {
+      font-size: 1.15rem; font-weight: 700; color: #1A1510;
+    }
+    .result-meta {
+      font-size: 0.8rem; color: #5C5248;
+    }
+    .result-meta strong { color: #1A1510; font-weight: 600; }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--card2); }
+    thead th {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+      padding: 11px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 11px 18px;
+      font-size: 0.88rem;
+      border-bottom: 1px solid #EDE7D9;
+      color: #1A1510;
+      vertical-align: middle;
+    }
+    td.num {
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem;
+      color: #1A1510;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    tr.sec-head td {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 9px 18px;
+    }
+    tr.sec-head.sh-energie td  { background: rgba(154,123,46,0.12); color: #7A5E22; border-left: 3px solid #9A7B2E; }
+    tr.sec-head.sh-netz td     { background: rgba(58,122,48,0.12);  color: #2D6E28; border-left: 3px solid #3A7A30; }
+    tr.sec-head.sh-abgaben td  { background: rgba(110,85,50,0.12);  color: #6E5530; border-left: 3px solid #8B6840; }
+    tr.s-energie td  { background: rgba(154,123,46,0.04); }
+    tr.s-netz td     { background: rgba(58,122,48,0.04); }
+    tr.s-abgaben td  { background: rgba(110,85,50,0.04); }
+    tr.sub-energie td     { background: rgba(154,123,46,0.10); font-weight:600; }
+    tr.sub-netz td        { background: rgba(58,122,48,0.10);  font-weight:600; }
+    tr.sub-abgaben td     { background: rgba(110,85,50,0.10);  font-weight:600; }
+    tr.sub-energie td.num { color: #7A5E22; }
+    tr.sub-netz td.num    { color: #2D6E28; }
+    tr.sub-abgaben td.num { color: #6E5530; }
+
+    tr.leg-row td { background: rgba(58,122,48,0.08); }
+    tr.leg-row td:first-child { border-left: 2px solid rgba(58,122,48,0.5); padding-left: 16px; }
+
+    tr.row-total td {
+      background: rgba(154,123,46,0.10);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #1A1510;
+      border-top: 1px solid rgba(154,123,46,0.20);
+    }
+    tr.row-total td.num { color: #9A7B2E; font-size: 0.95rem; }
+    tr.row-grand td {
+      background: #9A7B2E;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #FFFFFF;
+    }
+    tr.row-grand td.num { font-size: 1.05rem; color: #FFFFFF; }
+    tr.row-mwst td { color: #5C5248; font-size: 0.84rem; }
+    tr.row-sub-info td { color: var(--text3); font-size: 0.8rem; padding-left: 30px; }
+    tr.row-avg td { color: #5C5248; font-size: 0.82rem; }
+    tr.row-avg td.num { color: #2D7A27; }
+
+    /* ── SAVINGS ── */
+    .savings-box {
+      margin-top: 20px;
+      background: #E7F9E4;
+      border: 1px solid rgba(46,120,40,0.28);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      animation: fadeUp 0.4s ease both;
+    }
+    .savings-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #2D7A27;
+      margin-bottom: 18px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .savings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media(max-width:500px){ .savings-grid { grid-template-columns: 1fr; } }
+    .s-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+    }
+    .s-item.hi {
+      background: #9DD295;
+      border-color: #8AC287;
+    }
+    .s-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #5C5248;
+      margin-bottom: 6px;
+    }
+    .s-item.hi .s-label { color: rgba(5,40,25,0.7); }
+    .s-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1A1510;
+    }
+    .s-item.hi .s-value { color: #052819; font-size: 1.45rem; font-weight: 700; }
+    .s-sub {
+      font-size: 0.75rem;
+      color: var(--text3);
+      margin-top: 3px;
+    }
+    .s-item.hi .s-sub { color: rgba(5,40,25,0.55); }
+
+    #nur_leg_hinweis {
+      background: rgba(154,123,46,0.08) !important;
+      border: 1px solid rgba(154,123,46,0.25) !important;
+      color: #7A5E22 !important;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- Top nav -->
+<nav class="top-nav">
+  <span class="top-nav-brand">Solar Lostorf</span>
+  <a href="/#rechner" class="top-nav-back">← Zurück</a>
+</nav>
+
+<header class="site-header">
+  <div class="header-icon">⚡</div>
+  <h1>LEG Endkunden <span class="accent">Preis</span> Simulator</h1>
+  <p class="header-sub">Berechnen Sie Ihre Stromkosten – mit oder ohne Lokale Energie Gemeinschaft.<br>Dieser Simulator zeigt Ihnen, wie stark Sie von einer Teilnahme an einer LEG profitieren können.<br>Geben Sie dazu Ihren Jahresverbrauch ein.</p>
+</header>
+
+<div class="container">
+
+  <!-- 1. ZEITRAUM -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-pill">Schritt 1</span>
+      <span class="card-title">Zeitraum</span>
+    </div>
+    <label class="field-label" for="monate">Anzahl Monate</label>
+    <select id="monate">
+      <option value="1">1 Monat</option>
+      <option value="2">2 Monate</option>
+      <option value="3">3 Monate</option>
+      <option value="4">4 Monate</option>
+      <option value="5">5 Monate</option>
+      <option value="6">6 Monate</option>
+      <option value="7">7 Monate</option>
+      <option value="8">8 Monate</option>
+      <option value="9">9 Monate</option>
+      <option value="10">10 Monate</option>
+      <option value="11">11 Monate</option>
+      <option value="12" selected>12 Monate</option>
+    </select>
+  </div>
+
+  <!-- 2. STROMBEZUG -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-pill">Schritt 2</span>
+      <span class="card-title">Strombezug</span>
+    </div>
+    <div class="radio-cards" style="flex-wrap: nowrap;">
+      <div class="radio-card" style="min-width: 0;">
+        <input type="radio" id="bezug_primeo" name="bezug" value="primeo" checked onchange="toggleBezug()">
+        <label for="bezug_primeo">
+          <span class="rc-icon">🏭</span>
+          <span class="rc-label">Nur Primeo</span>
+          <span class="rc-sub">Bestehender Bezug</span>
+        </label>
+      </div>
+      <div class="radio-card" style="min-width: 0;">
+        <input type="radio" id="bezug_quartier_leg" name="bezug" value="quartier_leg" onchange="toggleBezug()">
+        <label for="bezug_quartier_leg">
+          <span class="rc-icon">⚡🏭</span>
+          <span class="rc-label">Quartier LEG + Primeo</span>
+          <span class="rc-sub">40% Netz-Rabatt · hinter gleicher Trafostation</span>
+        </label>
+      </div>
+      <div class="radio-card" style="min-width: 0;">
+        <input type="radio" id="bezug_gemeinde_leg" name="bezug" value="gemeinde_leg" onchange="toggleBezug()">
+        <label for="bezug_gemeinde_leg">
+          <span class="rc-icon">🏘️🏭</span>
+          <span class="rc-label">Gemeinde LEG + Primeo</span>
+          <span class="rc-sub">20% Netz-Rabatt · Gemeindegebiet</span>
+        </label>
+      </div>
+      <div class="radio-card" style="min-width: 0;">
+        <input type="radio" id="bezug_nur_quartier_leg" name="bezug" value="nur_quartier_leg" onchange="toggleBezug()">
+        <label for="bezug_nur_quartier_leg">
+          <span class="rc-icon">⚡</span>
+          <span class="rc-label">Nur Quartier LEG</span>
+          <span class="rc-sub">40% Netz-Rabatt · hinter gleicher Trafostation</span>
+        </label>
+      </div>
+      <div class="radio-card" style="min-width: 0;">
+        <input type="radio" id="bezug_nur_gemeinde_leg" name="bezug" value="nur_gemeinde_leg" onchange="toggleBezug()">
+        <label for="bezug_nur_gemeinde_leg">
+          <span class="rc-icon">🏘️</span>
+          <span class="rc-label">Nur Gemeinde LEG</span>
+          <span class="rc-sub">20% Netz-Rabatt · Gemeindegebiet</span>
+        </label>
+      </div>
+    </div>
+    <div id="nur_leg_hinweis" class="hidden" style="margin-top:12px; padding:10px 14px; border-radius:8px; font-size:0.8rem; line-height:1.6;">
+      ⚠️ <strong>Hinweis:</strong> Ein reiner LEG-Bezug ist in der Praxis schwer zu erreichen, da die PV-Produktion in den Monaten November bis Februar deutlich reduziert ist und der Eigenverbrauch der Gemeinschaft den Bedarf in dieser Zeit kaum decken kann.
+    </div>
+  </div>
+
+  <!-- 3. STROMPRODUKT -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-pill">Schritt 3</span>
+      <span class="card-title">Stromprodukt <span style="font-size:0.82rem;font-weight:400;color:var(--text2)">— gilt für Primeo-Anteil</span></span>
+    </div>
+    <label class="field-label" for="produkt">Produkt wählen</label>
+    <select id="produkt" class="wide">
+      <option value="0.00|Primeo Standard|Strom aus erneuerbaren Energiequellen">Primeo Standard – Strom aus erneuerbaren Energiequellen (kein Aufschlag)</option>
+      <option value="0.03|Primeo Grün|Ökostrom für eine intakte Umwelt und eine sorgenfreie Zukunft" selected>Primeo Grün – Ökostrom für eine intakte Umwelt (+ 3.00 Rp./kWh)</option>
+      <option value="0.02|Aarestrom|Erneuerbare Energie aus der Region für die Region">Aarestrom – Erneuerbare Energie aus der Region (+ 2.00 Rp./kWh)</option>
+    </select>
+  </div>
+
+  <!-- 4. VERBRAUCH -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-pill">Schritt 4</span>
+      <span class="card-title">Verbrauch</span>
+    </div>
+
+    <div id="verbrauch_primeo">
+      <div class="grid2">
+        <div>
+          <label class="field-label" for="ht">Hochtarif (HT)</label>
+          <input type="number" id="ht" class="kwh-input" value="0" min="0" step="1">
+          <div class="unit-tag">kWh</div>
+        </div>
+        <div>
+          <label class="field-label" for="nt">Niedertarif (NT)</label>
+          <input type="number" id="nt" class="kwh-input" value="0" min="0" step="1">
+          <div class="unit-tag">kWh</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="verbrauch_leg" class="hidden">
+      <div class="grid2">
+        <div class="col-panel leg-panel">
+          <div class="col-panel-title">⚡ Von der LEG</div>
+          <label class="field-label" for="leg_ht">Hochtarif (HT)</label>
+          <input type="number" id="leg_ht" class="kwh-input" value="0" min="0" step="1">
+          <div class="unit-tag">kWh</div>
+          <label class="field-label" for="leg_nt">Niedertarif (NT)</label>
+          <input type="number" id="leg_nt" class="kwh-input" value="0" min="0" step="1">
+          <div class="unit-tag">kWh</div>
+        </div>
+        <div id="netz_felder" class="col-panel">
+          <div class="col-panel-title">🏭 Vom Netz (Primeo)</div>
+          <label class="field-label" for="netz_ht">Hochtarif (HT)</label>
+          <input type="number" id="netz_ht" class="kwh-input" value="0" min="0" step="1">
+          <div class="unit-tag">kWh</div>
+          <label class="field-label" for="netz_nt">Niedertarif (NT)</label>
+          <input type="number" id="netz_nt" class="kwh-input" value="0" min="0" step="1">
+          <div class="unit-tag">kWh</div>
+        </div>
+      </div>
+
+      <div class="leg-price-box">
+        <div class="leg-price-box-title">⚙ LEG Energiepreise — anpassbar</div>
+        <div class="leg-price-row">
+          <div>
+            <label class="field-label" for="leg_preis_ht">Hochtarif (Rp./kWh)</label>
+            <input type="number" id="leg_preis_ht" class="price-input" value="15.85" min="0" step="0.1" oninput="updateLegDiff()">
+          </div>
+          <div>
+            <label class="field-label" for="leg_preis_nt">Niedertarif (Rp./kWh)</label>
+            <input type="number" id="leg_preis_nt" class="price-input" value="14.5" min="0" step="0.1" oninput="updateLegDiff()">
+          </div>
+        </div>
+        <div class="info-note">
+          <strong>Netzkosten Quartier LEG:</strong> 40% Rabatt auf Hochtarif Netz (12.25 Rp. → 7.35 Rp.) und Niedertarif Netz (8.15 Rp. → 4.89 Rp.).<br>
+          <strong>Netzkosten Gemeinde LEG:</strong> 20% Rabatt auf Hochtarif Netz (12.25 Rp. → 9.80 Rp.) und Niedertarif Netz (8.15 Rp. → 6.52 Rp.).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-calc" onclick="berechnen()">⚡ &nbsp;Kosten berechnen</button>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  const TARIFE = {
+    ht_energie:      0.15850,
+    nt_energie:      0.14500,
+    ht_netz:         0.12250,
+    nt_netz:         0.08150,
+    grundpreis_netz: 6.00,
+    messtarif:       4.00,
+    netzzuschlag:    0.02300,
+    sdl_swissgrid:   0.00270,
+    konzession:      0.01000,
+    stromreserve:    0.00410,
+    solidarisiert:   0.00050,
+  };
+
+  function toggleBezug() {
+    const val = document.querySelector('input[name="bezug"]:checked').value;
+    const isLeg    = ['quartier_leg', 'gemeinde_leg', 'nur_quartier_leg', 'nur_gemeinde_leg'].includes(val);
+    const isNurLeg = val === 'nur_quartier_leg' || val === 'nur_gemeinde_leg';
+    document.getElementById('verbrauch_primeo').classList.toggle('hidden', isLeg);
+    document.getElementById('verbrauch_leg').classList.toggle('hidden', !isLeg);
+    document.getElementById('nur_leg_hinweis').classList.toggle('hidden', !isNurLeg);
+    const nf = document.getElementById('netz_felder');
+    if (nf) {
+      nf.classList.toggle('hidden', isNurLeg);
+      if (isNurLeg) { document.getElementById('netz_ht').value = 0; document.getElementById('netz_nt').value = 0; }
+    }
+    updateLegDiff();
+  }
+
+  function updateLegDiff() {
+    // Preisvorschau – keine Produzentenanzeige
+  }
+  window.addEventListener('load', updateLegDiff);
+
+  function fmt(val)     { return val.toFixed(2) + ' CHF'; }
+  function fmtRate(val) { return (val * 100).toFixed(4) + ' Rp./kWh'; }
+
+  function row(label, basis, ansatz, betrag, css) {
+    return `<tr${css ? ` class="${css}"` : ''}><td>${label}</td><td>${basis}</td><td>${ansatz}</td><td class="num">${fmt(betrag)}</td></tr>`;
+  }
+  function secHead(t, s) { return `<tr class="sec-head sh-${s}"><td colspan="4">${t}</td></tr>`; }
+  function subtotal(l, v, s) { return `<tr class="sub-${s}"><td colspan="3">${l}</td><td class="num">${fmt(v)}</td></tr>`; }
+
+  function berechnen() {
+    const monate = parseFloat(document.getElementById('monate').value);
+    const bezug  = document.querySelector('input[name="bezug"]:checked').value;
+    const isLeg  = ['quartier_leg', 'gemeinde_leg', 'nur_quartier_leg', 'nur_gemeinde_leg'].includes(bezug);
+    const isQuartier = bezug === 'quartier_leg' || bezug === 'nur_quartier_leg';
+    const legTypeLabel = isQuartier ? 'Quartier LEG' : 'Gemeinde LEG';
+    const netzRabatt = isQuartier ? 0.60 : 0.80;
+
+    const pv   = document.getElementById('produkt').value.split('|');
+    const pAuf = parseFloat(pv[0]), pName = pv[1], pDesc = pv[2];
+
+    let ht_p, nt_p, ht_l, nt_l;
+    if (!isLeg) {
+      ht_p = parseFloat(document.getElementById('ht').value) || 0;
+      nt_p = parseFloat(document.getElementById('nt').value) || 0;
+      ht_l = 0; nt_l = 0;
+    } else {
+      ht_l = parseFloat(document.getElementById('leg_ht').value)  || 0;
+      nt_l = parseFloat(document.getElementById('leg_nt').value)  || 0;
+      ht_p = parseFloat(document.getElementById('netz_ht').value) || 0;
+      nt_p = parseFloat(document.getElementById('netz_nt').value) || 0;
+    }
+
+    const gesamt = ht_p + nt_p + ht_l + nt_l;
+    const sum_p  = ht_p + nt_p;
+
+    if (gesamt === 0) {
+      document.getElementById('result').innerHTML = '<div class="card" style="color:#c0392b;font-weight:600;">⚠️ Bitte mindestens einen Verbrauchswert eingeben.</div>';
+      return;
+    }
+
+    const leg_ht_preis = (parseFloat(document.getElementById('leg_preis_ht').value) || 15.85) / 100;
+    const leg_nt_preis = (parseFloat(document.getElementById('leg_preis_nt').value) || 14.5) / 100;
+    const leg_ht_netz  = TARIFE.ht_netz * netzRabatt;
+    const leg_nt_netz  = TARIFE.nt_netz * netzRabatt;
+
+    const e_ht_p = ht_p * TARIFE.ht_energie, e_nt_p = nt_p * TARIFE.nt_energie;
+    const e_prod = sum_p * pAuf;
+    const e_ht_l = ht_l * leg_ht_preis, e_nt_l = nt_l * leg_nt_preis;
+    const sumE   = e_ht_p + e_nt_p + e_prod + e_ht_l + e_nt_l;
+
+    const n_ht_p = ht_p * TARIFE.ht_netz, n_nt_p = nt_p * TARIFE.nt_netz;
+    const n_ht_l = ht_l * leg_ht_netz,  n_nt_l = nt_l * leg_nt_netz;
+    const n_leg_zuschlag = isLeg ? (ht_l + nt_l) * 0.01 : 0;
+    const n_grund = monate * TARIFE.grundpreis_netz, n_mess = monate * TARIFE.messtarif;
+    const sumN   = n_ht_p + n_nt_p + n_ht_l + n_nt_l + n_leg_zuschlag + n_grund + n_mess;
+
+    const a_netz = gesamt*TARIFE.netzzuschlag, a_sdl=gesamt*TARIFE.sdl_swissgrid;
+    const a_konz = gesamt*TARIFE.konzession,   a_res=gesamt*TARIFE.stromreserve;
+    const a_sol  = gesamt*TARIFE.solidarisiert;
+    const sumA   = a_netz+a_sdl+a_konz+a_res+a_sol;
+
+    const total            = sumE + sumN + sumA;
+    const leg_e_total      = e_ht_l + e_nt_l;
+    const mwst             = total * 0.081;
+    const totalInkl        = total * 1.081;
+
+    const pr_eht=(ht_p+ht_l)*TARIFE.ht_energie, pr_ent=(nt_p+nt_l)*TARIFE.nt_energie;
+    const pr_sumE=pr_eht+pr_ent+gesamt*pAuf;
+    const pr_nht=(ht_p+ht_l)*TARIFE.ht_netz, pr_nnt=(nt_p+nt_l)*TARIFE.nt_netz;
+    const pr_sumN=pr_nht+pr_nnt+n_grund+n_mess;
+    const pr_totalInkl=(pr_sumE+pr_sumN+sumA)*1.081;
+    const pr_avg=pr_totalInkl/gesamt*100;
+    const leg_avg=totalInkl/gesamt*100;
+    const ersparnis=pr_totalInkl-totalInkl;
+    const ersp_kwh=pr_avg-leg_avg;
+
+    let meta = `<strong>${monate} Monat${monate>1?'e':''}</strong>`;
+    if (isLeg) meta += ` &nbsp;·&nbsp; LEG: <strong>${ht_l+nt_l} kWh</strong> &nbsp;·&nbsp; Netz: <strong>${ht_p+nt_p} kWh</strong>`;
+    else        meta += ` &nbsp;·&nbsp; HT: <strong>${ht_p} kWh</strong> &nbsp;·&nbsp; NT: <strong>${nt_p} kWh</strong>`;
+    meta += ` &nbsp;·&nbsp; Gesamt: <strong>${gesamt.toLocaleString('de-CH')} kWh</strong>`;
+
+    let rE = secHead('Energie', 'energie');
+    rE += row('Hochtarif Energie (Primeo)', `${ht_p.toLocaleString('de-CH')} kWh`, fmtRate(TARIFE.ht_energie), e_ht_p, 's-energie');
+    rE += row('Niedertarif Energie (Primeo)', `${nt_p.toLocaleString('de-CH')} kWh`, fmtRate(TARIFE.nt_energie), e_nt_p, 's-energie');
+    rE += row(`${pName}<br><small style="color:var(--text3);font-weight:400">${pDesc}</small>`, `${sum_p.toLocaleString('de-CH')} kWh`, fmtRate(pAuf), e_prod, 's-energie');
+    if (isLeg) {
+      rE += row(`Hochtarif Energie (${legTypeLabel})`, `${ht_l.toLocaleString('de-CH')} kWh`, fmtRate(leg_ht_preis), e_ht_l, 'leg-row');
+      rE += row(`Niedertarif Energie (${legTypeLabel})`, `${nt_l.toLocaleString('de-CH')} kWh`, fmtRate(leg_nt_preis), e_nt_l, 'leg-row');
+    }
+    rE += subtotal('Zwischentotal Energie', sumE, 'energie');
+
+    let rN = secHead('Netz', 'netz');
+    rN += row('Hochtarif Netz (Primeo)', `${ht_p.toLocaleString('de-CH')} kWh`, fmtRate(TARIFE.ht_netz), n_ht_p, 's-netz');
+    rN += row('Niedertarif Netz (Primeo)', `${nt_p.toLocaleString('de-CH')} kWh`, fmtRate(TARIFE.nt_netz), n_nt_p, 's-netz');
+    if (isLeg) {
+      const rabattPct = isQuartier ? '40' : '20';
+      rN += row(`Hochtarif Netz (${legTypeLabel}, −${rabattPct}%)`, `${ht_l.toLocaleString('de-CH')} kWh`, `${fmtRate(leg_ht_netz)} <small style="color:var(--text3)">(Basis: ${fmtRate(TARIFE.ht_netz)})</small>`, n_ht_l, 'leg-row');
+      rN += row(`Niedertarif Netz (${legTypeLabel}, −${rabattPct}%)`, `${nt_l.toLocaleString('de-CH')} kWh`, `${fmtRate(leg_nt_netz)} <small style="color:var(--text3)">(Basis: ${fmtRate(TARIFE.nt_netz)})</small>`, n_nt_l, 'leg-row');
+      rN += row('Zuschlag LEG Dienstleistung', `${(ht_l+nt_l).toLocaleString('de-CH')} kWh`, '1.0000 Rp./kWh', n_leg_zuschlag, 'leg-row');
+    }
+    rN += row('Grundpreis Netz', `${monate} Monat${monate>1?'e':''}`, '6.00 CHF/Monat', n_grund, 's-netz');
+    rN += row('Messtarif', `${monate} Monat${monate>1?'e':''}`, '4.00 CHF/Monat', n_mess, 's-netz');
+    rN += subtotal('Zwischentotal Netz', sumN, 'netz');
+
+    let rA = secHead('Abgaben &amp; Zuschläge — immer auf Gesamtverbrauch', 'abgaben');
+    rA += row('Netzzuschlag',`${gesamt.toLocaleString('de-CH')} kWh`,fmtRate(TARIFE.netzzuschlag),a_netz,'s-abgaben');
+    rA += row('Systemdienstleistung Swissgrid',`${gesamt.toLocaleString('de-CH')} kWh`,fmtRate(TARIFE.sdl_swissgrid),a_sdl,'s-abgaben');
+    rA += row('Konzessionsabgabe',`${gesamt.toLocaleString('de-CH')} kWh`,fmtRate(TARIFE.konzession),a_konz,'s-abgaben');
+    rA += row('Stromreserve',`${gesamt.toLocaleString('de-CH')} kWh`,fmtRate(TARIFE.stromreserve),a_res,'s-abgaben');
+    rA += row('Solidarisierte Kosten',`${gesamt.toLocaleString('de-CH')} kWh`,fmtRate(TARIFE.solidarisiert),a_sol,'s-abgaben');
+    rA += subtotal('Zwischentotal Abgaben &amp; Zuschläge', sumA, 'abgaben');
+
+    document.getElementById('result').innerHTML = `
+      <div class="result-title-bar">
+        <h2>Ergebnis</h2>
+        <div class="result-meta">${meta}</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Position</th><th>Basis</th><th>Ansatz</th><th style="text-align:right">Betrag</th></tr></thead>
+          <tbody>
+            ${rE}${rN}${rA}
+            <tr class="row-total"><td colspan="3">Total (exkl. MwSt.)</td><td class="num">${fmt(total)}</td></tr>
+            <tr class="row-mwst"><td colspan="3">MwSt. 8.1%</td><td class="num">${fmt(mwst)}</td></tr>
+            <tr class="row-grand"><td colspan="3">Total (inkl. MwSt.)</td><td class="num">${fmt(totalInkl)}</td></tr>
+            <tr class="row-avg"><td colspan="3">Durchschnittspreis pro kWh (inkl. MwSt.)</td><td class="num">${leg_avg.toFixed(4)} Rp./kWh</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      ${isLeg ? `
+      <div class="savings-box">
+        <div class="savings-title">💰 Ihre Ersparnis durch die ${legTypeLabel}</div>
+        <div class="savings-grid">
+          <div class="s-item">
+            <div class="s-label">Kosten ohne LEG (alles Primeo)</div>
+            <div class="s-value">${fmt(pr_totalInkl)}</div>
+            <div class="s-sub">${pr_avg.toFixed(4)} Rp./kWh</div>
+          </div>
+          <div class="s-item">
+            <div class="s-label">Kosten mit LEG</div>
+            <div class="s-value">${fmt(totalInkl)}</div>
+            <div class="s-sub">${leg_avg.toFixed(4)} Rp./kWh</div>
+          </div>
+          <div class="s-item hi">
+            <div class="s-label">✅ Ersparnis Total</div>
+            <div class="s-value">${fmt(ersparnis)}</div>
+            <div class="s-sub">inkl. MwSt. &nbsp;·&nbsp; ${(ersparnis / pr_totalInkl * 100).toFixed(2)}% günstiger</div>
+          </div>
+          <div class="s-item hi">
+            <div class="s-label">✅ Ersparnis pro kWh</div>
+            <div class="s-value">${ersp_kwh.toFixed(4)} Rp.</div>
+            <div class="s-sub">pro kWh &nbsp;·&nbsp; ${(ersp_kwh / pr_avg * 100).toFixed(2)}% günstiger</div>
+          </div>
+        </div>
+      </div>` : ''}
+    `;
+  }
+</script>
+</body>
+</html>

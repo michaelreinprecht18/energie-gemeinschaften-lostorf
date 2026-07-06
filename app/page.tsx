@@ -246,7 +246,7 @@ export default function Page() {
             <h3 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 22, color: '#1A1510', marginBottom: 8 }}>
               LEG Trafo-Karte Lostorf
             </h3>
-            <p style={{ ...S.lead, fontSize: 15, marginBottom: 20 }}>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 20, maxWidth: 'none' }}>
               Die 22 möglichen Trafo-Kreise in Lostorf — klick auf einen Kreis, um alle Adressen und bestehende PV-Anlagen anzuzeigen.
             </p>
           </div>
@@ -328,15 +328,38 @@ export default function Page() {
       {/* ─── Rechner ─── */}
       <section id="rechner" style={{ ...S.sectionPad, background: '#FFFFFF' }}>
         <div style={S.container}>
-          <div className="scroll-fade" style={{ textAlign: 'center', marginBottom: 56 }}>
-            <SectionLabel>Sparrechner</SectionLabel>
-            <h2 style={{ ...S.h2, marginBottom: 12 }}>Was bringt mir die LEG?</h2>
-            <p style={{ ...S.lead, margin: '0 auto' }}>
-              Verschiebe die Regler und sieh, wie viel lokal erzeugter Solarstrom du nutzen könntest.
-            </p>
-          </div>
-          <div className="scroll-fade scroll-fade-d1">
-            <Rechner />
+          {/* LEG-Rechner Cards */}
+          <div className="scroll-fade" style={{ marginTop: 0 }}>
+            <div style={{ textAlign: 'center', marginBottom: 32 }}>
+              <h3 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 22, color: '#1A1510', marginBottom: 8 }}>
+                Detaillierte LEG-Rechner
+              </h3>
+              <p style={{ ...S.lead, fontSize: 15, maxWidth: 'none' }}>
+                Mit den beiden Rechnern findest du heraus, wie du von der LEG profitierst. Beachte: Ein reiner LEG-Bezug ist in der Praxis nicht realistisch – von Dezember bis Februar steht nicht genügend Solarstrom zur Verfügung.
+              </p>
+            </div>
+            <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+              <div style={{ background: '#F5F7F2', border: '1px solid #D9CEB5', borderRadius: 16, padding: 28 }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
+                <h4 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 18, color: '#1A1510', marginBottom: 8 }}>Konsumenten-Rechner</h4>
+                <p style={{ ...S.lead, fontSize: 14, marginBottom: 20 }}>
+                  Berechnen Sie Ihre Stromkosten mit und ohne LEG – aufgeteilt nach Energie, Netz und Abgaben. Vollständiger Tarifvergleich mit Ersparnis-Ausweis.
+                </p>
+                <a href="/leg-rechner-konsument.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#9A7B2E', color: '#FFFFFF', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, padding: '10px 20px', borderRadius: 8, textDecoration: 'none' }}>
+                  Zum Konsumenten-Rechner →
+                </a>
+              </div>
+              <div style={{ background: '#F5F7F2', border: '1px solid #D9CEB5', borderRadius: 16, padding: 28 }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>☀️</div>
+                <h4 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 18, color: '#1A1510', marginBottom: 8 }}>Produzenten-Kalkulator</h4>
+                <p style={{ ...S.lead, fontSize: 14, marginBottom: 20 }}>
+                  Vergleichen Sie Ihren PV-Einspeiserverdienst über die LEG mit dem Primeo-Direkttarif – quartalsweise, mit Excel-Import aus dem Primeo-Kundenportal.
+                </p>
+                <a href="/leg-rechner-produzent.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#9A7B2E', color: '#FFFFFF', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, padding: '10px 20px', borderRadius: 8, textDecoration: 'none' }}>
+                  Zum Produzenten-Rechner →
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -349,7 +372,7 @@ export default function Page() {
           <div className="scroll-fade" style={{ marginBottom: 32 }}>
             <SectionLabel>Solaranlagen in Lostorf</SectionLabel>
             <h2 style={{ ...S.h2, marginBottom: 12 }}>PV-Karte Lostorf</h2>
-            <p style={{ ...S.lead }}>
+            <p style={{ ...S.lead, maxWidth: 'none' }}>
               Alle registrierten Photovoltaikanlagen der Gemeinde Lostorf — live aus der Datenbank des Bundesamts für Energie.
             </p>
           </div>

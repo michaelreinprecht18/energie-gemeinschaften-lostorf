@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEG Produzenten-Rechner | Solar Lostorf</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,600;6..12,700;6..12,800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #F5F7F2;
+      --card:      #FFFFFF;
+      --card2:     #F0F3EC;
+      --border:    #D9CEB5;
+      --border2:   #C4B89A;
+      --blue:      #9A7B2E;
+      --blue-dim:  rgba(154,123,46,0.10);
+      --green:     #2D7A27;
+      --green-dim: #E7F9E4;
+      --amber:     #9A7B2E;
+      --amber-dim: rgba(154,123,46,0.10);
+      --leg-col:   #3A7A30;
+      --leg-dim:   rgba(58,122,48,0.10);
+      --purple:    #7C3AED;
+      --purple-dim:rgba(124,58,237,0.10);
+      --red-dim:   rgba(220,38,38,0.10);
+      --text:      #1A1510;
+      --text2:     #5C5248;
+      --text3:     #8A7E78;
+      --white:     #FFFFFF;
+      --radius:    16px;
+      --radius-sm: 10px;
+
+      --q1: #0284C7; --q1-dim: rgba(2,132,199,0.10);
+      --q2: #16A34A; --q2-dim: rgba(22,163,74,0.10);
+      --q3: #B45309; --q3-dim: rgba(180,83,9,0.10);
+      --q4: #7C3AED; --q4-dim: rgba(124,58,237,0.10);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── TOP NAV ── */
+    .top-nav {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .top-nav-brand { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; color: #1A1510; letter-spacing: -0.01em; }
+    .top-nav-back {
+      font-family: 'Nunito Sans', sans-serif; font-size: 0.85rem; font-weight: 600; color: #5C5248;
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+      padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; background: #fff;
+      transition: background 0.15s, color 0.15s;
+    }
+    .top-nav-back:hover { background: var(--bg); color: var(--text); }
+
+    /* ── HEADER ── */
+    .site-header { padding: 48px 24px 40px; text-align: center; background: #E7F9E4; border-bottom: 1px solid var(--border); }
+    .header-icon { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: rgba(154,123,46,0.12); border: 1px solid rgba(154,123,46,0.30); border-radius: 16px; font-size: 1.6rem; margin-bottom: 20px; }
+    .site-header h1 { font-family: 'DM Sans', sans-serif; font-size: 2.4rem; font-weight: 700; color: #1A1510; letter-spacing: -0.03em; }
+    .site-header h1 .accent { color: #9A7B2E; }
+    .header-sub { margin-top: 10px; color: #5C5248; font-size: 0.95rem; font-weight: 400; line-height: 1.7; max-width: 680px; margin-left: auto; margin-right: auto; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-top: 16px; transition: border-color 0.2s; box-shadow: 0 1px 4px rgba(26,21,16,0.05); }
+    .card:hover { border-color: var(--border2); }
+    .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .step-pill { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9A7B2E; background: rgba(154,123,46,0.10); border: 1px solid rgba(154,123,46,0.22); padding: 4px 10px; border-radius: 20px; }
+    .card-title { font-size: 1rem; font-weight: 600; color: #1A1510; }
+    .card-title small { font-size: 0.82rem; font-weight: 400; color: var(--text2); }
+
+    .field-label { display: block; font-size: 0.78rem; font-weight: 700; color: #5C5248; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; margin-top: 18px; }
+    .field-label:first-of-type { margin-top: 0; }
+
+    input[type=number], select {
+      font-family: 'Nunito Sans', sans-serif; font-size: 0.95rem; color: #1A1510;
+      background: var(--card2); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 10px 14px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type=number]:focus, select:focus { border-color: #9A7B2E; box-shadow: 0 0 0 3px rgba(154,123,46,0.18); }
+    input.rp-input { width: 130px; }
+    option { background: var(--card2); color: var(--text); }
+    .unit-tag { font-size: 0.75rem; color: var(--text3); margin-top: 4px; }
+
+    /* FILE UPLOAD */
+    .upload-zone {
+      border: 2px dashed var(--border2);
+      border-radius: var(--radius-sm);
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--card2);
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag { border-color: #9A7B2E; background: rgba(154,123,46,0.06); }
+    .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-icon { font-size: 2rem; margin-bottom: 10px; }
+    .upload-title { font-size: 0.95rem; font-weight: 600; color: #1A1510; }
+    .upload-sub { font-size: 0.78rem; color: var(--text2); margin-top: 4px; }
+
+    .import-result {
+      margin-top: 14px; padding: 14px 18px;
+      background: #E7F9E4; border: 1px solid rgba(46,120,40,0.28);
+      border-radius: var(--radius-sm); font-size: 0.85rem;
+    }
+    .import-result .ir-title { font-weight: 700; color: #2D7A27; margin-bottom: 8px; }
+    .import-result .ir-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+    @media(max-width:600px){ .import-result .ir-grid { grid-template-columns: repeat(2,1fr); } }
+    .ir-cell { background: rgba(26,21,16,0.04); border-radius: 8px; padding: 10px 12px; }
+    .ir-cell-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 4px; }
+    .ir-cell-val { font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; font-weight: 600; color: var(--text); }
+
+    /* RADIO CARDS */
+    .radio-cards { display: flex; gap: 10px; flex-wrap: wrap; }
+    .radio-card { flex: 1; min-width: 170px; }
+    .radio-card input[type=radio] { display: none; }
+    .radio-card label { display: block; padding: 16px 14px; background: var(--card2); border: 1.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s; text-align: center; }
+    .rc-icon  { display: block; font-size: 1.5rem; margin-bottom: 6px; }
+    .rc-label { display: block; font-size: 0.9rem; font-weight: 600; color: #1A1510; }
+    .rc-sub   { display: block; font-size: 0.75rem; color: var(--text2); margin-top: 3px; line-height: 1.4; }
+    .radio-card input:checked + label { background: rgba(154,123,46,0.08); border-color: #9A7B2E; box-shadow: 0 0 0 1px #9A7B2E; }
+    .radio-card input:checked + label .rc-label { color: #9A7B2E; }
+    .radio-card label:hover { border-color: #9A7B2E; }
+
+    /* QUARTER GRID */
+    .quarter-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    @media(max-width:700px){ .quarter-grid { grid-template-columns: repeat(2,1fr); } }
+
+    .q-card { border-radius: var(--radius-sm); padding: 16px; border: 1.5px solid; }
+    .q-card.q1 { background: var(--q1-dim); border-color: rgba(2,132,199,0.3); }
+    .q-card.q2 { background: var(--q2-dim); border-color: rgba(22,163,74,0.3); }
+    .q-card.q3 { background: var(--q3-dim); border-color: rgba(180,83,9,0.3); }
+    .q-card.q4 { background: var(--q4-dim); border-color: rgba(124,58,237,0.3); }
+    .q-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .q-card.q1 .q-title { color: var(--q1); } .q-card.q2 .q-title { color: var(--q2); }
+    .q-card.q3 .q-title { color: var(--q3); } .q-card.q4 .q-title { color: var(--q4); }
+    .q-field-label { font-size: 0.7rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; margin-top: 10px; }
+    .q-field-label:first-of-type { margin-top: 0; }
+    .q-kwh { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text3); margin-top: 3px; }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width:580px){ .grid2 { grid-template-columns: 1fr; } }
+
+    .info-box { padding: 12px 16px; border-radius: 8px; font-size: 0.8rem; line-height: 1.65; margin-top: 14px; }
+    .info-box.amber { background: rgba(154,123,46,0.10); border: 1px solid rgba(154,123,46,0.25); color: #7A5E22; }
+    .info-box.blue  { background: rgba(58,122,48,0.10);  border: 1px solid rgba(58,122,48,0.25);  color: #2D6E28; }
+    .info-box.green { background: #E7F9E4; border: 1px solid rgba(46,120,40,0.28); color: #2D7A27; }
+    .info-box a { color: #3A7A30; }
+
+    .hidden { display: none; }
+
+    /* LEG PRICES */
+    .leg-price-row { display: flex; gap: 28px; flex-wrap: wrap; }
+
+    /* BUTTON */
+    .btn-calc { display: inline-flex; align-items: center; gap: 10px; background: #9A7B2E; color: #FFFFFF; font-family: 'Nunito Sans', sans-serif; font-size: 0.95rem; font-weight: 700; padding: 14px 32px; border: none; border-radius: var(--radius-sm); cursor: pointer; margin-top: 24px; letter-spacing: 0.02em; transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 20px rgba(154,123,46,0.30); }
+    .btn-calc:hover { opacity:0.9; transform:translateY(-1px); }
+    .btn-calc:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+
+    /* RESULT */
+    #result { margin-top: 32px; }
+
+    /* RESULT QUARTER CARDS */
+    .res-quarter-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+    @media(max-width:700px){ .res-quarter-grid { grid-template-columns: repeat(2,1fr); } }
+
+    .res-q-card { border-radius: var(--radius-sm); border: 1.5px solid; overflow: hidden; }
+    .res-q-card.q1 { border-color: rgba(2,132,199,0.3); } .res-q-card.q2 { border-color: rgba(22,163,74,0.3); }
+    .res-q-card.q3 { border-color: rgba(180,83,9,0.3); } .res-q-card.q4 { border-color: rgba(124,58,237,0.3); }
+    .res-q-head { padding: 10px 14px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
+    .res-q-card.q1 .res-q-head { background: var(--q1-dim); color: var(--q1); }
+    .res-q-card.q2 .res-q-head { background: var(--q2-dim); color: var(--q2); }
+    .res-q-card.q3 .res-q-head { background: var(--q3-dim); color: var(--q3); }
+    .res-q-card.q4 .res-q-head { background: var(--q4-dim); color: var(--q4); }
+    .res-q-body { padding: 12px 14px; background: var(--card); }
+    .res-q-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 3px 0; color: var(--text2); }
+    .res-q-row.total { padding-top: 8px; border-top: 1px solid var(--border); margin-top: 6px; font-weight: 700; font-size: 0.85rem; color: var(--text); }
+    .res-q-row .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text); }
+
+    /* COMPARE TABLE */
+    .compare-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--card2); }
+    thead th { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); padding: 11px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    td { padding: 10px 16px; font-size: 0.86rem; border-bottom: 1px solid #EDE7D9; color: var(--text); vertical-align: middle; }
+    td.num { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
+    tr:last-child td { border-bottom: none; }
+    tr.tr-total td { background: rgba(154,123,46,0.10); font-weight: 700; }
+    tr.tr-total td.num { color: #9A7B2E; }
+    tr.tr-grand td { background: #9A7B2E; color: #FFFFFF; font-weight: 800; }
+    tr.tr-grand td.num { color: #FFFFFF; font-size: 1rem; }
+    tr.q1-row td { background: var(--q1-dim); }
+    tr.q2-row td { background: var(--q2-dim); }
+    tr.q3-row td { background: var(--q3-dim); }
+    tr.q4-row td { background: var(--q4-dim); }
+
+    /* WINNER */
+    .winner-box { margin-top: 20px; border-radius: var(--radius); padding: 24px 28px; animation: fadeUp 0.4s ease both; }
+    .winner-box.good { background: #E7F9E4; border: 2px solid #2D7A27; }
+    .winner-box.bad  { background: var(--red-dim); border: 2px solid #DC2626; }
+    .winner-title { font-size: 1rem; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .winner-box.good .winner-title { color: #2D7A27; }
+    .winner-box.bad  .winner-title { color: #DC2626; }
+    .wg { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    @media(max-width:600px){ .wg { grid-template-columns: repeat(2,1fr); } }
+    .wi { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; }
+    .wi.hi-good { background: #9DD295; border-color: #8AC287; }
+    .wi.hi-bad  { background: #FCA5A5; border-color: #F87171; }
+    .wi-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text2); margin-bottom: 6px; }
+    .wi.hi-good .wi-label, .wi.hi-bad .wi-label { color: rgba(0,0,0,0.6); }
+    .wi-val { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 700; color: var(--text); }
+    .wi.hi-good .wi-val, .wi.hi-bad .wi-val { color: rgba(0,0,0,0.85); font-size: 1.35rem; }
+    .wi-sub { font-size: 0.73rem; color: var(--text3); margin-top: 3px; }
+    .wi.hi-good .wi-sub, .wi.hi-bad .wi-sub { color: rgba(0,0,0,0.5); }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  </style>
+</head>
+<body>
+
+<!-- Top nav -->
+<nav class="top-nav">
+  <span class="top-nav-brand">Solar Lostorf</span>
+  <a href="/#rechner" class="top-nav-back">← Zurück</a>
+</nav>
+
+<header class="site-header">
+  <div class="header-icon">☀️</div>
+  <h1>LEG <span class="accent">Produzenten</span> Kalkulator</h1>
+  <p class="header-sub">
+    Berechnen Sie Ihren Produktionsertrag aus PV-Einspeisung via LEG –<br>
+    mit automatischem Excel-Import und quartalsweisem Preisvergleich gegen Primeo.<br>
+    <span style="color:#9A7B2E;font-weight:600;">Die aufgeführten Tarife und Konditionen gelten für die Gemeinde Lostorf.</span>
+  </p>
+</header>
+
+<div class="container">
+
+  <!-- 1. DATEN IMPORTIEREN -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-pill">Schritt 1</span>
+      <span class="card-title">Produktionsdaten importieren <small>— Primeo Lastgang Excel (.xlsx)</small></span>
+    </div>
+
+    <div class="info-box blue" style="margin-bottom:16px;">
+      <strong>So erhalten Sie Ihre Produktionsdaten:</strong><br>
+      1. Login im Kundenportal Primeo: <a href="https://my.primeo-energie.ch/" target="_blank">my.primeo-energie.ch</a><br>
+      2. Navigieren Sie zu <strong>Verbrauch &amp; Produktion</strong><br>
+      3. Legen Sie den gewünschten <strong>Zeitraum</strong> fest<br>
+      4. Bei <strong>Lieferstelle</strong> unbedingt <strong>«Rücklieferung»</strong> auswählen<br>
+      5. Klicken Sie auf <strong>Verbrauchsbericht → «Bericht anfordern»</strong><br>
+      6. Nach wenigen Minuten kann das Lastgang Excel-File unter <strong>Dokumente &amp; Reporte</strong> heruntergeladen und hier importiert werden.
+    </div>
+
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="fileInput" accept=".xlsx" onchange="handleFile(this)">
+      <div class="upload-icon">📂</div>
+      <div class="upload-title">Excel-Datei hier ablegen oder klicken zum Auswählen</div>
+      <div class="upload-sub">Format: Primeo Lastgang – 15-Minuten-Werte mit HT/NT-Spalte</div>
+    </div>
+
+    <div id="importResult" class="hidden"></div>
+  </div>
+
+  <!-- 2. ANLAGE BAUJAHR -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-pill">Schritt 2</span>
+      <span class="card-title">Wann wurde die Anlage gebaut?</span>
+    </div>
+    <div class="info-box blue" style="margin-bottom:16px;">
+      ℹ️ Ihre Auswahl bestimmt, welches Vergütungsmodell für den Primeo-Vergleich herangezogen wird. Die Berechnung wird immer mit allen Varianten durchgeführt, damit Sie optimal vergleichen können.
+    </div>
+
+    <div class="radio-cards">
+      <div class="radio-card">
+        <input type="radio" id="anlage_alt" name="anlage" value="alt" checked onchange="toggleAnlage()">
+        <label for="anlage_alt">
+          <span class="rc-icon">🏗️</span>
+          <span class="rc-label">Vor 31. März 2025</span>
+          <span class="rc-sub">Garantierte Vergütung bis 31.12.2028</span>
+        </label>
+      </div>
+      <div class="radio-card">
+        <input type="radio" id="anlage_neu" name="anlage" value="neu" onchange="toggleAnlage()">
+        <label for="anlage_neu">
+          <span class="rc-icon">🆕</span>
+          <span class="rc-label">Ab 1. April 2025</span>
+          <span class="rc-sub">Mindestvergütung nach Börsenstrompreis</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Alte Anlage -->
+    <div id="block_alt">
+      <div class="info-box blue" style="margin-top:16px;">
+        📋 Garantierte Einspeisevergütung: <strong>9.0 Rp./kWh</strong> + <strong>2.0 Rp./kWh</strong> Herkunftsnachweise (HKN) = <strong>11.0 Rp./kWh</strong> bis 31.12.2028. Gilt für HT und NT gleich. Liegt der Marktpreis höher, wird der Marktpreis vergütet.
+      </div>
+    </div>
+
+    <!-- Neue Anlage: Preise pro Quartal -->
+    <div id="block_neu" class="hidden" style="margin-top:18px;">
+      <div class="info-box amber" style="margin-bottom:16px;">
+        📋 Die Mindestvergütung gilt einheitlich für HT und NT und beträgt <strong>mindestens 6.0 Rp./kWh</strong> — jedoch nur für <strong>Anlagen unter 150 kWp</strong>. Liegt der Börsenstrompreis darunter, wird automatisch mit 6.0 Rp. gerechnet.<br><br>
+        <strong>Anlagen ab 150 kWp</strong> erhalten ausschliesslich den <strong>Börsenstrompreis</strong> ohne Mindestgarantie.
+      </div>
+
+      <!-- Datenbasis wählen -->
+      <label class="field-label">Datenbasis für Börsenstrompreise</label>
+      <div class="radio-cards" style="margin-bottom:18px;">
+        <div class="radio-card">
+          <input type="radio" id="basis_2025" name="preisbasis" value="2025" checked onchange="togglePreisbasis()">
+          <label for="basis_2025">
+            <span class="rc-icon">📅</span>
+            <span class="rc-label">Werte 2025 verwenden</span>
+            <span class="rc-sub">Q1: 10.38 · Q2: 2.759 · Q3: 5.731 · Q4: 9.508 Rp.</span>
+          </label>
+        </div>
+        <div class="radio-card">
+          <input type="radio" id="basis_manuell" name="preisbasis" value="manuell" onchange="togglePreisbasis()">
+          <label for="basis_manuell">
+            <span class="rc-icon">✏️</span>
+            <span class="rc-label">Manuell eingeben</span>
+            <span class="rc-sub">Eigene Quartalswerte erfassen</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-bottom:16px;">
+        <div>
+          <label class="field-label" for="hkn">Herkunftsnachweise (HKN) – ganzjährig</label>
+          <input type="number" class="rp-input" id="hkn" value="2.0" min="0" step="0.1" oninput="updateQuartalTotals()">
+          <div class="unit-tag">Rp./kWh – gilt für alle Quartale</div>
+        </div>
+      </div>
+
+      <div class="quarter-grid" id="quartalFelder">
+        <div class="q-card q1">
+          <div class="q-title">Q1 — Jan / Feb / Mär</div>
+          <div class="q-field-label">Börsenstrompreis</div>
+          <input type="number" class="rp-input" id="b_q1" value="10.38" min="0" step="0.001" oninput="updateQuartalTotals()">
+          <div class="unit-tag">Rp./kWh (exkl. HKN)</div>
+          <div id="b_q1_total" class="q-kwh"></div>
+          <div id="b_q1_warn" class="q-kwh"></div>
+        </div>
+        <div class="q-card q2">
+          <div class="q-title">Q2 — Apr / Mai / Jun</div>
+          <div class="q-field-label">Börsenstrompreis</div>
+          <input type="number" class="rp-input" id="b_q2" value="2.759" min="0" step="0.001" oninput="updateQuartalTotals()">
+          <div class="unit-tag">Rp./kWh (exkl. HKN)</div>
+          <div id="b_q2_total" class="q-kwh"></div>
+          <div id="b_q2_warn" class="q-kwh"></div>
+        </div>
+        <div class="q-card q3">
+          <div class="q-title">Q3 — Jul / Aug / Sep</div>
+          <div class="q-field-label">Börsenstrompreis</div>
+          <input type="number" class="rp-input" id="b_q3" value="5.731" min="0" step="0.001" oninput="updateQuartalTotals()">
+          <div class="unit-tag">Rp./kWh (exkl. HKN)</div>
+          <div id="b_q3_total" class="q-kwh"></div>
+          <div id="b_q3_warn" class="q-kwh"></div>
+        </div>
+        <div class="q-card q4">
+          <div class="q-title">Q4 — Okt / Nov / Dez</div>
+          <div class="q-field-label">Börsenstrompreis</div>
+          <input type="number" class="rp-input" id="b_q4" value="9.508" min="0" step="0.001" oninput="updateQuartalTotals()">
+          <div class="unit-tag">Rp./kWh (exkl. HKN)</div>
+          <div id="b_q4_total" class="q-kwh"></div>
+          <div id="b_q4_warn" class="q-kwh"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. LEG VERKAUFSPREISE -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-pill">Schritt 3</span>
+      <span class="card-title">LEG Verkaufspreise</span>
+    </div>
+    <div class="info-box amber">
+      ℹ️ <strong>1.0 Rp./kWh</strong> Abrechnung und Datenbearbeitung durch Primeo Energie AG.
+    </div>
+    <div class="grid2" style="margin-top:18px;">
+      <div>
+        <label class="field-label" for="leg_ht">LEG Preis Hochtarif (Käufer zahlt)</label>
+        <input type="number" id="leg_ht" class="rp-input" value="15.85" min="0" step="0.1" oninput="updateLegPreview()">
+        <div class="unit-tag">Rp./kWh</div>
+        <div id="pv_earn_ht" style="margin-top:6px; font-size:0.82rem;"></div>
+      </div>
+      <div>
+        <label class="field-label" for="leg_nt">LEG Preis Niedertarif (Käufer zahlt)</label>
+        <input type="number" id="leg_nt" class="rp-input" value="14.5" min="0" step="0.1" oninput="updateLegPreview()">
+        <div class="unit-tag">Rp./kWh</div>
+        <div id="pv_earn_nt" style="margin-top:6px; font-size:0.82rem;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. LEG-ANTEIL -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-pill">Schritt 4</span>
+      <span class="card-title">Einspeisung aufteilen <small>— Anteil LEG vs. Primeo</small></span>
+    </div>
+    <div class="info-box blue" style="margin-bottom:18px;">
+      ℹ️ Geben Sie ein, wie viel Prozent Ihrer Jahresproduktion Sie voraussichtlich in die LEG verkaufen können. Der Rest wird direkt zu Primeo-Konditionen vergütet. Das Ergebnis zeigt Ihren effektiven Mix-Ertrag.
+    </div>
+
+    <div style="display:flex; align-items:flex-end; gap:32px; flex-wrap:wrap;">
+      <div>
+        <label class="field-label" for="leg_anteil">Anteil in die LEG</label>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <input type="number" id="leg_anteil" class="rp-input" value="70" min="0" max="100" step="1" oninput="updateLegSplit()" style="width:100px;">
+          <span style="font-size:1.4rem; font-weight:800; color:#3A7A30;" id="leg_anteil_pct">70 %</span>
+        </div>
+        <div class="unit-tag">% der Jahresproduktion → LEG</div>
+      </div>
+      <div style="flex:1; min-width:220px;">
+        <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--text2); margin-bottom:8px;">Verteilung</div>
+        <div style="height:28px; border-radius:8px; overflow:hidden; display:flex; background:var(--card2); border:1px solid var(--border);">
+          <div id="bar_leg" style="width:70%; background:linear-gradient(90deg,#2D7A27,#5CA455); transition:width 0.3s; display:flex; align-items:center; justify-content:center;">
+            <span id="bar_leg_label" style="font-size:0.72rem; font-weight:700; color:#fff; white-space:nowrap; padding:0 8px;">70% LEG</span>
+          </div>
+          <div id="bar_prim" style="width:30%; display:flex; align-items:center; justify-content:center;">
+            <span id="bar_prim_label" style="font-size:0.72rem; font-weight:600; color:var(--text2); white-space:nowrap; padding:0 8px;">30% Primeo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="split_kwh_preview" style="margin-top:14px; display:none;">
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;">
+        <div style="flex:1; min-width:160px; background:var(--leg-dim); border:1px solid rgba(58,122,48,0.25); border-radius:10px; padding:12px 16px;">
+          <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--leg-col); margin-bottom:4px;">⚡ LEG-Anteil</div>
+          <div id="split_leg_kwh" style="font-family:'JetBrains Mono',monospace; font-size:1rem; font-weight:700; color:var(--text);"></div>
+        </div>
+        <div style="flex:1; min-width:160px; background:var(--purple-dim); border:1px solid rgba(124,58,237,0.25); border-radius:10px; padding:12px 16px;">
+          <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--purple); margin-bottom:4px;">🏭 Primeo-Anteil</div>
+          <div id="split_prim_kwh" style="font-family:'JetBrains Mono',monospace; font-size:1rem; font-weight:700; color:var(--text);"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-calc" id="calcBtn" onclick="berechnen()" disabled>☀️ &nbsp;Ertrag berechnen</button>
+  <div style="font-size:0.78rem; color:var(--text3); margin-top:8px;" id="calcHint">Bitte zuerst eine Excel-Datei importieren (Schritt 1).</div>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  // ─── STATE ───────────────────────────────────────────────
+  let importedData = null; // { q1:{HT:x,NT:x}, q2:..., q3:..., q4:..., total:{HT,NT}, year }
+
+  // ─── FILE HANDLING ───────────────────────────────────────
+  const uploadZone = document.getElementById('uploadZone');
+  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault(); uploadZone.classList.remove('drag');
+    const file = e.dataTransfer.files[0];
+    if (file) processFile(file);
+  });
+
+  function handleFile(input) {
+    if (input.files[0]) processFile(input.files[0]);
+  }
+
+  function processFile(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const wb = XLSX.read(e.target.result, { type: 'binary', cellDates: true });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null });
+
+        // Find header row: look for 'Datum'
+        let dataStart = -1;
+        for (let i = 0; i < rows.length; i++) {
+          if (rows[i] && String(rows[i][0]).trim() === 'Datum') { dataStart = i + 1; break; }
+        }
+        if (dataStart === -1) throw new Error('Spalte "Datum" nicht gefunden.');
+
+        // Aggregate
+        const agg = {
+          1:{HT:0,NT:0}, 2:{HT:0,NT:0}, 3:{HT:0,NT:0}, 4:{HT:0,NT:0}
+        };
+        let rowCount = 0;
+        let year = null;
+
+        for (let i = dataStart; i < rows.length; i++) {
+          const r = rows[i];
+          if (!r || r[0] === null) continue;
+          const dateVal = r[0];
+          const kwh     = parseFloat(r[2]) || 0;
+          const tarif   = String(r[3] || '').trim().toUpperCase();
+          if (tarif !== 'HT' && tarif !== 'NT') continue;
+
+          let month;
+          if (dateVal instanceof Date) {
+            month = dateVal.getMonth() + 1;
+            if (!year) year = dateVal.getFullYear();
+          } else if (typeof dateVal === 'number') {
+            // Excel serial
+            const d = new Date(Math.round((dateVal - 25569) * 86400 * 1000));
+            month = d.getUTCMonth() + 1;
+            if (!year) year = d.getUTCFullYear();
+          } else continue;
+
+          const q = Math.ceil(month / 3);
+          agg[q][tarif] += kwh;
+          rowCount++;
+        }
+
+        importedData = { q: agg, year };
+        showImportResult(agg, year, rowCount);
+        document.getElementById('calcBtn').disabled = false;
+        document.getElementById('calcHint').textContent = '✅ Daten importiert – bereit zur Berechnung.';
+        document.getElementById('calcHint').style.color = 'var(--green)';
+        updateLegSplit();
+      } catch(err) {
+        document.getElementById('importResult').innerHTML =
+          `<div style="color:#DC2626; padding:12px; background:var(--red-dim); border-radius:8px; border:1px solid rgba(220,38,38,0.3);">❌ Fehler beim Einlesen: ${err.message}</div>`;
+        document.getElementById('importResult').classList.remove('hidden');
+      }
+    };
+    reader.readAsBinaryString(file);
+  }
+
+  function showImportResult(agg, year, rowCount) {
+    const totalHT = agg[1].HT + agg[2].HT + agg[3].HT + agg[4].HT;
+    const totalNT = agg[1].NT + agg[2].NT + agg[3].NT + agg[4].NT;
+    const total   = totalHT + totalNT;
+
+    const qNames = ['Q1 (Jan–Mär)', 'Q2 (Apr–Jun)', 'Q3 (Jul–Sep)', 'Q4 (Okt–Dez)'];
+    let cells = '';
+    for (let q = 1; q <= 4; q++) {
+      const ht = agg[q].HT, nt = agg[q].NT;
+      cells += `<div class="ir-cell">
+        <div class="ir-cell-label">${qNames[q-1]}</div>
+        <div class="ir-cell-val">HT: ${ht.toFixed(1)} kWh</div>
+        <div class="ir-cell-val">NT: ${nt.toFixed(1)} kWh</div>
+        <div class="ir-cell-val" style="color:var(--text2);font-size:0.75rem;">${(ht+nt).toFixed(1)} kWh total</div>
+      </div>`;
+    }
+
+    document.getElementById('importResult').innerHTML = `
+      <div class="import-result">
+        <div class="ir-title">✅ Datei erfolgreich importiert — ${year || '?'} — ${rowCount.toLocaleString('de-CH')} Messpunkte — Total: ${total.toFixed(1)} kWh (HT: ${totalHT.toFixed(1)} | NT: ${totalNT.toFixed(1)})</div>
+        <div class="ir-grid">${cells}</div>
+      </div>`;
+    document.getElementById('importResult').classList.remove('hidden');
+  }
+
+  // ─── UI HELPERS ──────────────────────────────────────────
+  function toggleAnlage() {
+    const isAlt = document.getElementById('anlage_alt').checked;
+    document.getElementById('block_alt').classList.toggle('hidden', !isAlt);
+    document.getElementById('block_neu').classList.toggle('hidden',  isAlt);
+  }
+
+  const PREISE_2025 = { q1: 10.38, q2: 2.759, q3: 5.731, q4: 9.508 };
+  const MIN_VERGUTUNG = 6.0;
+
+  function togglePreisbasis() {
+    const is2025 = document.getElementById('basis_2025').checked;
+    [1,2,3,4].forEach(q => {
+      const f = document.getElementById(`b_q${q}`);
+      if (is2025) {
+        f.value = PREISE_2025[`q${q}`];
+        f.disabled = true;
+        f.style.opacity = '0.5';
+      } else {
+        f.disabled = false;
+        f.style.opacity = '1';
+      }
+    });
+    updateQuartalTotals();
+  }
+
+  function updateQuartalTotals() {
+    const hkn = parseFloat(document.getElementById('hkn').value) || 0;
+    [1,2,3,4].forEach(q => {
+      const raw   = parseFloat(document.getElementById(`b_q${q}`).value) || 0;
+      const clamped = Math.max(raw, MIN_VERGUTUNG);
+      const total = clamped + hkn;
+      const totalEl = document.getElementById(`b_q${q}_total`);
+      const warnEl  = document.getElementById(`b_q${q}_warn`);
+      if (totalEl) totalEl.innerHTML = `<span style="color:var(--green);font-weight:600;font-size:0.82rem;margin-top:4px;display:block;">Total: ${total.toFixed(3)} Rp./kWh (inkl. HKN)</span>`;
+      if (warnEl) {
+        if (raw < MIN_VERGUTUNG) {
+          warnEl.innerHTML = `<span style="color:var(--amber);font-size:0.76rem;display:block;margin-top:3px;">⚠️ Börsenwert unter Mindest­vergütung – es gilt ${MIN_VERGUTUNG.toFixed(1)} Rp.</span>`;
+        } else {
+          warnEl.innerHTML = '';
+        }
+      }
+    });
+  }
+
+  // Attach live listeners after DOM ready
+  window.addEventListener('load', () => {
+    updateLegPreview();
+    togglePreisbasis();
+    const hknField = document.getElementById('hkn');
+    if (hknField) hknField.addEventListener('input', updateQuartalTotals);
+    updateQuartalTotals();
+  });
+
+  function updateLegPreview() {
+    const legHT = parseFloat(document.getElementById('leg_ht').value) || 0;
+    const legNT = parseFloat(document.getElementById('leg_nt').value) || 0;
+    const pvHT = legHT - 1.0, pvNT = legNT - 1.0;
+    const col = (v) => v >= 0 ? 'var(--green)' : '#DC2626';
+    document.getElementById('pv_earn_ht').innerHTML = `<span style="color:${col(pvHT)};font-weight:600;">☀️ Produzent erhält: ${pvHT.toFixed(2)} Rp./kWh</span> <span style="color:var(--text3);font-size:0.78rem;">(−1.0 Rp. Abrechnung Primeo)</span>`;
+    document.getElementById('pv_earn_nt').innerHTML = `<span style="color:${col(pvNT)};font-weight:600;">☀️ Produzent erhält: ${pvNT.toFixed(2)} Rp./kWh</span> <span style="color:var(--text3);font-size:0.78rem;">(−1.0 Rp. Abrechnung Primeo)</span>`;
+  }
+  window.addEventListener('load', updateLegPreview);
+
+  function updateLegSplit() {
+    let pct = parseFloat(document.getElementById('leg_anteil').value);
+    if (isNaN(pct)) pct = 0;
+    pct = Math.min(100, Math.max(0, pct));
+    const primPct = 100 - pct;
+
+    document.getElementById('leg_anteil_pct').textContent = pct + ' %';
+    document.getElementById('bar_leg').style.width  = pct + '%';
+    document.getElementById('bar_prim').style.width = primPct + '%';
+    document.getElementById('bar_leg_label').textContent  = pct > 8  ? pct + '% LEG'   : '';
+    document.getElementById('bar_prim_label').textContent = primPct > 8 ? primPct + '% Primeo' : '';
+
+    // Live kWh preview if data imported
+    if (importedData) {
+      const agg = importedData.q;
+      const totalKwh = [1,2,3,4].reduce((s,q) => s + agg[q].HT + agg[q].NT, 0);
+      const legKwh   = totalKwh * pct / 100;
+      const primKwh  = totalKwh * primPct / 100;
+      document.getElementById('split_kwh_preview').style.display = 'block';
+      document.getElementById('split_leg_kwh').textContent  = legKwh.toFixed(1)  + ' kWh';
+      document.getElementById('split_prim_kwh').textContent = primKwh.toFixed(1) + ' kWh';
+    }
+  }
+  window.addEventListener('load', updateLegSplit);
+  function fmt(v)  { return v.toFixed(2) + ' CHF'; }
+  function fmtKwh(v){ return v.toFixed(1) + ' kWh'; }
+  function fmtRp(v){ return v.toFixed(2) + ' Rp./kWh'; }
+
+  // ─── BERECHNUNG ──────────────────────────────────────────
+  function berechnen() {
+    if (!importedData) return;
+    const agg = importedData.q;
+    const year = importedData.year;
+
+    const legHT  = (parseFloat(document.getElementById('leg_ht').value) || 0) / 100;
+    const legNT  = (parseFloat(document.getElementById('leg_nt').value) || 0) / 100;
+    const pvHT   = legHT - 0.01;  // −1 Rp. Abrechnung
+    const pvNT   = legNT - 0.01;
+
+    const isAlt  = document.getElementById('anlage_alt').checked;
+
+    // Marktpreise neue Anlage: immer berechnen (max 6 Rp. + HKN)
+    const hkn = (parseFloat(document.getElementById('hkn').value) || 0) / 100;
+    const primP = [1,2,3,4].map(q => {
+      const raw     = parseFloat(document.getElementById(`b_q${q}`).value) || 0;
+      const clamped = Math.max(raw, MIN_VERGUTUNG);
+      const total   = (clamped + (hkn * 100)) / 100;
+      return [total, total];
+    });
+
+    // Fixpreis alte Anlage: immer 11.0 Rp.
+    const fixP = 0.11;
+
+    const qNames   = ['Q1 – Jan bis Mär','Q2 – Apr bis Jun','Q3 – Jul bis Sep','Q4 – Okt bis Dez'];
+    const qClasses = ['q1','q2','q3','q4'];
+    const qColors  = ['var(--q1)','var(--q2)','var(--q3)','var(--q4)'];
+
+    // Hervorhebung der gewählten Variante
+    const selRefBadge = !isAlt ? '<br><span style="color:var(--green);font-size:0.7em;font-weight:700;">⭐ Ihre Anlage</span>' : '';
+    const selFixBadge =  isAlt ? '<br><span style="color:#9A7B2E;font-size:0.7em;font-weight:700;">⭐ Ihre Anlage</span>' : '';
+    const selRefBorder = !isAlt ? 'border-left:3px solid var(--green);' : 'border-left:2px solid rgba(124,58,237,0.2);';
+    const selFixBorder =  isAlt ? 'border-left:3px solid #9A7B2E;' : 'border-left:2px solid rgba(154,123,46,0.2);';
+
+    const legFrac = Math.min(1, Math.max(0, (parseFloat(document.getElementById('leg_anteil').value) || 0) / 100));
+    const primFrac = 1 - legFrac;
+
+    let legTotal=0, primTotal=0, fixTotal=0, mixTotal=0;
+    let qRows='';
+    let resQCards='';
+
+    for (let qi=0;qi<4;qi++) {
+      const q = qi+1;
+      const ht = agg[q].HT, nt = agg[q].NT, tot = ht+nt;
+
+      // Split kWh
+      const ht_leg  = ht * legFrac,  nt_leg  = nt * legFrac;
+      const ht_prim = ht * primFrac, nt_prim = nt * primFrac;
+
+      // Earnings for LEG portion
+      const legE_part  = ht_leg  * pvHT + nt_leg  * pvNT;
+
+      // 100% reference values (for comparison — always market price)
+      const primE = ht * primP[qi][0] + nt * primP[qi][1];
+
+      // Altanlage: max(11.0 Rp. Garantie, Marktpreis inkl. HKN)
+      const fixPriceRp  = primP[qi][0] * 100;
+      const fixEffRp    = Math.max(11.0, fixPriceRp);
+      const fixUsesGuar = fixPriceRp <= 11.0;
+      const fixE        = tot * (fixEffRp / 100);
+      fixTotal += fixE;
+
+      // Primeo portion uses the SAME price basis as the relevant comparison:
+      // old installation → guarantee/fix price; new installation → market price
+      const primPriceHT = isAlt ? (fixEffRp / 100) : primP[qi][0];
+      const primPriceNT = isAlt ? (fixEffRp / 100) : primP[qi][1];
+      const primE_part  = ht_prim * primPriceHT + nt_prim * primPriceNT;
+
+      const mixE = legE_part + primE_part;
+
+      mixTotal  += mixE;
+      legTotal  += legE_part;
+      primTotal += primE;
+
+      const diff       = mixE - (isAlt ? fixE : primE);
+      const diffCol    = diff>=0 ? 'var(--green)' : '#DC2626';
+      const diffFix    = mixE - fixE;
+      const diffFixCol = diffFix>=0 ? 'var(--green)' : '#DC2626';
+      const fixColour  = fixUsesGuar ? '#9A7B2E' : 'var(--green)';
+      const fixTag     = fixUsesGuar ? '✅ Garantie' : '📈 Markt';
+
+      qRows += `<tr class="${qClasses[qi]}-row">
+        <td><strong style="color:${qColors[qi]}">${qNames[qi]}</strong></td>
+        <td>${fmtKwh(tot)}<br><small style="color:var(--text3)">${fmtKwh(tot*legFrac)} LEG / ${fmtKwh(tot*primFrac)} Primeo</small></td>
+        <td class="num"><span style="color:var(--leg-col)">${fmt(legE_part)}</span><br><small style="color:var(--text3)">${fmt(primE_part)} Primeo</small><br><strong>${fmt(mixE)}</strong></td>
+        ${!isAlt ? `<td class="num" style="${selRefBorder}">${fmt(primE)}</td>` : ''}
+        ${isAlt  ? `<td class="num" style="${selFixBorder}"><span style="color:${fixColour}">${fmt(fixE)}<br><small>${fixEffRp.toFixed(3)} Rp. ${fixTag}</small></span></td>` : ''}
+        <td class="num" style="color:${diffCol};font-weight:700;">${diff>=0?'+':''}${fmt(diff)}</td>
+      </tr>`;
+
+      resQCards += `<div class="res-q-card ${qClasses[qi]}">
+        <div class="res-q-head">${qNames[qi]} &nbsp;·&nbsp; ${fmtKwh(tot)}</div>
+        <div class="res-q-body">
+          <div class="res-q-row"><span style="color:var(--leg-col)">⚡ LEG (${(legFrac*100).toFixed(0)}%)</span><span class="mono" style="color:var(--leg-col)">${fmt(legE_part)}</span></div>
+          <div class="res-q-row"><span style="color:var(--purple)">🏭 Primeo (${(primFrac*100).toFixed(0)}%)</span><span class="mono" style="color:var(--purple)">${fmt(primE_part)}</span></div>
+          <div class="res-q-row total"><span style="color:var(--text)">Mix Total</span><span class="mono" style="color:var(--text)">${fmt(mixE)}</span></div>
+          ${!isAlt ? `<div class="res-q-row" style="background:rgba(22,163,74,0.07);border-radius:6px;padding:3px 6px;margin:-3px -6px;">
+            <span style="color:rgba(124,58,237,0.8)">100% Ref.-Markt${selRefBadge}</span>
+            <span class="mono" style="color:rgba(124,58,237,0.8)">${fmt(primE)}</span>
+          </div>` : ''}
+          ${isAlt ? `<div class="res-q-row" style="background:rgba(154,123,46,0.10);border-radius:6px;padding:3px 6px;margin:-3px -6px;">
+            <span style="color:${fixColour}">🏗️ 100% Fix (${fixEffRp.toFixed(2)} Rp.)${selFixBadge}</span>
+            <span class="mono" style="color:${fixColour}">${fmt(fixE)}</span>
+          </div>` : ''}
+          <div class="res-q-row total"><span>${isAlt ? 'Mix vs. 100% Fix' : 'Mix vs. 100% Ref.'}</span><span class="mono" style="color:${diffCol}">${diff>=0?'+':''}${fmt(diff)}</span></div>
+        </div>
+      </div>`;
+    }
+
+    const totalKwh = agg[1].HT+agg[1].NT+agg[2].HT+agg[2].NT+agg[3].HT+agg[3].NT+agg[4].HT+agg[4].NT;
+    const totalHT  = agg[1].HT+agg[2].HT+agg[3].HT+agg[4].HT;
+    const totalNT  = agg[1].NT+agg[2].NT+agg[3].NT+agg[4].NT;
+    const legKwh   = totalKwh * legFrac;
+    const primKwh  = totalKwh * primFrac;
+
+    const mehrVsPrim   = mixTotal - primTotal;
+    const mehrVsFix    = mixTotal - fixTotal;
+    const pctVsPrim    = primTotal > 0 ? (mehrVsPrim/primTotal*100) : 0;
+    const pctVsFix     = fixTotal  > 0 ? (mehrVsFix /fixTotal *100) : 0;
+    const mixAvg  = totalKwh > 0 ? mixTotal /totalKwh*100 : 0;
+    const primAvg = totalKwh > 0 ? primTotal/totalKwh*100 : 0;
+    const fixAvg  = totalKwh > 0 ? fixTotal /totalKwh*100 : 11.0;
+
+    // Split label for header
+    const splitLabel = legFrac === 1 ? '100% LEG' : legFrac === 0 ? '100% Primeo' : `${(legFrac*100).toFixed(0)}% LEG / ${(primFrac*100).toFixed(0)}% Primeo`;
+
+    function winBox(diff, pct, labelA, valA, subA, labelB, valB, subB, labelDiff, labelKwh, kwh, isSelected) {
+      const good = diff >= 0;
+      const parts = labelDiff.split('—');
+      const mainTitle = parts[0].trim();
+      const subNote   = parts[1] ? parts[1].trim() : '';
+      const selStyle  = isSelected ? 'border-width:3px;box-shadow:0 0 0 1px var(--green);' : '';
+      return `<div class="winner-box ${good?'good':'bad'}" style="margin-top:16px;${selStyle}">
+        <div class="winner-title">${good?'💰':'⚠️'} LEG vs. ${mainTitle}${isSelected?' <span style="font-size:0.75rem;background:var(--green);color:#052819;padding:2px 8px;border-radius:10px;vertical-align:middle;">⭐ Ihre Anlage</span>':''}</div>
+        ${subNote ? `<div style="font-size:0.78rem;color:var(--text2);margin:-10px 0 14px;padding:8px 12px;background:rgba(26,21,16,0.04);border-radius:8px;border-left:2px solid #9A7B2E;">ℹ️ ${subNote}</div>` : ''}
+        <div class="wg">
+          <div class="wi"><div class="wi-label">${labelA}</div><div class="wi-val">${valA}</div><div class="wi-sub">${subA}</div></div>
+          <div class="wi"><div class="wi-label">${labelB}</div><div class="wi-val">${valB}</div><div class="wi-sub">${subB}</div></div>
+          <div class="wi ${good?'hi-good':'hi-bad'}">
+            <div class="wi-label">${good?'✅':'❌'} ${good?'Mehrertrag':'Minderertrag'} Total</div>
+            <div class="wi-val">${good?'+':''}${fmt(diff)}</div>
+            <div class="wi-sub">${Math.abs(pct).toFixed(2)}% ${good?'mehr':'weniger'}</div>
+          </div>
+          <div class="wi ${good?'hi-good':'hi-bad'}">
+            <div class="wi-label">${good?'✅':'❌'} ${good?'Mehrertrag':'Minderertrag'} pro kWh</div>
+            <div class="wi-val">${good?'+':''}${fmtRp(kwh)}</div>
+            <div class="wi-sub">pro kWh Jahresschnitt</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    document.getElementById('result').innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <h2 style="font-size:1.15rem;font-weight:700;color:var(--text);">Ergebnis ${year||''} &nbsp;<span style="font-size:0.85rem;font-weight:500;color:var(--leg-col);background:var(--leg-dim);padding:3px 12px;border-radius:20px;border:1px solid rgba(58,122,48,0.3);">${splitLabel}</span></h2>
+        <span style="font-size:0.8rem;color:var(--text2);">
+          <strong style="color:var(--text)">Total:</strong> ${fmtKwh(totalKwh)} &nbsp;·&nbsp;
+          <strong style="color:var(--leg-col)">LEG:</strong> ${fmtKwh(legKwh)} &nbsp;·&nbsp;
+          <strong style="color:var(--purple)">Primeo:</strong> ${fmtKwh(primKwh)}
+        </span>
+      </div>
+
+      <div class="res-quarter-grid">${resQCards}</div>
+
+      <div class="compare-wrap" style="margin-top:16px;">
+        <table>
+          <thead><tr>
+            <th>Quartal</th>
+            <th>Total kWh<br><small style="font-weight:400;text-transform:none;letter-spacing:0">(LEG / Primeo)</small></th>
+            <th>Mix Ertrag<br><small style="font-weight:400;text-transform:none;letter-spacing:0">(LEG + Primeo)</small></th>
+            ${!isAlt ? `<th style="${selRefBorder}">100% Ref.-Markt${selRefBadge}</th>` : ''}
+            ${isAlt  ? `<th style="${selFixBorder}">100% Fixpreis${selFixBadge}</th>` : ''}
+            <th>${isAlt ? 'Diff Mix / Fix' : 'Diff Mix / Ref.'}</th>
+          </tr></thead>
+          <tbody>
+            ${qRows}
+            <tr class="tr-total">
+              <td><strong>Total Jahr</strong></td>
+              <td>${fmtKwh(totalKwh)}<br><small style="color:var(--text3)">${fmtKwh(legKwh)} / ${fmtKwh(primKwh)}</small></td>
+              <td class="num" style="color:var(--leg-col);font-weight:700;">${fmt(mixTotal)}</td>
+              ${!isAlt ? `<td class="num" style="${selRefBorder}">${fmt(primTotal)}</td>` : ''}
+              ${isAlt  ? `<td class="num" style="${selFixBorder}">${fmt(fixTotal)}</td>` : ''}
+              <td class="num" style="color:${(isAlt?mehrVsFix:mehrVsPrim)>=0?'var(--green)':'#DC2626'};font-weight:700;">${(isAlt?mehrVsFix:mehrVsPrim)>=0?'+':''}${fmt(isAlt?mehrVsFix:mehrVsPrim)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      ${isAlt
+        ? winBox(mehrVsFix, pctVsFix,
+            `Mix Ertrag (${splitLabel})`, fmt(mixTotal), `${fmtKwh(legKwh)} LEG · ${fmtKwh(primKwh)} Primeo`,
+            `Jahresertrag 100% Fixpreis alt${selFixBadge}`, fmt(fixTotal), '',
+            'Fixpreis alt (Anlagen bis 31. März 2025) — nur gültig für Anlagen in Betrieb vor dem 31. März 2025 (Garantievergütung 9.0 + 2.0 Rp. HKN = 11.0 Rp., bis 31.12.2028)', 'vs. Fixpreis alt', mixAvg-fixAvg, true)
+        : winBox(mehrVsPrim, pctVsPrim,
+            `Mix Ertrag (${splitLabel})`, fmt(mixTotal), `${fmtKwh(legKwh)} LEG · ${fmtKwh(primKwh)} Primeo`,
+            `Jahresertrag 100% Ref.-Marktpreis${selRefBadge}`, fmt(primTotal), '',
+            'Referenz-Marktpreis (Anlagen ab 1. April 2025)', 'vs. Referenz-Marktpreis', mixAvg-primAvg, true)
+      }
+    `;
+  }
+</script>
+</body>
+</html>
