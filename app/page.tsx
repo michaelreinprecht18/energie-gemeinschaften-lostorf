@@ -220,9 +220,9 @@ export default function Page() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 8 }}>
               {[
                 'Haushalte mit Solaranlage (Produzenten)',
-                'Mieterinnen und Mieter (Konsumenten)',
-                'Gewerbebetriebe im Netzgebiet',
-                'Gemeinden und öffentliche Gebäude',
+                'Haushalte ohne Solaranlage (Konsumenten)',
+                'Bestehende vZEV-Teilnehmende',
+                'Gewerbebetriebe',
               ].map(item => (
                 <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <Check size={15} color="#9A7B2E" />
@@ -231,15 +231,6 @@ export default function Page() {
               ))}
             </div>
           </div>
-
-          {/* Quellenangabe */}
-          <p style={{ fontSize: 12, color: '#B8AFA8', fontFamily: 'var(--font-nunito)', marginBottom: 48 }}>
-            Quelle:{' '}
-            <a href="https://www.lokalerstrom.ch/" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>
-              lokalerstrom.ch
-            </a>
-            {' '}· Bundesgesetz über die Stromversorgung (StromVG)
-          </p>
 
           {/* LEG Trafo-Karte */}
           <div className="scroll-fade" style={{ marginBottom: 8 }}>
@@ -308,10 +299,10 @@ export default function Page() {
           {/* vZEV Vorteile */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
             {[
-              { icon: <Zap size={22} color="#9A7B2E" />, title: 'Vorteil 1', desc: 'Kommt noch.', delay: 'scroll-fade scroll-fade-d1' },
-              { icon: <Sun size={22} color="#9A7B2E" />, title: 'Vorteil 2', desc: 'Kommt noch.', delay: 'scroll-fade scroll-fade-d2' },
-              { icon: <Users size={22} color="#9A7B2E" />, title: 'Vorteil 3', desc: 'Kommt noch.', delay: 'scroll-fade scroll-fade-d3' },
-              { icon: <Leaf size={22} color="#9A7B2E" />, title: 'Vorteil 4', desc: 'Kommt noch.', delay: 'scroll-fade scroll-fade-d4' },
+              { icon: <Zap size={22} color="#9A7B2E" />, title: 'Mehr Erlös für Produzenten', desc: 'Wer eine Solaranlage betreibt, verkauft den Überschussstrom direkt an Nachbarinnen und Nachbarn — zu einem deutlich besseren Preis als bei der Rückspeisung ins Netz.', delay: 'scroll-fade scroll-fade-d1' },
+              { icon: <Sun size={22} color="#9A7B2E" />, title: 'Bessere Eigenverbrauchsquote', desc: 'Der produzierte Solarstrom wird direkt vor Ort verbraucht. Das steigert die Wirtschaftlichkeit der Anlage und verkürzt die Amortisationszeit.', delay: 'scroll-fade scroll-fade-d2' },
+              { icon: <Users size={22} color="#9A7B2E" />, title: 'Günstigerer Strom für Konsumenten', desc: 'Wer keine eigene Anlage hat, profitiert trotzdem: Lokal bezogener Solarstrom ist günstiger, weil Netznutzungsgebühren und Abgaben wegfallen.', delay: 'scroll-fade scroll-fade-d3' },
+              { icon: <Leaf size={22} color="#9A7B2E" />, title: 'Solarstrom ohne eigene Anlage', desc: 'Auch Mieterinnen und Mieter oder Haushalte ohne Dachfläche können am vZEV teilnehmen und lokal produzierten Solarstrom beziehen.', delay: 'scroll-fade scroll-fade-d4' },
             ].map(item => (
               <div key={item.title} className={`hover-lift ${item.delay}`} style={S.card}>
                 <div style={{ marginBottom: 14 }}>{item.icon}</div>
