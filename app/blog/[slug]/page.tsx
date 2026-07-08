@@ -16,7 +16,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const raw = fs.readFileSync(path.join(BLOG_DIR, `${slug}.mdx`), 'utf8')
   const { data } = matter(raw)
-  return { title: `${data.title} – Energiegemeinschaften Lostorf`, description: data.description }
+  return {
+    title: data.title,
+    description: data.description,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: {
+      type: 'article',
+      title: data.title,
+      description: data.description,
+      publishedTime: data.date,
+      authors: data.author ? [data.author] : undefined,
+    },
+  }
 }
 
 const S = {
@@ -29,8 +40,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const raw = fs.readFileSync(path.join(BLOG_DIR, `${slug}.mdx`), 'utf8')
   const { content, data } = matter(raw)
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: data.title,
+    description: data.description,
+    datePublished: data.date,
+    author: data.author ? { '@type': 'Person', name: data.author } : undefined,
+    publisher: { '@type': 'Organization', name: 'Energiegemeinschaften Lostorf' },
+    mainEntityOfPage: `https://lostorf.solar/blog/${slug}`,
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* Nav */}
       <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: '#FFFFFF', borderBottom: '1px solid #D9CEB5' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

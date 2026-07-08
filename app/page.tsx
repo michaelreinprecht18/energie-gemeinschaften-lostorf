@@ -1,20 +1,11 @@
-import { Sun, Users, Zap, Leaf, ArrowRight, Check, ChevronDown, Car, Droplets, MessageCircle, Percent } from 'lucide-react'
+import { Sun, Users, Zap, Leaf, ArrowRight, Check, ChevronDown, Car, Droplets, MessageCircle, Percent, PiggyBank } from 'lucide-react'
 import Rechner from './components/Rechner'
 import StatsBand from './components/StatsBand'
 import ContactForm from './components/ContactForm'
 import EmailLink from './components/EmailLink'
 import ScrollAnimator from './components/ScrollAnimator'
-import MobileMenu from './components/MobileMenu'
-
-const NAV = [
-  { href: '#leg', label: 'LEG' },
-  { href: '#vzev', label: 'vZEV' },
-  { href: '#rechner', label: 'Rechner' },
-  { href: '#pv-karte', label: 'PV-Karte' },
-  { href: '#energiestadt', label: 'Energiestadt' },
-  { href: '#kontakt', label: 'Kontakt' },
-  { href: '/blog', label: 'Blog' },
-]
+import SiteNav from './components/SiteNav'
+import SiteFooter from './components/SiteFooter'
 
 const S = {
   container: { maxWidth: 1100, margin: '0 auto', padding: '0 24px' } as React.CSSProperties,
@@ -58,30 +49,63 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return <span style={S.label}>{children}</span>
 }
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      name: 'Energiegemeinschaften Lostorf',
+      url: 'https://lostorf.solar',
+      description: 'Informationsplattform für lokal produzierten Solarstrom in Lostorf – Lokale Elektrizitätsgemeinschaften (LEG) und virtuelle Zusammenschlüsse zum Eigenverbrauch (vZEV).',
+      areaServed: { '@type': 'AdministrativeArea', name: 'Lostorf, Kanton Solothurn, Schweiz' },
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Was ist eine LEG (Lokale Elektrizitätsgemeinschaft)?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Eine Lokale Elektrizitätsgemeinschaft (LEG) schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen. Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu 40 % reduzieren. Lostorf hat das Potenzial für 22 Quartier-Elektrizitätsgemeinschaften.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Was ist ein vZEV (virtueller Zusammenschluss zum Eigenverbrauch)?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Ein virtueller Zusammenschluss zum Eigenverbrauch (vZEV) ist eine Eigenverbrauchsgemeinschaft, in der mindestens zwei Strombezüger gemeinsam mit mindestens einer Photovoltaikanlage lokal produzierten Solarstrom innerhalb der Nachbarschaft nutzen. Voraussetzung ist, dass alle Teilnehmenden am gleichen Netzanschlusspunkt angeschlossen sind.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Wer kann bei einer LEG in Lostorf mitmachen?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Haushalte mit Solaranlage (Produzenten), Haushalte ohne Solaranlage (Konsumenten), bestehende vZEV-Teilnehmende sowie Gewerbebetriebe können bei einer LEG in Lostorf mitmachen.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Wie viel spart ein Haushalt mit Wärmepumpe durch eine LEG?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Ein durchschnittliches Einfamilienhaus mit Wärmepumpe spart durch die Teilnahme an einer LEG rund CHF 80 bis 200 pro Jahr, abhängig von Verbrauch und Nutzungsverhalten.',
+          },
+        },
+      ],
+    },
+  ],
+}
+
 export default function Page() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <ScrollAnimator />
 
-      {/* ─── Navigation ─── */}
-      <nav className="nav-glass" style={{
-        position: 'sticky', top: 0, zIndex: 50,
-        borderBottom: '1px solid rgba(217, 206, 181, 0.6)',
-      }}>
-        <div style={{ ...S.container, height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <a href="#" style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, color: '#1A1510', fontSize: 15, lineHeight: 1.3, whiteSpace: 'nowrap' }}>
-            Energiegemeinschaften <span style={{ color: '#9A7B2E' }}>Lostorf</span>
-          </a>
-          <div className="nav-links" style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
-            {NAV.map(l => (
-              <a key={l.href} href={l.href} className="nav-link" style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248' }}>
-                {l.label}
-              </a>
-            ))}
-          </div>
-          <MobileMenu />
-        </div>
-      </nav>
+      <SiteNav />
 
       {/* ─── Hero ─── */}
       <section id="start" style={{
@@ -184,6 +208,12 @@ export default function Page() {
               <p style={{ ...S.lead, fontSize: 16, marginBottom: 0, fontWeight: 600, color: '#1A3317' }}>
                 Lostorf hat das Potenzial für <strong>22 Quartier Elektrizitätsgemeinschaften</strong>.
               </p>
+              <p style={{ ...S.lead, fontSize: 14, marginTop: 12, marginBottom: 0 }}>
+                Weitere LEG-Infos:{' '}
+                <a href="https://www.lokalerstrom.ch/betriebsmodelle/leg" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E', fontWeight: 600 }}>
+                  lokalerstrom.ch – Betriebsmodell LEG
+                </a>
+              </p>
             </div>
             <div className="scroll-fade scroll-fade-d1">
               <img
@@ -211,6 +241,44 @@ export default function Page() {
                 <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>{c.text}</div>
               </div>
             ))}
+          </div>
+
+          {/* Wärmepumpe Kernbotschaft */}
+          <div className="scroll-fade hover-lift" style={{
+            background: 'linear-gradient(135deg, #E7F9E4 0%, #D5F0D0 100%)',
+            border: '1px solid #9DD295',
+            borderRadius: 16,
+            padding: '32px 36px',
+            marginBottom: 24,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 28,
+            flexWrap: 'wrap',
+          }}>
+            <div style={{
+              width: 72, height: 72, borderRadius: '50%',
+              background: '#FFFFFF',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <PiggyBank size={32} color="#2D7A27" />
+            </div>
+            <div style={{ flex: 1, minWidth: 240 }}>
+              <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 19, color: '#1A1510', marginBottom: 6 }}>
+                Sparpotenzial
+              </div>
+              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 15, color: '#3A4A36', lineHeight: 1.6 }}>
+                Ein durchschnittliches Einfamilienhaus mit Wärmepumpe spart durch die Teilnahme an der LEG rund <strong>CHF 80–200 pro Jahr</strong> — abhängig von Verbrauch und Nutzungsverhalten.
+              </div>
+            </div>
+            <div style={{ textAlign: 'center', flexShrink: 0 }}>
+              <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 36, color: '#2D7A27', lineHeight: 1 }}>
+                80–200.-
+              </div>
+              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 12, fontWeight: 600, color: '#5C5248', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 4 }}>
+                Ersparnis pro Jahr
+              </div>
+            </div>
           </div>
 
           {/* Wer kann mitmachen */}
@@ -255,8 +323,12 @@ export default function Page() {
             <h3 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 20, color: '#1A1510', marginBottom: 8 }}>
               LEG in Lostorf
             </h3>
-            <p style={{ ...S.lead, fontSize: 15, marginBottom: 28, maxWidth: 'none' }}>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 8, maxWidth: 'none' }}>
               Übersicht der aktiven und in Gründung befindlichen Lokalen Elektrizitätsgemeinschaften.
+            </p>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 28, maxWidth: 'none' }}>
+              Hast du bereits eine eigene LEG gegründet?{' '}
+              <a href="#kontakt" style={{ color: '#9A7B2E', fontWeight: 600 }}>Melde dich bei uns</a> — wir nehmen sie gerne in diese Übersicht auf.
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 340px))', gap: 20 }}>
               {[
@@ -318,6 +390,12 @@ export default function Page() {
               <p style={{ ...S.lead, fontSize: 16, marginBottom: 20 }}>
                 Voraussetzung ist, dass alle Teilnehmenden am gleichen Netzanschlusspunkt angeschlossen sind. Der vZEV erhöht die Wirtschaftlichkeit von PV-Anlagen, senkt die Stromkosten der Beteiligten und ermöglicht eine effizientere Nutzung des produzierten Solarstroms.
               </p>
+              <p style={{ ...S.lead, fontSize: 14, marginBottom: 20 }}>
+                Weitere vZEV-Infos:{' '}
+                <a href="https://www.lokalerstrom.ch/betriebsmodelle/vzev" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E', fontWeight: 600 }}>
+                  lokalerstrom.ch – Betriebsmodell vZEV
+                </a>
+              </p>
               <a
                 href="https://www.primeo-energie.ch/geschaeftskunden/photovoltaik/energiegemeinschaften/vzev.html"
                 target="_blank"
@@ -361,6 +439,44 @@ export default function Page() {
               </div>
             ))}
           </div>
+
+          {/* Sparpotenzial vZEV */}
+          <div className="scroll-fade hover-lift" style={{
+            background: 'linear-gradient(135deg, #E7F9E4 0%, #D5F0D0 100%)',
+            border: '1px solid #9DD295',
+            borderRadius: 16,
+            padding: '32px 36px',
+            marginTop: 24,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 28,
+            flexWrap: 'wrap',
+          }}>
+            <div style={{
+              width: 72, height: 72, borderRadius: '50%',
+              background: '#FFFFFF',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <PiggyBank size={32} color="#2D7A27" />
+            </div>
+            <div style={{ flex: 1, minWidth: 240 }}>
+              <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 19, color: '#1A1510', marginBottom: 6 }}>
+                Sparpotenzial
+              </div>
+              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 15, color: '#3A4A36', lineHeight: 1.6 }}>
+                Ein durchschnittliches Einfamilienhaus mit Wärmepumpe spart durch die Teilnahme an einem vZEV rund <strong>CHF 200–400 pro Jahr</strong> — abhängig von Verbrauch und Nutzungsverhalten.
+              </div>
+            </div>
+            <div style={{ textAlign: 'center', flexShrink: 0 }}>
+              <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 36, color: '#2D7A27', lineHeight: 1 }}>
+                200–400.-
+              </div>
+              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 12, fontWeight: 600, color: '#5C5248', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 4 }}>
+                Ersparnis pro Jahr
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -386,7 +502,7 @@ export default function Page() {
                 <p style={{ ...S.lead, fontSize: 14, marginBottom: 20 }}>
                   Berechnen Sie Ihre Stromkosten mit und ohne LEG – aufgeteilt nach Energie, Netz und Abgaben. Vollständiger Tarifvergleich mit Ersparnis-Ausweis.
                 </p>
-                <a href="/leg-rechner-konsument.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#9A7B2E', color: '#FFFFFF', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, padding: '10px 20px', borderRadius: 8, textDecoration: 'none' }}>
+                <a href="/rechner/konsument" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#9A7B2E', color: '#FFFFFF', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, padding: '10px 20px', borderRadius: 8, textDecoration: 'none' }}>
                   Zum Konsumenten-Rechner →
                 </a>
               </div>
@@ -396,7 +512,7 @@ export default function Page() {
                 <p style={{ ...S.lead, fontSize: 14, marginBottom: 20 }}>
                   Vergleichen Sie Ihren PV-Einspeiserverdienst über die LEG mit dem Primeo-Direkttarif – quartalsweise, mit Excel-Import aus dem Primeo-Kundenportal.
                 </p>
-                <a href="/leg-rechner-produzent.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#9A7B2E', color: '#FFFFFF', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, padding: '10px 20px', borderRadius: 8, textDecoration: 'none' }}>
+                <a href="/rechner/produzent" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#9A7B2E', color: '#FFFFFF', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, padding: '10px 20px', borderRadius: 8, textDecoration: 'none' }}>
                   Zum Produzenten-Rechner →
                 </a>
               </div>
@@ -541,23 +657,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* ─── Footer ─── */}
-      <footer style={{ background: '#1A3317', color: '#B8D9B4', padding: '40px 24px', textAlign: 'center' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
-          <span style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 15, color: '#E7F9E4' }}>
-            Energiegemeinschaften Lostorf
-          </span>
-          <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, lineHeight: 1.7 }}>
-            <strong style={{ color: '#E7F9E4', fontWeight: 600 }}>Impressum:</strong>{' '}
-            Michael Reinprecht, Holdenackerstrasse 3, 4565 Lostorf
-          </span>
-          <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13 }}>
-            Diese Webseite wurde mit{' '}
-            <a href="https://claude.ai/code" style={{ color: '#9DD295' }}>KI Claude Code</a>{' '}
-            erstellt. Zuletzt aktualisiert am {new Date().toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-          </span>
-        </div>
-      </footer>
+      <SiteFooter />
     </>
   )
 }

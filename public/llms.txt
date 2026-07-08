@@ -1,0 +1,28 @@
+# Energiegemeinschaften Lostorf
+
+> Informationsplattform für lokal produzierten Solarstrom in Lostorf (Kanton Solothurn, Schweiz). Zentrales Thema: Lokale Elektrizitätsgemeinschaften (LEG) und virtuelle Zusammenschlüsse zum Eigenverbrauch (vZEV).
+
+Lostorf hat das Potenzial für 22 Quartier-Elektrizitätsgemeinschaften. Ziel der Plattform ist es, Haushalte mit und ohne Solaranlage, Gewerbebetriebe und bestehende vZEV-Teilnehmende über lokale Stromhandelsmodelle zu informieren und zur Teilnahme zu motivieren.
+
+## Kernfakten
+
+- Eine LEG ermöglicht es, überschüssigen Solarstrom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der Gemeinde zu verkaufen.
+- Sind alle Teilnehmenden an derselben Trafostation angeschlossen, reduzieren sich die Netzentgelte um bis zu 40 %.
+- Ein vZEV ist eine Eigenverbrauchsgemeinschaft für mindestens zwei Strombezüger am gleichen Netzanschlusspunkt.
+- Ein durchschnittliches Einfamilienhaus mit Wärmepumpe spart durch eine LEG rund CHF 80–200 pro Jahr.
+- Lostorf ist seit dem 12. März 2024 offiziell Energiestadt (Erfüllungsgrad 54,6 %) und Teil des Netzwerks Energiestädte Kanton Solothurn.
+- Mitmachen können: Haushalte mit Solaranlage (Produzenten), Haushalte ohne Solaranlage (Konsumenten), bestehende vZEV-Teilnehmende und Gewerbebetriebe.
+
+## Seiten
+
+- [Startseite](https://lostorf.solar/): Überblick LEG, vZEV, Sparrechner, PV-Karte, Energiestadt, Kontakt
+- [Blog](https://lostorf.solar/blog): Artikel zu LEG, vZEV und Solarstrom in Lostorf
+- [Was ist eine LEG?](https://lostorf.solar/blog/was-ist-eine-leg): Ausführliche Erklärung des LEG-Modells
+- [LEG Trafo-Karte](https://lostorf.solar/leg-karte.html): Interaktive Karte der 22 möglichen Trafo-Kreise mit PV-Anlagen
+- [PV-Karte Lostorf](https://lostorf.solar/pv-karte.html): Alle registrierten Photovoltaikanlagen der Gemeinde (Daten des Bundesamts für Energie)
+- [Konsumenten-Rechner](https://lostorf.solar/rechner/konsument): Stromkosten-Vergleich mit und ohne LEG
+- [Produzenten-Kalkulator](https://lostorf.solar/rechner/produzent): Ertragsvergleich LEG-Verkauf vs. Primeo-Direkttarif
+
+## Kontakt
+
+Fragen zur LEG oder vZEV in Lostorf werden über das Kontaktformular auf der Startseite (Abschnitt "Kontakt") beantwortet.

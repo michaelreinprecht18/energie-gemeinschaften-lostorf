@@ -3,12 +3,12 @@ import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
 const NAV = [
-  { href: '#leg', label: 'LEG' },
-  { href: '#vzev', label: 'vZEV' },
-  { href: '#rechner', label: 'Rechner' },
-  { href: '#pv-karte', label: 'PV-Karte' },
-  { href: '#energiestadt', label: 'Energiestadt' },
-  { href: '#kontakt', label: 'Kontakt' },
+  { href: '/#leg', label: 'LEG' },
+  { href: '/#vzev', label: 'vZEV' },
+  { href: '/#rechner', label: 'Rechner' },
+  { href: '/#pv-karte', label: 'PV-Karte' },
+  { href: '/#energiestadt', label: 'Energiestadt' },
+  { href: '/#kontakt', label: 'Kontakt' },
   { href: '/blog', label: 'Blog' },
 ]
 
