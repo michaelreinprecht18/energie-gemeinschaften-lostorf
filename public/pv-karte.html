@@ -160,8 +160,8 @@
       <thead>
         <tr>
           <th>#</th>
-          <th data-col="address" class="sorted">Adresse <span class="sort-arrow">↑</span></th>
-          <th data-col="date">Inbetrieb <span class="sort-arrow"></span></th>
+          <th data-col="address">Adresse <span class="sort-arrow"></span></th>
+          <th data-col="date" class="sorted">Inbetrieb <span class="sort-arrow">↓</span></th>
           <th data-col="power">Leistung <span class="sort-arrow"></span></th>
           <th title="Auf map.geo.admin.ch öffnen">Karte</th>
         </tr>
@@ -183,7 +183,7 @@ const LAYER   = 'ch.bfe.elektrizitaetsproduktionsanlagen';
 const API_URL = `https://api3.geo.admin.ch/rest/services/api/MapServer/find?layer=${LAYER}&searchField=address&searchText=Lostorf&contains=true&returnGeometry=true&lang=de`;
 const MONTHS  = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
-let DATA = [], activeYear = null, sortCol = 'date', sortAsc = true, minPower = 0;
+let DATA = [], activeYear = null, sortCol = 'date', sortAsc = false, minPower = 0;
 let jsonpTimeout = null;
 
 function loadData() {
@@ -402,7 +402,6 @@ document.querySelectorAll('.pwr-btn').forEach(btn => {
 });
 
 document.getElementById('search').addEventListener('input', render);
-document.querySelector('thead th[data-col="address"]').querySelector('.sort-arrow').textContent = '↑';
 
 loadData();
 </script>
