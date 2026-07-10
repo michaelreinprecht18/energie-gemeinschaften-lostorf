@@ -1,6 +1,7 @@
 import MobileMenu from './MobileMenu'
 
 const NAV = [
+  { href: '/#strategie', label: 'Strategie' },
   { href: '/#leg', label: 'LEG' },
   { href: '/#vzev', label: 'vZEV' },
   { href: '/#rechner', label: 'Rechner' },

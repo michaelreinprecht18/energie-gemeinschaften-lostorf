@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
 const NAV = [
+  { href: '/#strategie', label: 'Strategie' },
   { href: '/#leg', label: 'LEG' },
   { href: '/#vzev', label: 'vZEV' },
   { href: '/#rechner', label: 'Rechner' },
