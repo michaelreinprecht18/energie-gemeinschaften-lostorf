@@ -1,4 +1,4 @@
-import { Sun, Users, Zap, Leaf, ArrowRight, Check, ChevronDown, Car, Droplets, MessageCircle, Percent, PiggyBank } from 'lucide-react'
+import { Sun, Users, Zap, Leaf, ArrowRight, Check, ChevronDown, Car, Droplets, MessageCircle, Percent, PiggyBank, Building2, Handshake } from 'lucide-react'
 import Rechner from './components/Rechner'
 import StatsBand from './components/StatsBand'
 import ContactForm from './components/ContactForm'
@@ -190,6 +190,77 @@ export default function Page() {
 
       <hr style={S.divider} />
 
+      {/* ─── Strategie ─── */}
+      <section id="strategie" style={{ ...S.sectionPad, background: '#E7F9E4' }}>
+        <div style={S.container}>
+          <div className="scroll-fade" style={{ textAlign: 'center', marginBottom: 48 }}>
+            <SectionLabel>Vorgehen</SectionLabel>
+            <h2 style={S.h2}>Strategie</h2>
+          </div>
+
+          {/* Prioritäten */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 20 }}>
+            <div className="scroll-fade hover-lift" style={{ ...S.card, background: '#FFFFFF', borderLeft: '3px solid #9A7B2E', display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
+                background: '#9A7B2E', color: '#FFFFFF',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 18,
+              }}>
+                1
+              </div>
+              <div>
+                <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>
+                  Priorität 1 — vZEV auf Eigeninitiative
+                </div>
+                <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
+                  Interessierte Lostorferinnen und Lostorfer können jederzeit durch eigene Initiative einen vZEV gründen und informieren via Homepage die Arbeitsgruppe Energiestadt.
+                </div>
+              </div>
+            </div>
+
+            <div className="scroll-fade scroll-fade-d1 hover-lift" style={{ ...S.card, background: '#FFFFFF', borderLeft: '3px solid #3A7A30', display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
+                background: '#3A7A30', color: '#FFFFFF',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 18,
+              }}>
+                2
+              </div>
+              <div>
+                <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>
+                  Priorität 2 — Koordinierte LEG über alle Trafokreise
+                </div>
+                <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
+                  LEGs sollen koordiniert über die 22 Trafokreise entstehen. Alle Lostorferinnen und Lostorfer, ob Produzent oder Konsument, sollen prinzipiell mittelfristig Zugang zu Energiegemeinschaften erhalten. Private LEGs informieren via Homepage die Arbeitsgruppe Energiestadt.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Rollen */}
+          <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            <div className="scroll-fade scroll-fade-d2 hover-lift" style={S.card}>
+              <div style={{ marginBottom: 14 }}><Building2 size={22} color="#9A7B2E" /></div>
+              <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>Rolle der Gemeinde</div>
+              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
+                Die Gemeinde integriert, wo möglich, die eigenen Gebäude inklusive der zukünftigen Fotovoltaikanlagen in Energiegemeinschaften — vZEV und LEG.
+              </div>
+            </div>
+            <div className="scroll-fade scroll-fade-d3 hover-lift" style={S.card}>
+              <div style={{ marginBottom: 14 }}><Handshake size={22} color="#9A7B2E" /></div>
+              <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>Rolle der Arbeitsgruppe Energiestadt</div>
+              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
+                Die Arbeitsgruppe Energiestadt unterstützt, informiert die Bevölkerung, koordiniert wo möglich und hält den Kontakt zum Verteilnetzbetreiber Primeo.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr style={S.divider} />
+
       {/* ─── LEG ─── */}
       <section id="leg" style={{ ...S.sectionPad, background: '#FFFFFF' }}>
         <div style={S.container}>
@@ -222,7 +293,7 @@ export default function Page() {
                 style={{ width: '100%', borderRadius: 16, display: 'block' }}
               />
               <p style={{ marginTop: 8, fontSize: 11, color: '#9A9089', fontFamily: 'var(--font-nunito)' }}>
-                Grafik: <a href="https://www.bkw.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>bkw.ch</a>
+                Grafik: <a href="https://www.bkw.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>bkw.ch</a> (In Lostorf ist der Energieversorger Primeo)
               </p>
             </div>
           </div>
@@ -396,20 +467,36 @@ export default function Page() {
                   lokalerstrom.ch – Betriebsmodell vZEV
                 </a>
               </p>
-              <a
-                href="https://www.primeo-energie.ch/geschaeftskunden/photovoltaik/energiegemeinschaften/vzev.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 8,
-                  background: '#9DD295', color: '#1A1510',
-                  fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 14,
-                  padding: '12px 24px', borderRadius: 8, marginTop: 8,
-                }}
-              >
-                Prüfen ob vZEV bei dir möglich ist <ArrowRight size={15} />
-              </a>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 8 }}>
+                <a
+                  href="https://www.primeo-energie.ch/geschaeftskunden/photovoltaik/energiegemeinschaften/vzev.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    background: '#9DD295', color: '#1A1510',
+                    fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 14,
+                    padding: '12px 24px', borderRadius: 8,
+                  }}
+                >
+                  Prüfen ob vZEV bei dir möglich ist <ArrowRight size={15} />
+                </a>
+                <a
+                  href="https://vzev-rechner.pvshare.ch/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    background: '#9DD295', color: '#1A1510',
+                    fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 14,
+                    padding: '12px 24px', borderRadius: 8,
+                  }}
+                >
+                  vZEV Rechner zur Ermittlung von Wirtschaftlichkeit <ArrowRight size={15} />
+                </a>
+              </div>
             </div>
 
             <div className="scroll-fade scroll-fade-d1">
@@ -419,7 +506,7 @@ export default function Page() {
                 style={{ width: '100%', borderRadius: 16, display: 'block' }}
               />
               <p style={{ marginTop: 8, fontSize: 11, color: '#9A9089', fontFamily: 'var(--font-nunito)' }}>
-                Grafik: <a href="https://www.bkw.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>bkw.ch</a>
+                Grafik: <a href="https://www.bkw.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E' }}>bkw.ch</a> (In Lostorf ist der Energieversorger Primeo)
               </p>
             </div>
           </div>
