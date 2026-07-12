@@ -6,6 +6,7 @@ import EmailLink from './components/EmailLink'
 import ScrollAnimator from './components/ScrollAnimator'
 import SiteNav from './components/SiteNav'
 import SiteFooter from './components/SiteFooter'
+import LegTrafoKarte from './components/LegTrafoKarte'
 
 const S = {
   container: { maxWidth: 1100, margin: '0 auto', padding: '0 24px' } as React.CSSProperties,
@@ -375,18 +376,17 @@ export default function Page() {
           {/* LEG Trafo-Karte */}
           <div className="scroll-fade" style={{ marginBottom: 8 }}>
             <h3 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 22, color: '#1A1510', marginBottom: 8 }}>
-              LEG Trafo-Karte Lostorf
+              LEG Trafo-Karte
             </h3>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 8, maxWidth: 'none' }}>
+              Die 22 möglichen Trafo-Kreise in Lostorf — Adresse eingeben oder auf einen Kreis klicken, um alle zugehörigen Adressen anzuzeigen.
+            </p>
             <p style={{ ...S.lead, fontSize: 15, marginBottom: 20, maxWidth: 'none' }}>
-              Die 22 möglichen Trafo-Kreise in Lostorf — klick auf einen Kreis, um alle Adressen und bestehende PV-Anlagen anzuzeigen.
+              Trafo-Kreise mit ☀️ haben bereits eine LEG in Gründung oder in Betrieb.
             </p>
           </div>
-          <div className="scroll-fade scroll-fade-d1" style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid #D9CEB5', boxShadow: '0 4px 24px rgba(26,21,16,0.07)' }}>
-            <iframe
-              title="LEG Trafo-Karte Lostorf"
-              src="/leg-karte.html"
-              style={{ width: '100%', height: 700, border: 'none', display: 'block' }}
-            />
+          <div className="scroll-fade scroll-fade-d1">
+            <LegTrafoKarte />
           </div>
 
           {/* LEG in Lostorf */}
@@ -461,12 +461,21 @@ export default function Page() {
               <p style={{ ...S.lead, fontSize: 16, marginBottom: 20 }}>
                 Voraussetzung ist, dass alle Teilnehmenden am gleichen Netzanschlusspunkt angeschlossen sind. Der vZEV erhöht die Wirtschaftlichkeit von PV-Anlagen, senkt die Stromkosten der Beteiligten und ermöglicht eine effizientere Nutzung des produzierten Solarstroms.
               </p>
-              <p style={{ ...S.lead, fontSize: 14, marginBottom: 20 }}>
-                Weitere vZEV-Infos:{' '}
-                <a href="https://www.lokalerstrom.ch/betriebsmodelle/vzev" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E', fontWeight: 600 }}>
-                  lokalerstrom.ch – Betriebsmodell vZEV
-                </a>
-              </p>
+              <div style={{ marginBottom: 20 }}>
+                <p style={{ ...S.lead, fontSize: 14, marginBottom: 4 }}>
+                  Weitere vZEV-Infos:
+                </p>
+                <p style={{ ...S.lead, fontSize: 14, marginBottom: 4 }}>
+                  <a href="https://www.lokalerstrom.ch/betriebsmodelle/vzev" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E', fontWeight: 600 }}>
+                    lokalerstrom.ch – Betriebsmodell vZEV
+                  </a>
+                </p>
+                <p style={{ ...S.lead, fontSize: 14, marginBottom: 0 }}>
+                  <a href="/documents/SSES_Solarstrom_Eigenverbrauch_Wirtschaftlichkeit.pdf" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E', fontWeight: 600 }}>
+                    Schweizerische Vereinigung für Sonnenenergie: Solarstrom gemeinsam nutzen – ein Praxisbeispiel
+                  </a>
+                </p>
+              </div>
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 8 }}>
                 <a
                   href="https://www.primeo-energie.ch/geschaeftskunden/photovoltaik/energiegemeinschaften/vzev.html"
@@ -616,8 +625,11 @@ export default function Page() {
           <div className="scroll-fade" style={{ marginBottom: 32 }}>
             <SectionLabel>Solaranlagen in Lostorf</SectionLabel>
             <h2 style={{ ...S.h2, marginBottom: 12 }}>PV-Karte Lostorf</h2>
-            <p style={{ ...S.lead, maxWidth: 'none' }}>
+            <p style={{ ...S.lead, maxWidth: 'none', marginBottom: 8 }}>
               Alle registrierten Photovoltaikanlagen der Gemeinde Lostorf — live aus der Datenbank des Bundesamts für Energie.
+            </p>
+            <p style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#9A9089' }}>
+              Neue Anlagen erscheinen hier mit einer Verzögerung von mehreren Monaten.
             </p>
           </div>
           <div className="scroll-fade scroll-fade-d1" style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid #D9CEB5', boxShadow: '0 4px 24px rgba(26,21,16,0.07)' }}>
@@ -645,7 +657,7 @@ export default function Page() {
               src="/images/energiestadt-lostorf-logo.png"
               alt="Logo Energiestadt Lostorf"
               className="scroll-fade scroll-fade-d1"
-              style={{ maxWidth: 220, width: '100%', height: 'auto', flexShrink: 0 }}
+              style={{ maxWidth: 330, width: '100%', height: 'auto', flexShrink: 0 }}
             />
           </div>
 

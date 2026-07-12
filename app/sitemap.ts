@@ -26,7 +26,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: siteUrl, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
     { url: `${siteUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     ...posts,
-    { url: `${siteUrl}/leg-karte.html`, changeFrequency: 'daily', priority: 0.6 },
     { url: `${siteUrl}/pv-karte.html`, changeFrequency: 'daily', priority: 0.6 },
     { url: `${siteUrl}/rechner/konsument`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${siteUrl}/rechner/produzent`, changeFrequency: 'monthly', priority: 0.6 },

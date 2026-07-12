@@ -46,8 +46,13 @@
   .stat-sub { font-size:11px; color:var(--text3); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
   .chart-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--rl); padding:1.25rem 1.25rem .75rem; margin-bottom:1.25rem; }
-  .chart-title { font-size:12px; font-weight:600; color:var(--text2); margin-bottom:1.25rem; display:flex; align-items:center; justify-content:space-between; font-family:'Nunito Sans',sans-serif; letter-spacing:.04em; text-transform:uppercase; }
+  .chart-title { font-size:12px; font-weight:600; color:var(--text2); margin-bottom:1.25rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; font-family:'Nunito Sans',sans-serif; letter-spacing:.04em; text-transform:uppercase; }
+  .chart-title-right { display:flex; align-items:center; gap:10px; }
   .chart-hint { font-size:11px; color:var(--text3); font-weight:400; }
+  .chart-toggle { display:flex; gap:2px; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:2px; }
+  .chart-toggle-btn { border:none; background:transparent; font-family:'Nunito Sans',sans-serif; font-size:10.5px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--text3); padding:4px 11px; border-radius:16px; cursor:pointer; transition:background .15s,color .15s; }
+  .chart-toggle-btn:hover:not(.active) { color:var(--accent-t); }
+  .chart-toggle-btn.active { background:var(--accent); color:#fff; }
   .chart-outer { display:flex; align-items:flex-end; gap:3px; height:240px; padding-top:20px; }
   .bar-col { flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; cursor:pointer; position:relative; padding-bottom:22px; }
   .bar-stack { width:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; flex:1; }
@@ -87,7 +92,7 @@
   thead th { background:var(--surface2); padding:9px 12px; text-align:left; font-size:11px; font-weight:600; font-family:'Nunito Sans',sans-serif; color:var(--text2); text-transform:uppercase; letter-spacing:.4px; border-bottom:1px solid var(--border); cursor:pointer; user-select:none; white-space:nowrap; }
   thead th:hover { color:var(--text); }
   thead th.sorted { color:var(--accent); }
-  th:nth-child(1){width:40px;text-align:center}
+  th:nth-child(1){width:48px;text-align:center}
   th:nth-child(2){width:auto}
   th:nth-child(3){width:100px}
   th:nth-child(4){width:110px;text-align:right}
@@ -124,8 +129,14 @@
 
   <div class="chart-section">
     <div class="chart-title">
-      <span>Neu installierte Anlagen pro Jahr</span>
-      <span class="chart-hint">Auf einen Balken klicken zum Filtern</span>
+      <span id="chartTitleText">Neu installierte Anlagen pro Jahr</span>
+      <div class="chart-title-right">
+        <div class="chart-toggle">
+          <button class="chart-toggle-btn active" data-mode="count">Anzahl</button>
+          <button class="chart-toggle-btn" data-mode="power">Leistung</button>
+        </div>
+        <span class="chart-hint">Auf einen Balken klicken zum Filtern</span>
+      </div>
     </div>
     <div class="chart-outer" id="chart"></div>
   </div>
@@ -136,9 +147,9 @@
       <input type="text" id="search" placeholder="Adresse suchen…">
     </div>
     <div class="pwr-filters">
-      <button class="pwr-btn" data-min="7">&gt; 7 kW</button>
-      <button class="pwr-btn" data-min="14">&gt; 14 kW</button>
-      <button class="pwr-btn" data-min="30">&gt; 30 kW</button>
+      <button class="pwr-btn" data-min="7">&gt; 7 kWp</button>
+      <button class="pwr-btn" data-min="14">&gt; 14 kWp</button>
+      <button class="pwr-btn" data-min="30">&gt; 30 kWp</button>
     </div>
     <div id="yearBadge" style="display:none">
       <div class="year-badge">
@@ -171,7 +182,7 @@
   </div>
 
   <div class="source-box">
-    <div class="src-row"><span class="src-lbl">Quelle</span><span>Bundesamt für Energie BFE — <em>Elektrizitätsproduktionsanlagen der Schweiz</em>. Datenbasis: Schweizerisches Herkunftsnachweissystem, betrieben von <a href="https://www.pronovo.ch" target="_blank">Pronovo AG</a>. Enthält alle in Betrieb befindlichen Anlagen &gt; 2 kW.</span></div>
+    <div class="src-row"><span class="src-lbl">Quelle</span><span>Bundesamt für Energie BFE — <em>Elektrizitätsproduktionsanlagen der Schweiz</em>. Datenbasis: Schweizerisches Herkunftsnachweissystem, betrieben von <a href="https://www.pronovo.ch" target="_blank">Pronovo AG</a>. Enthält alle in Betrieb befindlichen Anlagen &gt; 2 kWp.</span></div>
     <div class="src-row"><span class="src-lbl">API</span><span><a href="https://api3.geo.admin.ch/rest/services/api/MapServer/find?layer=ch.bfe.elektrizitaetsproduktionsanlagen&searchField=address&searchText=Lostorf&contains=true&returnGeometry=true&lang=de" target="_blank">api3.geo.admin.ch — MapServer/find (ch.bfe.elektrizitaetsproduktionsanlagen)</a></span></div>
     <div class="src-row"><span class="src-lbl">Metadaten</span><span><a href="https://inspire-geoportal.ec.europa.eu/srv/api/records/e5a00bdb-5022-4856-ad4a-d1afe7bf38b0?language=ger" target="_blank">inspire-geoportal.ec.europa.eu — Elektrizitätsproduktionsanlagen (e5a00bdb-5022-4856-ad4a-d1afe7bf38b0)</a></span></div>
     <div class="src-row"><span class="src-lbl">Stand</span><span id="standLabel">wird geladen…</span></div>
@@ -183,7 +194,7 @@ const LAYER   = 'ch.bfe.elektrizitaetsproduktionsanlagen';
 const API_URL = `https://api3.geo.admin.ch/rest/services/api/MapServer/find?layer=${LAYER}&searchField=address&searchText=Lostorf&contains=true&returnGeometry=true&lang=de`;
 const MONTHS  = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
-let DATA = [], activeYear = null, sortCol = 'date', sortAsc = false, minPower = 0;
+let DATA = [], activeYear = null, sortCol = 'date', sortAsc = false, minPower = 0, chartMode = 'count';
 let jsonpTimeout = null;
 
 function loadData() {
@@ -286,8 +297,8 @@ function updateStats() {
   const dp = newest.date.split('-');
   document.getElementById('stat-count').textContent      = DATA.length;
   document.getElementById('stat-power').textContent      = (totalPower / 1000).toFixed(2) + ' MW';
-  document.getElementById('stat-power-sub').textContent  = Math.round(totalPower).toLocaleString('de-CH') + ' kW installiert';
-  document.getElementById('stat-largest').textContent    = Math.round(largest.power) + ' kW';
+  document.getElementById('stat-power-sub').textContent  = Math.round(totalPower).toLocaleString('de-CH') + ' kWp installiert';
+  document.getElementById('stat-largest').textContent    = Math.round(largest.power) + ' kWp';
   document.getElementById('stat-largest-sub').textContent = largest.address;
   document.getElementById('stat-newest').textContent     = MONTHS[parseInt(dp[1]) - 1] + ' ' + dp[0];
   document.getElementById('stat-newest-sub').textContent = newest.address;
@@ -296,20 +307,40 @@ function updateStats() {
 function buildChart() {
   const el = document.getElementById('chart');
   el.innerHTML = '';
-  const yearMap = {};
-  DATA.forEach(r => { const y = r.date.slice(0,4); yearMap[y] = (yearMap[y]||0) + 1; });
-  const years = Object.entries(yearMap).sort((a,b) => a[0].localeCompare(b[0]));
-  const maxN  = Math.max(...years.map(y => y[1]));
-  years.forEach(([year, count]) => {
-    const barH = Math.max(Math.round((count / maxN) * 180), 4);
-    const col  = document.createElement('div');
+  const yearMap = {}, kwMap = {};
+  DATA.forEach(r => {
+    const y = r.date.slice(0,4);
+    yearMap[y] = (yearMap[y]||0) + 1;
+    kwMap[y]   = (kwMap[y]||0) + r.power;
+  });
+  const years  = Object.keys(yearMap).sort();
+  const values = years.map(y => chartMode === 'power' ? kwMap[y] : yearMap[y]);
+  const maxV   = Math.max(...values);
+  years.forEach((year, i) => {
+    const val   = values[i];
+    const barH  = Math.max(Math.round((val / maxV) * 180), 4);
+    const label = chartMode === 'power' ? `${Math.round(val)} kWp` : val;
+    const col   = document.createElement('div');
     col.className    = 'bar-col';
     col.dataset.year = year;
-    col.innerHTML    = `<div class="bar-stack"><div class="bar-count">${count}</div><div class="bar" style="height:${barH}px"></div></div><div class="bar-year">${year}</div>`;
+    col.innerHTML    = `<div class="bar-stack"><div class="bar-count">${label}</div><div class="bar" style="height:${barH}px"></div></div><div class="bar-year">${year}</div>`;
     col.addEventListener('click', () => toggleYear(year));
     el.appendChild(col);
   });
 }
+
+document.querySelectorAll('.chart-toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (chartMode === btn.dataset.mode) return;
+    chartMode = btn.dataset.mode;
+    document.querySelectorAll('.chart-toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.getElementById('chartTitleText').textContent = chartMode === 'power'
+      ? 'Installierte Leistung pro Jahr'
+      : 'Neu installierte Anlagen pro Jahr';
+    buildChart();
+    if (activeYear) document.querySelectorAll('.bar-col').forEach(c => c.classList.toggle('active', c.dataset.year === activeYear));
+  });
+});
 
 function toggleYear(year) {
   if (activeYear === year) { clearYear(); return; }
@@ -348,7 +379,7 @@ function render() {
     <td>${i+1}</td>
     <td title="${r.fullAddress}">${r.address}</td>
     <td>${fmtDate(r.date)}</td>
-    <td>${r.power.toFixed(2)} kW</td>
+    <td>${r.power.toFixed(2)} kWp</td>
     <td><a class="map-link" href="${mapUrl(r)}" target="_blank" title="${r.address} auf Karte">↗</a></td>
   </tr>`).join('');
 }
