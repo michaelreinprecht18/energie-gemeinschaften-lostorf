@@ -9,6 +9,8 @@ import SiteFooter from '../../components/SiteFooter'
 
 const BLOG_DIR = path.join(process.cwd(), 'content/blog')
 
+export const dynamicParams = false
+
 export async function generateStaticParams() {
   const files = fs.readdirSync(BLOG_DIR).filter(f => f.endsWith('.mdx'))
   return files.map(f => ({ slug: f.replace('.mdx', '') }))
