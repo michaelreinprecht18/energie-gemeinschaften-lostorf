@@ -17,7 +17,7 @@ Lostorf hat das Potenzial für 22 Quartier-Elektrizitätsgemeinschaften. Ziel de
 
 - [Startseite](https://lostorf.solar/): Überblick LEG, vZEV, Sparrechner, PV-Karte, Energiestadt, Kontakt — inkl. LEG-Trafo-Karte mit Adresssuche (Abschnitt "LEG")
 - [Blog](https://lostorf.solar/blog): Artikel zu LEG, vZEV und Solarstrom in Lostorf
-- [Was ist eine LEG?](https://lostorf.solar/blog/was-ist-eine-leg): Ausführliche Erklärung des LEG-Modells
+- [Die Plattform ist online: lostorf.solar](https://lostorf.solar/blog/plattform-ist-live): Ankündigung des Live-Starts mit Überblick über alle Funktionen der Plattform
 - [PV-Karte Lostorf](https://lostorf.solar/pv-karte.html): Alle registrierten Photovoltaikanlagen der Gemeinde (Daten des Bundesamts für Energie)
 - [Konsumenten-Rechner](https://lostorf.solar/rechner/konsument): Stromkosten-Vergleich mit und ohne LEG
 - [Produzenten-Kalkulator](https://lostorf.solar/rechner/produzent): Ertragsvergleich LEG-Verkauf vs. Primeo-Direkttarif

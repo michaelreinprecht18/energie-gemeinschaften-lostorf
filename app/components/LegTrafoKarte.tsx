@@ -38,6 +38,33 @@ const LEG_PRODUCERS: Record<string, { street: string; nr: string }[]> = {
   '01 – Schulstrasse': [{ street: 'Holdenackerstrasse', nr: '3' }],
 }
 
+// Anzahl PV-Produzenten und installierte Leistung (kWp) pro Trafo-Kreis — manuell nachführen,
+// sobald neue Produzenten einer LEG beitreten
+const TRAFO_KREIS_STATS: Record<string, { producers: number; kwp: number }> = {
+  '01 – Schulstrasse': { producers: 1, kwp: 28 },
+  '02 – Hangstrasse': { producers: 0, kwp: 0 },
+  '03 – Alte Badstrasse': { producers: 0, kwp: 0 },
+  '04 – Rebenstrasse': { producers: 0, kwp: 0 },
+  '05 – Bachstrasse': { producers: 0, kwp: 0 },
+  '06 – Bachstrasse': { producers: 0, kwp: 0 },
+  '07 – Belchenstrasse': { producers: 0, kwp: 0 },
+  '08 – Birkenstrasse': { producers: 0, kwp: 0 },
+  '09 – Buerstrasse': { producers: 0, kwp: 0 },
+  '10 – Bündtenmattweg': { producers: 0, kwp: 0 },
+  '11 – Chilenackerstrasse': { producers: 0, kwp: 0 },
+  '12 – Chilenackerstrasse': { producers: 0, kwp: 0 },
+  '13 – Chälenstrasse': { producers: 0, kwp: 0 },
+  '14 – Hauptstrasse': { producers: 0, kwp: 0 },
+  '15 – Höhenweg': { producers: 0, kwp: 0 },
+  '16 – Industriestrasse': { producers: 0, kwp: 0 },
+  '17 – Juraweg': { producers: 0, kwp: 0 },
+  '18 – Längackerstrasse': { producers: 0, kwp: 0 },
+  '19 – Mahrenstrasse': { producers: 0, kwp: 0 },
+  '20 – Duschletenstrasse': { producers: 0, kwp: 0 },
+  '21 – Duschletenstrasse': { producers: 0, kwp: 0 },
+  '22 – Hangstrasse': { producers: 0, kwp: 0 },
+}
+
 export default function LegTrafoKarte() {
   const mapElRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<L.Map | null>(null)
@@ -219,31 +246,37 @@ export default function LegTrafoKarte() {
           <div style={S.sbTitle}>Trafo-Kreise (22)</div>
         </div>
         <div style={{ flex: 1, overflowY: 'auto', padding: '0 8px 8px' }}>
-          {TRAFO_KREISE.map(tk => (
-            <div
-              key={tk.name}
-              onClick={() => showTrafo(tk.name)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 8, padding: '6px 8px', borderRadius: 6,
-                fontSize: 12, cursor: 'pointer', marginBottom: 2,
-                border: `1px solid ${activeName === tk.name ? tk.color : 'transparent'}`,
-                background: activeName === tk.name ? '#F5F0E8' : 'transparent',
-              }}
-            >
-              <div style={{ width: 10, height: 10, borderRadius: '50%', background: tk.color, flexShrink: 0 }} />
-              <div style={{
-                flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                color: activeName === tk.name ? tk.color : '#5C5248',
-                fontWeight: activeName === tk.name ? 600 : 400,
-                fontFamily: 'var(--font-nunito)',
-              }}>
-                {tk.name}{ACTIVE_LEG_KREISE.includes(tk.name) ? ' ☀️' : ''}
+          {TRAFO_KREISE.map(tk => {
+            const stats = TRAFO_KREIS_STATS[tk.name] || { producers: 0, kwp: 0 }
+            return (
+              <div
+                key={tk.name}
+                onClick={() => showTrafo(tk.name)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 8, padding: '6px 8px', borderRadius: 6,
+                  fontSize: 12, cursor: 'pointer', marginBottom: 2,
+                  border: `1px solid ${activeName === tk.name ? tk.color : 'transparent'}`,
+                  background: activeName === tk.name ? '#F5F0E8' : 'transparent',
+                }}
+              >
+                <div style={{ width: 10, height: 10, borderRadius: '50%', background: tk.color, flexShrink: 0 }} />
+                <div style={{
+                  flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                  color: activeName === tk.name ? tk.color : '#5C5248',
+                  fontWeight: activeName === tk.name ? 600 : 400,
+                  fontFamily: 'var(--font-nunito)',
+                }}>
+                  {tk.name}{ACTIVE_LEG_KREISE.includes(tk.name) ? ' ☀️' : ''}
+                </div>
+                {stats.producers > 0 && (
+                  <div style={{ textAlign: 'right', flexShrink: 0, fontFamily: 'var(--font-nunito)' }}>
+                    <span style={{ fontSize: 9, color: '#9A9089', display: 'block' }}>{stats.producers} PV</span>
+                    <span style={{ fontSize: 9, color: '#9A7B2E', fontWeight: 600, display: 'block' }}>{stats.kwp} kWp</span>
+                  </div>
+                )}
               </div>
-              <div style={{ fontSize: 10, color: '#9A9089', flexShrink: 0, fontFamily: 'var(--font-nunito)' }}>
-                {tk.addresses.length} Adr.
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
       <div style={{ flex: 1, position: 'relative', minWidth: 0 }}>

@@ -3,6 +3,8 @@ import path from 'path'
 import matter from 'gray-matter'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import SiteNav from '../components/SiteNav'
+import SiteFooter from '../components/SiteFooter'
 
 export const metadata: Metadata = {
   title: 'Blog – Energiegemeinschaften Lostorf',
@@ -33,17 +35,7 @@ export default function BlogPage() {
 
   return (
     <>
-      {/* Nav */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: '#FFFFFF', borderBottom: '1px solid #D9CEB5' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/" style={{ fontFamily: S.serif, fontWeight: 700, color: '#1A1510', fontSize: 15, whiteSpace: 'nowrap' }}>
-            Energiegemeinschaften <span style={{ color: '#9A7B2E' }}>Lostorf</span>
-          </Link>
-          <Link href="/" style={{ fontFamily: S.sans, fontSize: 14, color: '#5C5248', display: 'flex', alignItems: 'center', gap: 6 }}>
-            ← Zurück zur Hauptseite
-          </Link>
-        </div>
-      </nav>
+      <SiteNav />
 
       {/* Header */}
       <div style={{ background: '#E7F9E4', padding: '64px 24px 48px', textAlign: 'center' }}>
@@ -95,11 +87,7 @@ export default function BlogPage() {
         </div>
       </main>
 
-      <footer style={{ background: '#2C4A28', color: '#B8D9B4', padding: '32px 24px', textAlign: 'center' }}>
-        <span style={{ fontFamily: S.serif, fontWeight: 700, fontSize: 14, color: '#E7F9E4' }}>
-          Energiegemeinschaften Lostorf
-        </span>
-      </footer>
+      <SiteFooter />
     </>
   )
 }
