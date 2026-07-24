@@ -68,7 +68,7 @@ const jsonLd = {
           name: 'Was ist eine LEG (Lokale Elektrizitätsgemeinschaft)?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Eine Lokale Elektrizitätsgemeinschaft (LEG) schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen. Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu 40 % reduzieren. Lostorf hat das Potenzial für 22 Quartier-Elektrizitätsgemeinschaften.',
+            text: 'Eine Lokale Elektrizitätsgemeinschaft (LEG) schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen. Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu 40 % reduzieren. Lostorf hat das Potenzial für 26 Quartier-Elektrizitätsgemeinschaften.',
           },
         },
         {
@@ -152,8 +152,8 @@ export default function Page() {
             margin: '0 auto 40px',
             animation: 'fadeSlideUp 0.7s ease 0.4s both',
           }}>
-            Lokal produzierter Solarstrom, der nicht selbst verbraucht wird, soll in Lostorf bleiben — und der Gemeinde zugutekommen.
-            Wo immer möglich als vZEV, ansonsten als LEG. Lostorf hat das Potenzial für 22 Quartier-LEG.
+            Lokal produzierter Solarstrom, der nicht selbst verbraucht wird, soll in Lostorf bleiben und der Gemeinde zugutekommen.
+            Wo immer möglich als vZEV, ansonsten als LEG. Lostorf hat das Potenzial für 26 Quartier-LEG.
             Nutzen wir diesen wertvollen Strom gemeinsam.
           </p>
 
@@ -212,7 +212,7 @@ export default function Page() {
               </div>
               <div>
                 <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>
-                  Priorität 1 — vZEV auf Eigeninitiative
+                  Priorität 1: vZEV auf Eigeninitiative
                 </div>
                 <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
                   Interessierte Lostorferinnen und Lostorfer können jederzeit durch eigene Initiative einen vZEV gründen und informieren via Homepage die Arbeitsgruppe Energiestadt.
@@ -231,10 +231,10 @@ export default function Page() {
               </div>
               <div>
                 <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>
-                  Priorität 2 — Koordinierte LEG über alle Trafokreise
+                  Priorität 2: Koordinierte LEG über alle Trafokreise
                 </div>
                 <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
-                  LEGs sollen koordiniert über die 22 Trafokreise entstehen. Alle Lostorferinnen und Lostorfer, ob Produzent oder Konsument, sollen prinzipiell mittelfristig Zugang zu Energiegemeinschaften erhalten. Private LEGs informieren via Homepage die Arbeitsgruppe Energiestadt.
+                  LEGs sollen koordiniert über die 26 Trafokreise entstehen. Alle Lostorferinnen und Lostorfer, ob Produzent oder Konsument, sollen prinzipiell mittelfristig Zugang zu Energiegemeinschaften erhalten. Private LEGs informieren via Homepage die Arbeitsgruppe Energiestadt.
                 </div>
               </div>
             </div>
@@ -246,7 +246,7 @@ export default function Page() {
               <div style={{ marginBottom: 14 }}><Building2 size={22} color="#9A7B2E" /></div>
               <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>Rolle der Gemeinde</div>
               <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
-                Die Gemeinde integriert, wo möglich, die eigenen Gebäude inklusive der zukünftigen Fotovoltaikanlagen in Energiegemeinschaften — vZEV und LEG.
+                Die Gemeinde integriert, wo möglich, die eigenen Gebäude inklusive der zukünftigen Fotovoltaikanlagen in Energiegemeinschaften (vZEV und LEG).
               </div>
             </div>
             <div className="scroll-fade scroll-fade-d3 hover-lift" style={S.card}>
@@ -275,10 +275,10 @@ export default function Page() {
                 Eine <strong>Lokale Elektrizitätsgemeinschaft (LEG)</strong> schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen.
               </p>
               <p style={{ ...S.lead, fontSize: 16, marginBottom: 20 }}>
-                Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu <strong>40 % reduzieren</strong> — ein erheblicher Vorteil für alle Beteiligten.
+                Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu <strong>40 % reduzieren</strong>, ein erheblicher Vorteil für alle Beteiligten.
               </p>
               <p style={{ ...S.lead, fontSize: 16, marginBottom: 0, fontWeight: 600, color: '#1A3317' }}>
-                Lostorf hat das Potenzial für <strong>22 Quartier Elektrizitätsgemeinschaften</strong>.
+                Lostorf hat das Potenzial für <strong>26 Quartier Elektrizitätsgemeinschaften</strong>.
               </p>
               <p style={{ ...S.lead, fontSize: 14, marginTop: 12, marginBottom: 0 }}>
                 Weitere LEG-Infos:{' '}
@@ -340,7 +340,7 @@ export default function Page() {
                 Sparpotenzial
               </div>
               <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 15, color: '#3A4A36', lineHeight: 1.6 }}>
-                Ein durchschnittliches Einfamilienhaus mit Wärmepumpe spart durch die Teilnahme an der LEG rund <strong>CHF 80–200 pro Jahr</strong> — abhängig von Verbrauch und Nutzungsverhalten.
+                Ein durchschnittliches Einfamilienhaus mit Wärmepumpe spart durch die Teilnahme an der LEG rund <strong>CHF 80–200 pro Jahr</strong>, abhängig von Verbrauch und Nutzungsverhalten.
               </div>
             </div>
             <div style={{ textAlign: 'center', flexShrink: 0 }}>
@@ -379,10 +379,16 @@ export default function Page() {
               LEG Trafo-Karte
             </h3>
             <p style={{ ...S.lead, fontSize: 15, marginBottom: 8, maxWidth: 'none' }}>
-              Die 22 möglichen Trafo-Kreise in Lostorf — Adresse eingeben oder auf einen Kreis klicken, um alle zugehörigen Adressen anzuzeigen.
+              Die 26 möglichen Trafo-Kreise in Lostorf: Adresse eingeben oder auf einen Kreis klicken, um alle zugehörigen Adressen anzuzeigen.
             </p>
-            <p style={{ ...S.lead, fontSize: 15, marginBottom: 20, maxWidth: 'none' }}>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 8, maxWidth: 'none' }}>
               Trafo-Kreise mit ☀️ haben bereits eine LEG in Gründung oder in Betrieb.
+            </p>
+            <p style={{ ...S.lead, fontSize: 13, marginBottom: 20, maxWidth: 'none', color: '#9A9089' }}>
+              Die Namen der Trafo-Kreise wurden grösstenteils von Primeo übernommen. Sämtliche Angaben stammen aus dem{' '}
+              <a href="https://www.primeo-energie.ch/geschaeftskunden/photovoltaik/energiegemeinschaften/leg.html" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E', fontWeight: 600 }}>
+                LEG-Checker von Primeo
+              </a>.
             </p>
           </div>
           <div className="scroll-fade scroll-fade-d1">
@@ -399,7 +405,7 @@ export default function Page() {
             </p>
             <p style={{ ...S.lead, fontSize: 15, marginBottom: 28, maxWidth: 'none' }}>
               Hast du bereits eine eigene LEG gegründet?{' '}
-              <a href="#kontakt" style={{ color: '#9A7B2E', fontWeight: 600 }}>Melde dich bei uns</a> — wir nehmen sie gerne in diese Übersicht auf.
+              <a href="#kontakt" style={{ color: '#9A7B2E', fontWeight: 600 }}>Melde dich bei uns</a>, wir nehmen sie gerne in diese Übersicht auf.
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 340px))', gap: 20 }}>
               {[
@@ -523,7 +529,7 @@ export default function Page() {
           {/* vZEV Vorteile */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
             {[
-              { icon: <Zap size={22} color="#9A7B2E" />, title: 'Mehr Erlös für Produzenten', desc: 'Wer eine Solaranlage betreibt, verkauft den Überschussstrom direkt an Nachbarinnen und Nachbarn — zu einem deutlich besseren Preis als bei der Rückspeisung ins Netz.', delay: 'scroll-fade scroll-fade-d1' },
+              { icon: <Zap size={22} color="#9A7B2E" />, title: 'Mehr Erlös für Produzenten', desc: 'Wer eine Solaranlage betreibt, verkauft den Überschussstrom direkt an Nachbarinnen und Nachbarn, zu einem deutlich besseren Preis als bei der Rückspeisung ins Netz.', delay: 'scroll-fade scroll-fade-d1' },
               { icon: <Sun size={22} color="#9A7B2E" />, title: 'Bessere Eigenverbrauchsquote', desc: 'Der produzierte Solarstrom wird direkt vor Ort verbraucht. Das steigert die Wirtschaftlichkeit der Anlage und verkürzt die Amortisationszeit.', delay: 'scroll-fade scroll-fade-d2' },
               { icon: <Users size={22} color="#9A7B2E" />, title: 'Günstigerer Strom für Konsumenten', desc: 'Wer keine eigene Anlage hat, profitiert trotzdem: Lokal bezogener Solarstrom ist günstiger, weil Netznutzungsgebühren und Abgaben wegfallen.', delay: 'scroll-fade scroll-fade-d3' },
               { icon: <Leaf size={22} color="#9A7B2E" />, title: 'Solarstrom ohne eigene Anlage', desc: 'Auch Mieterinnen und Mieter oder Haushalte ohne Dachfläche können am vZEV teilnehmen und lokal produzierten Solarstrom beziehen.', delay: 'scroll-fade scroll-fade-d4' },
@@ -561,7 +567,7 @@ export default function Page() {
                 Sparpotenzial
               </div>
               <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 15, color: '#3A4A36', lineHeight: 1.6 }}>
-                Ein durchschnittliches Einfamilienhaus mit Wärmepumpe spart durch die Teilnahme an einem vZEV rund <strong>CHF 200–400 pro Jahr</strong> — abhängig von Verbrauch und Nutzungsverhalten.
+                Ein durchschnittliches Einfamilienhaus mit Wärmepumpe spart durch die Teilnahme an einem vZEV rund <strong>CHF 200–400 pro Jahr</strong>, abhängig von Verbrauch und Nutzungsverhalten.
               </div>
             </div>
             <div style={{ textAlign: 'center', flexShrink: 0 }}>
@@ -626,7 +632,7 @@ export default function Page() {
             <SectionLabel>Solaranlagen in Lostorf</SectionLabel>
             <h2 style={{ ...S.h2, marginBottom: 12 }}>PV-Karte Lostorf</h2>
             <p style={{ ...S.lead, maxWidth: 'none', marginBottom: 8 }}>
-              Alle registrierten Photovoltaikanlagen der Gemeinde Lostorf — live aus der Datenbank des Bundesamts für Energie.
+              Alle registrierten Photovoltaikanlagen der Gemeinde Lostorf, live aus der Datenbank des Bundesamts für Energie.
             </p>
             <p style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#9A9089' }}>
               Neue Anlagen erscheinen hier mit einer Verzögerung von mehreren Monaten.
@@ -664,7 +670,7 @@ export default function Page() {
           <div className="scroll-fade">
             <p style={{ ...S.lead, marginBottom: 20, maxWidth: 'none' }}>
               Lostorf ist seit dem <strong>12. März 2024</strong> offiziell Energiestadt und damit Teil des
-              Netzwerks Energiestädte Kanton Solothurn — gemeinsam mit Biberist, Grenchen, Oensingen, Olten und
+              Netzwerks Energiestädte Kanton Solothurn, gemeinsam mit Biberist, Grenchen, Oensingen, Olten und
               Solothurn. Eine eigens gegründete <strong>Arbeitsgruppe Energiestadt</strong> setzt seither laufend
               neue Massnahmen für einen sparsameren Energieverbrauch und den Ausbau erneuerbarer Energien um.
             </p>
@@ -673,10 +679,10 @@ export default function Page() {
             </p>
             <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 24 }}>
               {[
-                'E-Car-Sharing bei der Migrol-Tankstelle — seit November 2025 buchbar über die Mobility-App',
-                'Intelligente Strassenbeleuchtung — Teststrecke an der Sandgrubenstrasse mit bewegungsgesteuerten LED-Kandelabern',
+                'E-Car-Sharing bei der Migrol-Tankstelle, seit November 2025 buchbar über die Mobility-App',
+                'Intelligente Strassenbeleuchtung, Teststrecke an der Sandgrubenstrasse mit bewegungsgesteuerten LED-Kandelabern',
                 'Themenabende zu Heizungsersatz, energetischer Sanierung und Photovoltaik mit Fachreferaten und Marktständen',
-                'Energie- und Klimastrategie in Erarbeitung — für verbindliche, langfristige Ziele',
+                'Energie- und Klimastrategie in Erarbeitung, für verbindliche, langfristige Ziele',
               ].map(item => (
                 <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
                   <Leaf size={15} color="#9A7B2E" style={{ marginTop: 3, flexShrink: 0 }} />
@@ -685,7 +691,7 @@ export default function Page() {
               ))}
             </div>
             <p style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#9A9089' }}>
-              Die Arbeitsgruppe freut sich über neue Ideen — Kontakt:{' '}
+              Die Arbeitsgruppe freut sich über neue Ideen. Kontakt:{' '}
               <EmailLink encoded="ZW5lcmdpZXN0YWR0QGxvc3RvcmYuY2g=" style={{ color: '#9A7B2E' }} />
             </p>
           </div>
@@ -696,7 +702,7 @@ export default function Page() {
               Handlungsfelder im Aktivitätenprogramm 2024–2028
             </h3>
             <p style={{ ...S.lead, fontSize: 15, marginBottom: 28, maxWidth: 'none' }}>
-              Der Gemeinderat hat dazu ein Aktivitätenprogramm mit 27 konkreten Massnahmen beschlossen — ein Auszug
+              Der Gemeinderat hat dazu ein Aktivitätenprogramm mit 27 konkreten Massnahmen beschlossen, ein Auszug
               nach Themen:
             </p>
             <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
@@ -747,7 +753,7 @@ export default function Page() {
             <h2 style={S.h2}>Fragen zur LEG oder vZEV?</h2>
             <p style={{ ...S.lead, margin: '0 auto' }}>
               Du möchtest eine vZEV oder LEG gründen oder einer bestehenden Gemeinschaft beitreten?
-              Wir begleiten dich auf dem Weg — melde dich, wir helfen dir gerne weiter.
+              Wir begleiten dich auf dem Weg: melde dich, wir helfen dir gerne weiter.
             </p>
           </div>
           <div className="scroll-fade scroll-fade-d1">

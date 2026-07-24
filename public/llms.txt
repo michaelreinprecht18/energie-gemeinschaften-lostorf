@@ -2,7 +2,7 @@
 
 > Informationsplattform für lokal produzierten Solarstrom in Lostorf (Kanton Solothurn, Schweiz). Zentrales Thema: Lokale Elektrizitätsgemeinschaften (LEG) und virtuelle Zusammenschlüsse zum Eigenverbrauch (vZEV).
 
-Lostorf hat das Potenzial für 22 Quartier-Elektrizitätsgemeinschaften. Ziel der Plattform ist es, Haushalte mit und ohne Solaranlage, Gewerbebetriebe und bestehende vZEV-Teilnehmende über lokale Stromhandelsmodelle zu informieren und zur Teilnahme zu motivieren.
+Lostorf hat das Potenzial für 26 Quartier-Elektrizitätsgemeinschaften. Ziel der Plattform ist es, Haushalte mit und ohne Solaranlage, Gewerbebetriebe und bestehende vZEV-Teilnehmende über lokale Stromhandelsmodelle zu informieren und zur Teilnahme zu motivieren.
 
 ## Kernfakten
 
@@ -15,7 +15,7 @@ Lostorf hat das Potenzial für 22 Quartier-Elektrizitätsgemeinschaften. Ziel de
 
 ## Seiten
 
-- [Startseite](https://lostorf.solar/): Überblick LEG, vZEV, Sparrechner, PV-Karte, Energiestadt, Kontakt — inkl. LEG-Trafo-Karte mit Adresssuche (Abschnitt "LEG")
+- [Startseite](https://lostorf.solar/): Überblick LEG, vZEV, Sparrechner, PV-Karte, Energiestadt, Kontakt, inkl. LEG-Trafo-Karte mit Adresssuche (Abschnitt "LEG")
 - [Blog](https://lostorf.solar/blog): Artikel zu LEG, vZEV und Solarstrom in Lostorf
 - [Die Plattform ist online: lostorf.solar](https://lostorf.solar/blog/plattform-ist-live): Ankündigung des Live-Starts mit Überblick über alle Funktionen der Plattform
 - [PV-Karte Lostorf](https://lostorf.solar/pv-karte.html): Alle registrierten Photovoltaikanlagen der Gemeinde (Daten des Bundesamts für Energie)

@@ -16,8 +16,8 @@ export default function SiteFooter() {
         </span>
         <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13 }}>
           Für anonyme Besucherstatistiken (Anzahl Besuche, Herkunft) nutzen wir das quelloffene, datenschutzfreundliche Tool{' '}
-          <a href="https://www.goatcounter.com/" target="_blank" rel="noopener noreferrer" style={{ color: '#9DD295' }}>GoatCounter</a>{' '}
-          — ohne Cookies und ohne personenbezogene Daten.
+          <a href="https://www.goatcounter.com/" target="_blank" rel="noopener noreferrer" style={{ color: '#9DD295' }}>GoatCounter</a>,{' '}
+          ohne Cookies und ohne personenbezogene Daten.
         </span>
       </div>
     </footer>

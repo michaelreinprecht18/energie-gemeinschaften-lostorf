@@ -547,7 +547,7 @@
   <div class="card">
     <div class="card-header">
       <span class="step-pill">Schritt 3</span>
-      <span class="card-title">Stromprodukt <span style="font-size:0.82rem;font-weight:400;color:var(--text2)">— gilt für Primeo-Anteil</span></span>
+      <span class="card-title">Stromprodukt <span style="font-size:0.82rem;font-weight:400;color:var(--text2)">(gilt für Primeo-Anteil)</span></span>
     </div>
     <label class="field-label" for="produkt">Produkt wählen</label>
     <select id="produkt" class="wide">
@@ -602,7 +602,7 @@
       </div>
 
       <div class="leg-price-box">
-        <div class="leg-price-box-title">⚙ LEG Energiepreise — anpassbar</div>
+        <div class="leg-price-box-title">⚙ LEG Energiepreise, anpassbar</div>
         <div class="leg-price-row">
           <div>
             <label class="field-label" for="leg_preis_ht">Hochtarif (Rp./kWh)</label>
@@ -765,7 +765,7 @@
     rN += row('Messtarif', `${monate} Monat${monate>1?'e':''}`, '4.00 CHF/Monat', n_mess, 's-netz');
     rN += subtotal('Zwischentotal Netz', sumN, 'netz');
 
-    let rA = secHead('Abgaben &amp; Zuschläge — immer auf Gesamtverbrauch', 'abgaben');
+    let rA = secHead('Abgaben &amp; Zuschläge, immer auf Gesamtverbrauch', 'abgaben');
     rA += row('Netzzuschlag',`${gesamt.toLocaleString('de-CH')} kWh`,fmtRate(TARIFE.netzzuschlag),a_netz,'s-abgaben');
     rA += row('Systemdienstleistung Swissgrid',`${gesamt.toLocaleString('de-CH')} kWh`,fmtRate(TARIFE.sdl_swissgrid),a_sdl,'s-abgaben');
     rA += row('Konzessionsabgabe',`${gesamt.toLocaleString('de-CH')} kWh`,fmtRate(TARIFE.konzession),a_konz,'s-abgaben');

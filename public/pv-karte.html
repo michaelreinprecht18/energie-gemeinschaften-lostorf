@@ -182,9 +182,9 @@
   </div>
 
   <div class="source-box">
-    <div class="src-row"><span class="src-lbl">Quelle</span><span>Bundesamt für Energie BFE — <em>Elektrizitätsproduktionsanlagen der Schweiz</em>. Datenbasis: Schweizerisches Herkunftsnachweissystem, betrieben von <a href="https://www.pronovo.ch" target="_blank">Pronovo AG</a>. Enthält alle in Betrieb befindlichen Anlagen &gt; 2 kWp.</span></div>
-    <div class="src-row"><span class="src-lbl">API</span><span><a href="https://api3.geo.admin.ch/rest/services/api/MapServer/find?layer=ch.bfe.elektrizitaetsproduktionsanlagen&searchField=address&searchText=Lostorf&contains=true&returnGeometry=true&lang=de" target="_blank">api3.geo.admin.ch — MapServer/find (ch.bfe.elektrizitaetsproduktionsanlagen)</a></span></div>
-    <div class="src-row"><span class="src-lbl">Metadaten</span><span><a href="https://inspire-geoportal.ec.europa.eu/srv/api/records/e5a00bdb-5022-4856-ad4a-d1afe7bf38b0?language=ger" target="_blank">inspire-geoportal.ec.europa.eu — Elektrizitätsproduktionsanlagen (e5a00bdb-5022-4856-ad4a-d1afe7bf38b0)</a></span></div>
+    <div class="src-row"><span class="src-lbl">Quelle</span><span>Bundesamt für Energie BFE, <em>Elektrizitätsproduktionsanlagen der Schweiz</em>. Datenbasis: Schweizerisches Herkunftsnachweissystem, betrieben von <a href="https://www.pronovo.ch" target="_blank">Pronovo AG</a>. Enthält alle in Betrieb befindlichen Anlagen &gt; 2 kWp.</span></div>
+    <div class="src-row"><span class="src-lbl">API</span><span><a href="https://api3.geo.admin.ch/rest/services/api/MapServer/find?layer=ch.bfe.elektrizitaetsproduktionsanlagen&searchField=address&searchText=Lostorf&contains=true&returnGeometry=true&lang=de" target="_blank">api3.geo.admin.ch, MapServer/find (ch.bfe.elektrizitaetsproduktionsanlagen)</a></span></div>
+    <div class="src-row"><span class="src-lbl">Metadaten</span><span><a href="https://inspire-geoportal.ec.europa.eu/srv/api/records/e5a00bdb-5022-4856-ad4a-d1afe7bf38b0?language=ger" target="_blank">inspire-geoportal.ec.europa.eu, Elektrizitätsproduktionsanlagen (e5a00bdb-5022-4856-ad4a-d1afe7bf38b0)</a></span></div>
     <div class="src-row"><span class="src-lbl">Stand</span><span id="standLabel">wird geladen…</span></div>
   </div>
 
@@ -216,7 +216,7 @@ function loadData() {
   jsonpTimeout = setTimeout(() => {
     if (window._geoCallback) {
       delete window._geoCallback;
-      showError('Zeitüberschreitung — API hat nicht geantwortet.', script.src);
+      showError('Zeitüberschreitung: API hat nicht geantwortet.', script.src);
     }
   }, 15000);
 }
@@ -252,7 +252,7 @@ function processData(json) {
   const now = new Date();
   const ts  = `${pad(now.getDate())}.${pad(now.getMonth()+1)}.${now.getFullYear()}, ${pad(now.getHours())}:${pad(now.getMinutes())} Uhr`;
   document.getElementById('standLabel').innerHTML =
-    `Live-Daten via geo.admin.ch API — geladen: ${ts} &nbsp;<span class="live-badge"><span class="live-dot"></span>Live</span>`;
+    `Live-Daten via geo.admin.ch API, geladen: ${ts} &nbsp;<span class="live-badge"><span class="live-dot"></span>Live</span>`;
 
   updateStats();
   buildChart();
