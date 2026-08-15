@@ -759,7 +759,11 @@ export default function Page() {
             </p>
           </div>
           <div className="scroll-fade scroll-fade-d1">
-            <ContactForm />
+            <iframe
+              src="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=K_6LNg30xkGxFqQfHb2r71QR5Ukfo8pCvLTwcSK-ux5UNjI0OFdGR1NDQUlMS0IwMU1CQklROFhHMS4u"
+              style={{ width: '100%', maxWidth: 640, height: 900, border: '1px solid #D9CEB5', borderRadius: 16, display: 'block', margin: '0 auto' }}
+              title="Kontaktformular"
+            />
           </div>
         </div>
       </section>
