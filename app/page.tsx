@@ -7,6 +7,7 @@ import ScrollAnimator from './components/ScrollAnimator'
 import SiteNav from './components/SiteNav'
 import SiteFooter from './components/SiteFooter'
 import LegTrafoKarte from './components/LegTrafoKarte'
+import UnderConstructionBanner from './components/UnderConstructionBanner'
 
 const S = {
   container: { maxWidth: 1100, margin: '0 auto', padding: '0 24px' } as React.CSSProperties,
@@ -106,6 +107,7 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <ScrollAnimator />
 
+      <UnderConstructionBanner />
       <SiteNav />
 
       {/* ─── Hero ─── */}
