@@ -8,6 +8,7 @@ import SiteNav from './components/SiteNav'
 import SiteFooter from './components/SiteFooter'
 import LegTrafoKarte from './components/LegTrafoKarte'
 import UnderConstructionBanner from './components/UnderConstructionBanner'
+import ScrollJumpGuard from './components/ScrollJumpGuard'
 
 const S = {
   container: { maxWidth: 1100, margin: '0 auto', padding: '0 24px' } as React.CSSProperties,
@@ -106,6 +107,7 @@ export default function Page() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <ScrollAnimator />
+      <ScrollJumpGuard />
 
       <UnderConstructionBanner />
       <SiteNav />
@@ -761,6 +763,7 @@ export default function Page() {
           <div className="scroll-fade scroll-fade-d1">
             <iframe
               src="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=K_6LNg30xkGxFqQfHb2r71QR5Ukfo8pCvLTwcSK-ux5UNjI0OFdGR1NDQUlMS0IwMU1CQklROFhHMS4u"
+              loading="lazy"
               style={{ width: '100%', maxWidth: 640, height: 900, border: '1px solid #D9CEB5', borderRadius: 16, display: 'block', margin: '0 auto' }}
               title="Kontaktformular"
             />
