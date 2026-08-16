@@ -143,10 +143,13 @@ export default function LegTrafoKarte() {
     setPanelInfo({ name, color: tk.color, text: `${tk.addresses.length} Adressen · wird geladen...` })
 
     let placed = 0
-    const bounds: [number, number][] = [[tk.trafo.lat, tk.trafo.lon]]
-    const trafoMarker = L.marker([tk.trafo.lat, tk.trafo.lon], { icon: trafoIcon(L), zIndexOffset: 800 }).addTo(map)
-    trafoMarker.bindPopup(`<div style="font-weight:700;font-size:13px;color:#1A1510;margin-bottom:3px;font-family:'DM Sans',sans-serif">Trafostation</div><span style="display:inline-block;padding:1px 7px;border-radius:20px;font-size:9px;font-weight:700;background:${tk.color}18;color:${tk.color};border:1px solid ${tk.color}60">${name}</span><br><span style="font-size:11px;color:#5C5248">${tk.trafo.street}</span>`)
-    activeMarkersRef.current.push(trafoMarker)
+    const bounds: [number, number][] = []
+    if (tk.trafo) {
+      bounds.push([tk.trafo.lat, tk.trafo.lon])
+      const trafoMarker = L.marker([tk.trafo.lat, tk.trafo.lon], { icon: trafoIcon(L), zIndexOffset: 800 }).addTo(map)
+      trafoMarker.bindPopup(`<div style="font-weight:700;font-size:13px;color:#1A1510;margin-bottom:3px;font-family:'DM Sans',sans-serif">Trafostation</div><span style="display:inline-block;padding:1px 7px;border-radius:20px;font-size:9px;font-weight:700;background:${tk.color}18;color:${tk.color};border:1px solid ${tk.color}60">${name}</span><br><span style="font-size:11px;color:#5C5248">${tk.trafo.street}</span>`)
+      activeMarkersRef.current.push(trafoMarker)
+    }
     let highlightMarker: L.Marker | null = null
     const hs = highlight ? norm(highlight.street) : null
     const hRawNr = highlight ? (highlight.nr || '').split(/[\s+]/)[0] : null
@@ -251,7 +254,7 @@ export default function LegTrafoKarte() {
           )}
         </div>
         <div style={{ padding: '10px 14px 6px', flexShrink: 0 }}>
-          <div style={S.sbTitle}>Trafo-Kreise (26)</div>
+          <div style={S.sbTitle}>Trafo-Kreise (27)</div>
         </div>
         <div style={{ flex: 1, overflowY: 'auto', padding: '0 8px 8px' }}>
           {TRAFO_KREISE.map(tk => {

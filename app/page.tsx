@@ -70,7 +70,7 @@ const jsonLd = {
           name: 'Was ist eine LEG (Lokale Elektrizitätsgemeinschaft)?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Eine Lokale Elektrizitätsgemeinschaft (LEG) schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen. Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu 40 % reduzieren. Lostorf hat das Potenzial für 26 Quartier-Elektrizitätsgemeinschaften.',
+            text: 'Eine Lokale Elektrizitätsgemeinschaft (LEG) schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen. Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu 40 % reduzieren. Lostorf hat das Potenzial für 27 Quartier-Elektrizitätsgemeinschaften.',
           },
         },
         {
@@ -157,7 +157,7 @@ export default function Page() {
             animation: 'fadeSlideUp 0.7s ease 0.4s both',
           }}>
             Lokal produzierter Solarstrom, der nicht selbst verbraucht wird, soll in Lostorf bleiben und der Gemeinde zugutekommen.
-            Wo immer möglich als vZEV, ansonsten als LEG. Lostorf hat das Potenzial für 26 Quartier-LEG.
+            Wo immer möglich als vZEV, ansonsten als LEG. Lostorf hat das Potenzial für 27 Quartier-LEG.
             Nutzen wir diesen wertvollen Strom gemeinsam.
           </p>
 
@@ -238,7 +238,7 @@ export default function Page() {
                   Priorität 2: Koordinierte LEG über alle Trafokreise
                 </div>
                 <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
-                  LEGs sollen koordiniert über die 26 Trafokreise entstehen. Alle Lostorferinnen und Lostorfer, ob Produzent oder Konsument, sollen prinzipiell mittelfristig Zugang zu Energiegemeinschaften erhalten. Private LEGs informieren via Homepage die Arbeitsgruppe Energiestadt.
+                  LEGs sollen koordiniert über die 27 Trafokreise entstehen. Alle Lostorferinnen und Lostorfer, ob Produzent oder Konsument, sollen prinzipiell mittelfristig Zugang zu Energiegemeinschaften erhalten. Private LEGs informieren via Homepage die Arbeitsgruppe Energiestadt.
                 </div>
               </div>
             </div>
@@ -282,7 +282,7 @@ export default function Page() {
                 Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu <strong>40 % reduzieren</strong>, ein erheblicher Vorteil für alle Beteiligten.
               </p>
               <p style={{ ...S.lead, fontSize: 16, marginBottom: 0, fontWeight: 600, color: '#1A3317' }}>
-                Lostorf hat das Potenzial für <strong>26 Quartier Elektrizitätsgemeinschaften</strong>.
+                Lostorf hat das Potenzial für <strong>27 Quartier Elektrizitätsgemeinschaften</strong>.
               </p>
               <p style={{ ...S.lead, fontSize: 14, marginTop: 12, marginBottom: 0 }}>
                 Weitere LEG-Infos:{' '}
@@ -383,7 +383,7 @@ export default function Page() {
               LEG Trafo-Karte
             </h3>
             <p style={{ ...S.lead, fontSize: 15, marginBottom: 8, maxWidth: 'none' }}>
-              Die 26 möglichen Trafo-Kreise in Lostorf: Adresse eingeben oder auf einen Kreis klicken, um alle zugehörigen Adressen anzuzeigen.
+              Die 27 möglichen Trafo-Kreise in Lostorf: Adresse eingeben oder auf einen Kreis klicken, um alle zugehörigen Adressen anzuzeigen.
             </p>
             <p style={{ ...S.lead, fontSize: 15, marginBottom: 8, maxWidth: 'none' }}>
               Trafo-Kreise mit ☀️ haben bereits eine LEG in Gründung oder in Betrieb.
