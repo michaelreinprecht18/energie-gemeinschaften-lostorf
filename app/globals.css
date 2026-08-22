@@ -219,7 +219,7 @@ input[type="range"] {
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .nav-links {
     display: none !important;
   }
@@ -227,7 +227,9 @@ input[type="range"] {
   .mobile-menu-btn {
     display: block;
   }
+}
 
+@media (max-width: 768px) {
   .mobile-stack {
     grid-template-columns: 1fr !important;
     gap: 16px !important;

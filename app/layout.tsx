@@ -23,8 +23,8 @@ const siteDescription = 'Informationsplattform für lokal produzierten Solarstro
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Energiegemeinschaften Lostorf – LEG & vZEV Solarstrom',
-    template: '%s | Energiegemeinschaften Lostorf',
+    default: 'Lokale Energiegemeinschaften Lostorf – LEG & vZEV Solarstrom',
+    template: '%s | Lokale Energiegemeinschaften Lostorf',
   },
   description: siteDescription,
   keywords: [
@@ -43,14 +43,14 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'de_CH',
     url: siteUrl,
-    siteName: 'Energiegemeinschaften Lostorf',
-    title: 'Energiegemeinschaften Lostorf – LEG & vZEV Solarstrom',
+    siteName: 'Lokale Energiegemeinschaften Lostorf',
+    title: 'Lokale Energiegemeinschaften Lostorf – LEG & vZEV Solarstrom',
     description: siteDescription,
     images: [{ url: '/images/iStock_solarpannels.jpg', width: 2382, height: 1259, alt: 'Solaranlage in Lostorf' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Energiegemeinschaften Lostorf',
+    title: 'Lokale Energiegemeinschaften Lostorf',
     description: siteDescription,
     images: ['/images/iStock_solarpannels.jpg'],
   },

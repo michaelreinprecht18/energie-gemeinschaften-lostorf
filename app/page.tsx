@@ -57,7 +57,7 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'Organization',
-      name: 'Energiegemeinschaften Lostorf',
+      name: 'Lokale Energiegemeinschaften Lostorf',
       url: 'https://lostorf.solar',
       description: 'Informationsplattform für lokal produzierten Solarstrom in Lostorf – Lokale Elektrizitätsgemeinschaften (LEG) und virtuelle Zusammenschlüsse zum Eigenverbrauch (vZEV).',
       areaServed: { '@type': 'AdministrativeArea', name: 'Lostorf, Kanton Solothurn, Schweiz' },
@@ -123,7 +123,7 @@ export default function Page() {
         padding: '24px 24px 80px',
         position: 'relative',
       }}>
-        <div style={{ maxWidth: 760 }}>
+        <div style={{ maxWidth: 760, minWidth: 0, width: '100%' }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 32, color: '#9A7B2E',
             animation: 'fadeSlideUp 0.7s ease 0.1s both',
@@ -141,9 +141,10 @@ export default function Page() {
             color: '#1A1510',
             lineHeight: 1.1,
             marginBottom: 24,
+            overflowWrap: 'break-word',
             animation: 'fadeSlideUp 0.7s ease 0.25s both',
           }}>
-            Energiegemeinschaften<br />Lostorf
+            Lokale Energiegemeinschaften<br />Lostorf
           </h1>
 
           <p style={{
@@ -205,10 +206,10 @@ export default function Page() {
 
           {/* Prioritäten */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 20 }}>
-            <div className="scroll-fade hover-lift" style={{ ...S.card, background: '#FFFFFF', borderLeft: '3px solid #9A7B2E', display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+            <div className="scroll-fade hover-lift" style={{ ...S.card, background: '#FFFFFF', borderLeft: '3px solid #3B6E8F', display: 'flex', gap: 20, alignItems: 'flex-start' }}>
               <div style={{
                 width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
-                background: '#9A7B2E', color: '#FFFFFF',
+                background: '#3B6E8F', color: '#FFFFFF',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 18,
               }}>
@@ -216,18 +217,18 @@ export default function Page() {
               </div>
               <div>
                 <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>
-                  Priorität 1: vZEV auf Eigeninitiative
+                  Priorität 1: PV-Eigenverbrauch mit Batteriespeicher
                 </div>
                 <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
-                  Interessierte Lostorferinnen und Lostorfer können jederzeit durch eigene Initiative einen vZEV gründen und informieren via Homepage die Arbeitsgruppe Energiestadt.
+                  Der PV-Eigenverbrauch reduziert direkt den vom Netz eingekauften Strom. Deshalb wird empfohlen, den am Tag überschüssigen Solarstrom mit einem Batteriespeicher im Gebäude auf den Nacht-Verbrauch zu übertragen. Die Preise für Batteriespeicher sind in den letzten Jahren stark gesunken und machen eine Investition heute vielfach wirtschaftlich attraktiv. Ein intelligentes Energiemanagementsystem kann den Eigenverbrauch zusätzlich deutlich steigern.
                 </div>
               </div>
             </div>
 
-            <div className="scroll-fade scroll-fade-d1 hover-lift" style={{ ...S.card, background: '#FFFFFF', borderLeft: '3px solid #3A7A30', display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+            <div className="scroll-fade scroll-fade-d1 hover-lift" style={{ ...S.card, background: '#FFFFFF', borderLeft: '3px solid #9A7B2E', display: 'flex', gap: 20, alignItems: 'flex-start' }}>
               <div style={{
                 width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
-                background: '#3A7A30', color: '#FFFFFF',
+                background: '#9A7B2E', color: '#FFFFFF',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 18,
               }}>
@@ -235,7 +236,26 @@ export default function Page() {
               </div>
               <div>
                 <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>
-                  Priorität 2: Koordinierte LEG über alle Trafokreise
+                  Priorität 2: vZEV auf Eigeninitiative
+                </div>
+                <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
+                  Wo ein gemeinsamer Netzverknüpfungspunkt besteht, ist der vZEV der LEG vorzuziehen, da hier aufgrund der ausbleibenden Netznutzungsentgelte höchste Rabatte/Erträge erzielt werden können. Interessierte Lostorferinnen und Lostorfer können jederzeit durch eigene Initiative einen vZEV gründen und informieren via Kontaktformular die Arbeitsgruppe Energiestadt.
+                </div>
+              </div>
+            </div>
+
+            <div className="scroll-fade scroll-fade-d2 hover-lift" style={{ ...S.card, background: '#FFFFFF', borderLeft: '3px solid #3A7A30', display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
+                background: '#3A7A30', color: '#FFFFFF',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 18,
+              }}>
+                3
+              </div>
+              <div>
+                <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>
+                  Priorität 3: Koordinierte LEG über alle Trafokreise
                 </div>
                 <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
                   LEGs sollen koordiniert über die 27 Trafokreise entstehen. Alle Lostorferinnen und Lostorfer, ob Produzent oder Konsument, sollen prinzipiell mittelfristig Zugang zu Energiegemeinschaften erhalten. Private LEGs informieren via Homepage die Arbeitsgruppe Energiestadt.
@@ -658,7 +678,7 @@ export default function Page() {
       {/* ─── Energiestadt ─── */}
       <section id="energiestadt" style={{ ...S.sectionPad, background: '#FFFFFF' }}>
         <div style={S.container}>
-          <div className="mobile-stack" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 32, marginBottom: 24 }}>
+          <div className="mobile-stack" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: 32, marginBottom: 24 }}>
             <div className="scroll-fade">
               <SectionLabel>Lostorf</SectionLabel>
               <h2 style={S.h2}>Energiestadt Lostorf</h2>
@@ -667,7 +687,7 @@ export default function Page() {
               src="/images/energiestadt-lostorf-logo.png"
               alt="Logo Energiestadt Lostorf"
               className="scroll-fade scroll-fade-d1"
-              style={{ maxWidth: 330, width: '100%', height: 'auto', flexShrink: 0 }}
+              style={{ maxWidth: 330, width: '100%', height: 'auto' }}
             />
           </div>
 

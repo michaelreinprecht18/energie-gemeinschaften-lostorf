@@ -3,7 +3,7 @@ export default function SiteFooter() {
     <footer style={{ background: '#1A3317', color: '#B8D9B4', padding: '40px 24px', textAlign: 'center' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
         <span style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 15, color: '#E7F9E4' }}>
-          Energiegemeinschaften Lostorf
+          Lokale Energiegemeinschaften Lostorf
         </span>
         <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, lineHeight: 1.7 }}>
           <strong style={{ color: '#E7F9E4', fontWeight: 600 }}>Impressum:</strong>{' '}

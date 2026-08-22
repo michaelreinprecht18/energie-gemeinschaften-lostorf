@@ -7,7 +7,7 @@ import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 
 export const metadata: Metadata = {
-  title: 'Blog – Energiegemeinschaften Lostorf',
+  title: 'Blog – Lokale Energiegemeinschaften Lostorf',
   description: 'Artikel und Neuigkeiten rund um LEG, vZEV und Solarstrom in Lostorf.',
 }
 

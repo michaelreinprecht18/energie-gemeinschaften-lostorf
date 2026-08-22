@@ -21,7 +21,7 @@ export default function SiteNav() {
     }}>
       <div style={{ ...container, height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, color: '#1A1510', fontSize: 15, lineHeight: 1.3, whiteSpace: 'nowrap' }}>
-          Energiegemeinschaften <span style={{ color: '#9A7B2E' }}>Lostorf</span>
+          Lokale Energiegemeinschaften <span style={{ color: '#9A7B2E' }}>Lostorf</span>
         </a>
         <div className="nav-links" style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
           {NAV.map(l => (

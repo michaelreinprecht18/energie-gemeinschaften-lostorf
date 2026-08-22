@@ -51,7 +51,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     description: data.description,
     datePublished: data.date,
     author: data.author ? { '@type': 'Person', name: data.author } : undefined,
-    publisher: { '@type': 'Organization', name: 'Energiegemeinschaften Lostorf' },
+    publisher: { '@type': 'Organization', name: 'Lokale Energiegemeinschaften Lostorf' },
     mainEntityOfPage: `https://lostorf.solar/blog/${slug}`,
   }
 
