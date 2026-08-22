@@ -7,7 +7,7 @@ export default function SiteFooter() {
         </span>
         <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, lineHeight: 1.7 }}>
           <strong style={{ color: '#E7F9E4', fontWeight: 600 }}>Impressum:</strong>{' '}
-          Michael Reinprecht, Holdenackerstrasse 3, 4565 Lostorf
+          Michael Reinprecht, Holdenackerstrasse 3, 4565 Lostorf (Mitglied Arbeitsgruppe Energiestadt Lostorf)
         </span>
         <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13 }}>
           Diese Webseite wurde mit{' '}
