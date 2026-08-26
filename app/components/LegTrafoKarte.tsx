@@ -61,8 +61,8 @@ export default function LegTrafoKarte() {
     ;(async () => {
       const L = (await import('leaflet')).default
       const map = L.map(mapElRef.current!).setView([47.3848, 7.9460], 15)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '© OpenStreetMap © CARTO', subdomains: 'abcd', maxZoom: 19,
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors', subdomains: 'abc', maxZoom: 19,
       }).addTo(map)
       mapRef.current = map
       try { geoCacheRef.current = JSON.parse(localStorage.getItem(CACHE_GEO) || '{}') } catch {}
