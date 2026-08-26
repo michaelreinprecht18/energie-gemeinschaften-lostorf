@@ -7,7 +7,12 @@ export default function SiteFooter() {
         </span>
         <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, lineHeight: 1.7 }}>
           <strong style={{ color: '#E7F9E4', fontWeight: 600 }}>Impressum:</strong>{' '}
-          Michael Reinprecht, Holdenackerstrasse 3, 4565 Lostorf (Mitglied Arbeitsgruppe Energiestadt Lostorf)
+          <a href="https://www.lostorf.ch/energiestadt-kontakt" target="_blank" rel="noopener noreferrer" style={{ color: '#9DD295' }}>Arbeitsgruppe Energiestadt Lostorf</a>,{' '}
+          c/o Gemeindeverwaltung Lostorf, Hauptstrasse 5, 4654 Lostorf
+        </span>
+        <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, lineHeight: 1.7 }}>
+          <strong style={{ color: '#E7F9E4', fontWeight: 600 }}>Inhaltlich verantwortlich:</strong>{' '}
+          Michael Reinprecht
         </span>
         <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 13 }}>
           Diese Webseite wurde mit{' '}

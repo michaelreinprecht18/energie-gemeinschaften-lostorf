@@ -161,28 +161,6 @@ export default function Page() {
             Wo immer möglich als vZEV, ansonsten als LEG. Lostorf hat das Potenzial für 27 Quartier-LEG.
             Nutzen wir diesen wertvollen Strom gemeinsam.
           </p>
-
-          <div style={{
-            display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap',
-            animation: 'fadeSlideUp 0.7s ease 0.55s both',
-          }}>
-            <a href="#leg" className="btn-primary" style={{
-              background: '#9DD295', color: '#1A1510',
-              fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 15,
-              padding: '14px 32px', borderRadius: 8,
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-            }}>
-              Was ist eine LEG? <ArrowRight size={16} />
-            </a>
-            <a href="#rechner" className="btn-secondary" style={{
-              background: 'transparent', color: '#1A1510',
-              border: '1.5px solid #D9CEB5',
-              fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 15,
-              padding: '14px 32px', borderRadius: 8,
-            }}>
-              Zum Rechner
-            </a>
-          </div>
         </div>
 
         <a href="#leg" style={{
