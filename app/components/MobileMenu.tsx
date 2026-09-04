@@ -10,7 +10,6 @@ const NAV = [
   { href: '/#pv-karte', label: 'PV-Karte' },
   { href: '/#energiestadt', label: 'Energiestadt' },
   { href: '/#kontakt', label: 'Kontakt' },
-  { href: '/blog', label: 'Blog' },
 ]
 
 export default function MobileMenu() {

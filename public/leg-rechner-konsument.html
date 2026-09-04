@@ -462,7 +462,7 @@
 <header class="site-header">
   <div class="header-icon">⚡</div>
   <h1>Konsumenten-<span class="accent">Rechner</span></h1>
-  <p class="header-sub">Berechnen Sie Ihre Stromkosten – mit oder ohne Lokale Energie Gemeinschaft.<br>Dieser Simulator zeigt Ihnen, wie stark Sie von einer Teilnahme an einer LEG profitieren können.<br>Geben Sie dazu Ihren Jahresverbrauch ein.</p>
+  <p class="header-sub">Berechnen Sie Ihre Stromkosten – mit oder ohne Lokale Energie Gemeinschaft.<br>Dieser Simulator zeigt Ihnen, wie stark Sie von einer Teilnahme an einer LEG profitieren können.<br>Geben Sie dazu Ihren Jahresverbrauch ein.<br><small>Es gelten die Tarife des Jahres 2027.</small></p>
 </header>
 
 <div class="container">
@@ -552,8 +552,7 @@
     <label class="field-label" for="produkt">Produkt wählen</label>
     <select id="produkt" class="wide">
       <option value="0.00|Primeo Standard|Strom aus erneuerbaren Energiequellen">Primeo Standard – Strom aus erneuerbaren Energiequellen (kein Aufschlag)</option>
-      <option value="0.03|Primeo Grün|Ökostrom für eine intakte Umwelt und eine sorgenfreie Zukunft" selected>Primeo Grün – Ökostrom für eine intakte Umwelt (+ 3.00 Rp./kWh)</option>
-      <option value="0.02|Aarestrom|Erneuerbare Energie aus der Region für die Region">Aarestrom – Erneuerbare Energie aus der Region (+ 2.00 Rp./kWh)</option>
+      <option value="0.02|Primeo Grün|Ökostrom für eine intakte Umwelt und eine sorgenfreie Zukunft" selected>Primeo Grün – Ökostrom für eine intakte Umwelt (+ 2.00 Rp./kWh)</option>
     </select>
   </div>
 
@@ -562,6 +561,10 @@
     <div class="card-header">
       <span class="step-pill">Schritt 4</span>
       <span class="card-title">Verbrauch</span>
+    </div>
+    <div class="info-note">
+      <strong>Hochtarif (HT):</strong> Montag bis Freitag, 6 – 21 Uhr.<br>
+      <strong>Niedertarif (NT):</strong> übrige Zeiten (Abend, Nacht, Wochenende).
     </div>
 
     <div id="verbrauch_primeo">
@@ -606,16 +609,16 @@
         <div class="leg-price-row">
           <div>
             <label class="field-label" for="leg_preis_ht">Hochtarif (Rp./kWh)</label>
-            <input type="number" id="leg_preis_ht" class="price-input" value="15.85" min="0" step="0.1" oninput="updateLegDiff()">
+            <input type="number" id="leg_preis_ht" class="price-input" value="14.05" min="0" step="0.1" oninput="updateLegDiff()">
           </div>
           <div>
             <label class="field-label" for="leg_preis_nt">Niedertarif (Rp./kWh)</label>
-            <input type="number" id="leg_preis_nt" class="price-input" value="14.5" min="0" step="0.1" oninput="updateLegDiff()">
+            <input type="number" id="leg_preis_nt" class="price-input" value="12.8" min="0" step="0.1" oninput="updateLegDiff()">
           </div>
         </div>
         <div class="info-note">
-          <strong>Netzkosten Quartier LEG:</strong> 40% Rabatt auf Hochtarif Netz (12.25 Rp. → 7.35 Rp.) und Niedertarif Netz (8.15 Rp. → 4.89 Rp.).<br>
-          <strong>Netzkosten Gemeinde LEG:</strong> 20% Rabatt auf Hochtarif Netz (12.25 Rp. → 9.80 Rp.) und Niedertarif Netz (8.15 Rp. → 6.52 Rp.).
+          <strong>Netzkosten Quartier LEG:</strong> 40% Rabatt auf Hochtarif Netz (13.85 Rp. → 8.31 Rp.) und Niedertarif Netz (9.20 Rp. → 5.52 Rp.).<br>
+          <strong>Netzkosten Gemeinde LEG:</strong> 20% Rabatt auf Hochtarif Netz (13.85 Rp. → 11.08 Rp.) und Niedertarif Netz (9.20 Rp. → 7.36 Rp.).
         </div>
       </div>
     </div>
@@ -628,17 +631,17 @@
 
 <script>
   const TARIFE = {
-    ht_energie:      0.15850,
-    nt_energie:      0.14500,
-    ht_netz:         0.12250,
-    nt_netz:         0.08150,
+    ht_energie:      0.14050,
+    nt_energie:      0.12800,
+    ht_netz:         0.13850,
+    nt_netz:         0.09200,
     grundpreis_netz: 6.00,
     messtarif:       4.00,
     netzzuschlag:    0.02300,
-    sdl_swissgrid:   0.00270,
+    sdl_swissgrid:   0.00190,
     konzession:      0.01000,
-    stromreserve:    0.00410,
-    solidarisiert:   0.00050,
+    stromreserve:    0.00170,
+    solidarisiert:   0.00190,
   };
 
   function toggleBezug() {
@@ -701,8 +704,8 @@
       return;
     }
 
-    const leg_ht_preis = (parseFloat(document.getElementById('leg_preis_ht').value) || 15.85) / 100;
-    const leg_nt_preis = (parseFloat(document.getElementById('leg_preis_nt').value) || 14.5) / 100;
+    const leg_ht_preis = (parseFloat(document.getElementById('leg_preis_ht').value) || 14.05) / 100;
+    const leg_nt_preis = (parseFloat(document.getElementById('leg_preis_nt').value) || 12.8) / 100;
     const leg_ht_netz  = TARIFE.ht_netz * netzRabatt;
     const leg_nt_netz  = TARIFE.nt_netz * netzRabatt;
 

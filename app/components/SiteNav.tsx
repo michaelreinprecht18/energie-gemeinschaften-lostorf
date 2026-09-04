@@ -8,7 +8,6 @@ const NAV = [
   { href: '/#pv-karte', label: 'PV-Karte' },
   { href: '/#energiestadt', label: 'Energiestadt' },
   { href: '/#kontakt', label: 'Kontakt' },
-  { href: '/blog', label: 'Blog' },
 ]
 
 const container: React.CSSProperties = { maxWidth: 1100, margin: '0 auto', padding: '0 24px' }
