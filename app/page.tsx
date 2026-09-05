@@ -344,6 +344,12 @@ export default function Page() {
               <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 15, color: '#3A4A36', lineHeight: 1.6 }}>
                 Ein durchschnittliches Einfamilienhaus mit Wärmepumpe spart durch die Teilnahme an der LEG rund <strong>CHF 80–200 pro Jahr</strong>, abhängig von Verbrauch und Nutzungsverhalten.
               </div>
+              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, color: '#5C7A56', lineHeight: 1.6, marginTop: 8 }}>
+                *Ersparnis Hochtarif: <strong style={{ color: '#2D7A27', fontSize: 16 }}>4.91 Rp./kWh</strong> (13.86 %)<br />
+                *Ersparnis Niedertarif: <strong style={{ color: '#2D7A27', fontSize: 16 }}>2.90 Rp./kWh</strong> (10 %)<br />
+                Hochtarif: Montag bis Freitag, 6–21 Uhr. Niedertarif: übrige Zeiten.<br />
+                <span style={{ fontSize: 11, color: '#7A8F74' }}>*(inkl. Abrechnungsgebühr LEG und MwSt.)</span>
+              </div>
             </div>
             <div style={{ textAlign: 'center', flexShrink: 0 }}>
               <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 36, color: '#2D7A27', lineHeight: 1 }}>
