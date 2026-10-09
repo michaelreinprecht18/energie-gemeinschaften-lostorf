@@ -215,6 +215,22 @@ input[type="range"] {
   transform: scaleX(1);
 }
 
+/* ─── FAQ accordion ─── */
+.faq-item summary {
+  list-style: none;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item summary:focus-visible {
+  outline: 2px solid #9A7B2E;
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+.faq-item[open] .faq-chevron {
+  transform: rotate(180deg);
+}
+
 .mobile-menu-btn {
   display: none;
 }

@@ -7,6 +7,7 @@ const NAV = [
   { href: '/#rechner', label: 'Rechner' },
   { href: '/#pv-karte', label: 'PV-Karte' },
   { href: '/#energiestadt', label: 'Energiestadt' },
+  { href: '/#faq', label: 'FAQ' },
   { href: '/#kontakt', label: 'Kontakt' },
 ]
 

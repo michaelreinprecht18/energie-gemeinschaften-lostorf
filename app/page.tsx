@@ -9,6 +9,8 @@ import SiteFooter from './components/SiteFooter'
 import LegTrafoKarte from './components/LegTrafoKarte'
 import UnderConstructionBanner from './components/UnderConstructionBanner'
 import ScrollJumpGuard from './components/ScrollJumpGuard'
+import ContactFrame from './components/ContactFrame'
+import { FAQ_GROUPS } from './data/faq'
 
 const S = {
   container: { maxWidth: 1100, margin: '0 auto', padding: '0 24px' } as React.CSSProperties,
@@ -193,13 +195,47 @@ export default function Page() {
               }}>
                 1
               </div>
-              <div>
+              <div style={{ minWidth: 0 }}>
                 <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>
                   Priorität 1: PV-Eigenverbrauch mit Batteriespeicher
                 </div>
                 <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
                   Der PV-Eigenverbrauch reduziert direkt den vom Netz eingekauften Strom. Deshalb wird empfohlen, den am Tag überschüssigen Solarstrom mit einem Batteriespeicher im Gebäude auf den Nacht-Verbrauch zu übertragen. Die Preise für Batteriespeicher sind in den letzten Jahren stark gesunken und machen eine Investition heute vielfach wirtschaftlich attraktiv. Ein intelligentes Energiemanagementsystem kann den Eigenverbrauch zusätzlich deutlich steigern.
                 </div>
+
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  background: '#E6EFF6', border: '1px solid #B7CEDF', borderRadius: 8,
+                  padding: '12px 14px', marginTop: 14,
+                  fontFamily: 'var(--font-nunito)', fontSize: 15, fontWeight: 700, color: '#1A1510', lineHeight: 1.5,
+                }}>
+                  <Percent size={20} color="#3B6E8F" style={{ flexShrink: 0 }} />
+                  <span>Primeo beteiligt sich mit bis zu 30 % an den Kosten für einen Batteriespeicher.</span>
+                </div>
+
+                <details style={{ marginTop: 12 }}>
+                  <summary style={{ cursor: 'pointer', fontFamily: 'var(--font-nunito)', fontSize: 14, fontWeight: 600, color: '#3B6E8F' }}>
+                    Details zur Förderung und Antrag anzeigen
+                  </summary>
+                  <div style={{ marginTop: 12 }}>
+                    <a href="/images/primeo-energiefonds-b4.png" target="_blank" rel="noopener noreferrer" title="Bild in voller Grösse öffnen" style={{ display: 'block', maxWidth: 720 }}>
+                      <img
+                        src="/images/primeo-energiefonds-b4.png"
+                        alt="Primeo Energiefonds B4: Projekte zum Ausbau von erneuerbaren Energien. Förderung von Batteriespeichern, Energiemanagement-Systemen, bi-direktionalen Batterien und PV Heatern. Beitrag max. 30 % der Netto-Projektkosten bis max. CHF 30'000. Förderantrag vor Projektstart."
+                        width={828}
+                        height={296}
+                        loading="lazy"
+                        style={{ width: '100%', height: 'auto', display: 'block', border: '1px solid #D9CEB5', borderRadius: 8, background: '#FFFFFF' }}
+                      />
+                    </a>
+                    <p style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65, margin: '12px 0 0' }}>
+                      Förderantrag Energiefonds Primeo:{' '}
+                      <a href="https://www.primeo-energie.ch/ueber-uns/engagement/formular-energiefonds.html" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E', fontWeight: 600, overflowWrap: 'anywhere' }}>
+                        Onlineformular von Primeo Energie
+                      </a>
+                    </p>
+                  </div>
+                </details>
               </div>
             </div>
 
@@ -753,6 +789,55 @@ export default function Page() {
 
       <hr style={S.divider} />
 
+      {/* ─── FAQ ─── */}
+      <section id="faq" style={{ ...S.sectionPad, background: '#FFFFFF' }}>
+        <div style={{ ...S.container, maxWidth: 760 }}>
+          <div className="scroll-fade" style={{ textAlign: 'center', marginBottom: 48 }}>
+            <SectionLabel>FAQ</SectionLabel>
+            <h2 style={S.h2}>Häufige Fragen</h2>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+            {FAQ_GROUPS.map(group => (
+              <div key={group.id} id={`faq-${group.id}`} className="scroll-fade">
+                <h3 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 21, color: '#1A1510', margin: '0 0 14px' }}>
+                  {group.title}
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {group.items.map(item => (
+                    <details key={item.q} className="faq-item" style={{ background: '#FFFFFF', border: '1px solid #D9CEB5', borderRadius: 12 }}>
+                      <summary style={{
+                        cursor: 'pointer', padding: '16px 20px',
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
+                        fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 15.5, color: '#1A1510', lineHeight: 1.5,
+                      }}>
+                        <span style={{ minWidth: 0 }}>{item.q}</span>
+                        <ChevronDown className="faq-chevron" size={20} color="#9A7B2E" style={{ flexShrink: 0, transition: 'transform 0.2s ease' }} />
+                      </summary>
+                      <div style={{ padding: '0 20px 18px', fontFamily: 'var(--font-nunito)', fontSize: 14.5, color: '#5C5248', lineHeight: 1.7, whiteSpace: 'pre-line' }}>
+                        {item.a}
+                        {item.links && item.links.length > 0 && (
+                          <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 4, fontSize: 13.5, whiteSpace: 'normal' }}>
+                            <span style={{ fontWeight: 600, color: '#1A1510' }}>Mehr dazu:</span>
+                            {item.links.map(l => (
+                              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E', fontWeight: 600, overflowWrap: 'anywhere' }}>
+                                {l.label}
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <hr style={S.divider} />
+
       {/* ─── Kontakt ─── */}
       <section id="kontakt" style={{ ...S.sectionPad, background: '#E7F9E4' }}>
         <div style={{ ...S.container, maxWidth: 760 }}>
@@ -765,12 +850,7 @@ export default function Page() {
             </p>
           </div>
           <div className="scroll-fade scroll-fade-d1">
-            <iframe
-              src="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=K_6LNg30xkGxFqQfHb2r71QR5Ukfo8pCvLTwcSK-ux5UNjI0OFdGR1NDQUlMS0IwMU1CQklROFhHMS4u"
-              loading="lazy"
-              style={{ width: '100%', maxWidth: 640, height: 900, border: '1px solid #D9CEB5', borderRadius: 16, display: 'block', margin: '0 auto' }}
-              title="Kontaktformular"
-            />
+            <ContactFrame />
           </div>
         </div>
       </section>
