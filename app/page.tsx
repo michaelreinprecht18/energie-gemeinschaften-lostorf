@@ -1,4 +1,4 @@
-import { Sun, Users, Zap, Leaf, ArrowRight, Check, ChevronDown, Car, Droplets, MessageCircle, Percent, PiggyBank, Building2, Handshake } from 'lucide-react'
+import { Sun, Users, Zap, Leaf, ArrowRight, Check, ChevronDown, Car, Droplets, MessageCircle, Percent, PiggyBank, Building2, Handshake, MapPin, CalendarPlus } from 'lucide-react'
 import Rechner from './components/Rechner'
 import StatsBand from './components/StatsBand'
 import ContactForm from './components/ContactForm'
@@ -11,6 +11,7 @@ import UnderConstructionBanner from './components/UnderConstructionBanner'
 import ScrollJumpGuard from './components/ScrollJumpGuard'
 import ContactFrame from './components/ContactFrame'
 import { FAQ_GROUPS } from './data/faq'
+import { THEMENABEND } from './data/themenabend'
 
 const S = {
   container: { maxWidth: 1100, margin: '0 auto', padding: '0 24px' } as React.CSSProperties,
@@ -738,6 +739,107 @@ export default function Page() {
               Die Arbeitsgruppe freut sich über neue Ideen. Kontakt:{' '}
               <EmailLink encoded="ZW5lcmdpZXN0YWR0QGxvc3RvcmYuY2g=" style={{ color: '#9A7B2E' }} />
             </p>
+          </div>
+
+          {/* Themenabende */}
+          <div id="themenabende" style={{ marginTop: 56 }}>
+            <div className="scroll-fade">
+              <h3 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 20, color: '#1A1510', marginBottom: 8 }}>
+                Themenabende
+              </h3>
+              <p style={{ ...S.lead, fontSize: 15, marginBottom: 28, maxWidth: 'none' }}>
+                Die Energiestadt Lostorf lädt regelmässig zu Themenabenden mit Fachreferaten und Marktständen ein.
+              </p>
+            </div>
+
+            <div className="mobile-stack scroll-fade" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 1fr)', gap: 20, alignItems: 'stretch' }}>
+              <div style={{
+                background: 'linear-gradient(135deg, #E7F9E4 0%, #D5F0D0 100%)',
+                border: '1px solid #9DD295', borderRadius: 16, padding: '28px 28px 26px',
+                display: 'flex', flexDirection: 'column', gap: 16, minWidth: 0,
+              }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#2D7A27', marginBottom: 8 }}>
+                    Nächster Themenabend · {THEMENABEND.kicker}
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 'clamp(24px, 3.4vw, 32px)', color: '#1A1510', lineHeight: 1.15, marginBottom: 6 }}>
+                    {THEMENABEND.datum}
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 500, fontSize: 19, color: '#2D7A27', lineHeight: 1.3 }}>
+                    «{THEMENABEND.titel}»
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12, fontFamily: 'var(--font-nunito)', fontSize: 15, fontWeight: 600, color: '#1A1510' }}>
+                    <MapPin size={17} color="#2D7A27" style={{ flexShrink: 0 }} />
+                    <span>{THEMENABEND.ort}</span>
+                  </div>
+                </div>
+
+                <p style={{ fontFamily: 'var(--font-nunito)', fontSize: 15, color: '#3A4A36', lineHeight: 1.65, margin: 0 }}>
+                  {THEMENABEND.ziel}
+                </p>
+
+                <div>
+                  <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 13, fontWeight: 700, color: '#1A1510', marginBottom: 10 }}>
+                    {THEMENABEND.etappenTitel}
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {THEMENABEND.etappen.map((e, i) => (
+                      <div key={e} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{
+                          width: 26, height: 26, borderRadius: '50%', flexShrink: 0, background: '#2D7A27', color: '#FFFFFF',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 13,
+                        }}>{i + 1}</span>
+                        <span style={{ fontFamily: 'var(--font-nunito)', fontSize: 15, fontWeight: 600, color: '#1A1510' }}>{e}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <a
+                  href="/themenabend.ics"
+                  download
+                  className="btn-primary"
+                  style={{
+                    alignSelf: 'flex-start', marginTop: 'auto',
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    background: '#2D7A27', color: '#FFFFFF',
+                    fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 15,
+                    padding: '12px 22px', borderRadius: 8,
+                  }}
+                >
+                  <CalendarPlus size={18} /> Zum Kalender hinzufügen
+                </a>
+              </div>
+
+              <div style={{ ...S.card, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9A7B2E', marginBottom: 16 }}>
+                  Vorläufiges Programm
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  {THEMENABEND.programm.map((p, i) => (
+                    <div key={p.zeit} style={{
+                      display: 'flex', gap: 16, padding: '12px 0',
+                      borderTop: i === 0 ? 'none' : '1px solid #EFE7D4',
+                    }}>
+                      <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 16, color: '#9A7B2E', width: 52, flexShrink: 0 }}>
+                        {p.zeit}
+                      </div>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontFamily: 'var(--font-nunito)', fontWeight: 600, fontSize: 15, color: '#1A1510', lineHeight: 1.4 }}>{p.titel}</div>
+                        {p.details && (
+                          <ul style={{ margin: '6px 0 0', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 3 }}>
+                            {p.details.map(d => (
+                              <li key={d} style={{ fontFamily: 'var(--font-nunito)', fontSize: 13.5, color: '#5C5248', lineHeight: 1.5 }}>{d}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Handlungsfelder Aktivitätenprogramm 2024-2028 */}
