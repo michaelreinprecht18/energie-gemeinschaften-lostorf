@@ -12,6 +12,7 @@ import ScrollJumpGuard from './components/ScrollJumpGuard'
 import ContactFrame from './components/ContactFrame'
 import { FAQ_GROUPS } from './data/faq'
 import { THEMENABEND } from './data/themenabend'
+import { LEG_TARIFE } from './data/legTarife'
 
 const S = {
   container: { maxWidth: 1100, margin: '0 auto', padding: '0 24px' } as React.CSSProperties,
@@ -395,6 +396,57 @@ export default function Page() {
               <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 12, fontWeight: 600, color: '#5C5248', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 4 }}>
                 Ersparnis pro Jahr
               </div>
+            </div>
+          </div>
+
+          {/* LEG-Tarife */}
+          <div id="leg-tarife" className="scroll-fade" style={{ marginTop: 24, marginBottom: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px 16px', marginBottom: 14 }}>
+              <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 19, color: '#1A1510' }}>
+                LEG-Tarife für Produzenten und Konsumenten
+              </div>
+              <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#9A7B2E' }}>
+                Gültig für das Jahr {LEG_TARIFE.jahr}
+              </div>
+            </div>
+
+            <div className="mobile-stack" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              {[
+                { icon: <Sun size={22} color="#9A7B2E" />, title: 'Produzenten erhalten', accent: '#9A7B2E', tarife: LEG_TARIFE.produzenten, zusatz: null },
+                { icon: <Zap size={22} color="#2D7A27" />, title: 'Konsumenten bezahlen', accent: '#2D7A27', tarife: LEG_TARIFE.konsumenten, zusatz: 'zuzüglich MwSt.' },
+              ].map(c => (
+                <div key={c.title} style={{ ...S.card, borderTop: `3px solid ${c.accent}`, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+                    {c.icon}
+                    <span style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510' }}>{c.title}</span>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                    {[
+                      { label: 'Hochtarif', wert: c.tarife.hochtarif },
+                      { label: 'Niedertarif', wert: c.tarife.niedertarif },
+                    ].map(t => (
+                      <div key={t.label}>
+                        <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 12, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#5C5248', marginBottom: 4 }}>
+                          {t.label}
+                        </div>
+                        <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 700, fontSize: 30, lineHeight: 1.05, color: c.accent }}>
+                          {t.wert}
+                        </div>
+                        <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 12.5, color: '#5C5248', marginTop: 2 }}>Rp./kWh</div>
+                      </div>
+                    ))}
+                  </div>
+                  {c.zusatz && (
+                    <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 12.5, fontWeight: 600, color: '#5C5248', marginTop: 12 }}>{c.zusatz}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 13.5, color: '#5C5248', lineHeight: 1.6, marginTop: 14 }}>
+              {LEG_TARIFE.zeiten}<br />
+              {LEG_TARIFE.gebuehr} Die Details sind in den{' '}
+              <a href="#rechner" style={{ color: '#9A7B2E', fontWeight: 600 }}>Rechnern</a> ersichtlich.
             </div>
           </div>
 
