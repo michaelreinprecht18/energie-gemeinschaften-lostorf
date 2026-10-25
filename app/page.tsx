@@ -75,7 +75,7 @@ const jsonLd = {
           name: 'Was ist eine LEG (Lokale Elektrizitätsgemeinschaft)?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Eine Lokale Elektrizitätsgemeinschaft (LEG) schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen. Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu 40 % reduzieren. Lostorf hat das Potenzial für 27 Quartier-Elektrizitätsgemeinschaften.',
+            text: 'Eine Lokale Elektrizitätsgemeinschaft (LEG) schafft einen lokalen Strommarktplatz: Wer eine Solaranlage betreibt, kann den überschüssigen Strom direkt an Nachbarinnen und Nachbarn im selben Quartier oder in der ganzen Gemeinde verkaufen. Sind alle Teilnehmenden an derselben Trafostation angeschlossen, lassen sich die Netzentgelte um bis zu 40 % reduzieren. In Lostorf sind 27 koordinierte LEG-Zonen vorgesehen, eine pro Trafostation.',
           },
         },
         {
