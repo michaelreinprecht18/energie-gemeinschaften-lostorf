@@ -13,6 +13,7 @@ import ContactFrame from './components/ContactFrame'
 import { FAQ_GROUPS } from './data/faq'
 import { THEMENABEND } from './data/themenabend'
 import { LEG_TARIFE } from './data/legTarife'
+import LegLiveAnsicht from './components/LegLiveAnsicht'
 
 const S = {
   container: { maxWidth: 1100, margin: '0 auto', padding: '0 24px' } as React.CSSProperties,
@@ -161,9 +162,9 @@ export default function Page() {
             margin: '0 auto 40px',
             animation: 'fadeSlideUp 0.7s ease 0.4s both',
           }}>
-            Lokal produzierter Solarstrom, der nicht selbst verbraucht wird, soll in Lostorf bleiben und der Gemeinde zugutekommen.
-            Wo immer möglich als vZEV, ansonsten als LEG. Lostorf hat das Potenzial für 27 Quartier-LEG.
-            Nutzen wir diesen wertvollen Strom gemeinsam.
+            Solarstrom lohnt sich am meisten, wenn man ihn selbst nutzt, am besten mit einem Batteriespeicher.
+            Was übrig bleibt, soll in Lostorf bleiben und der Gemeinde zugutekommen: wo immer möglich als vZEV,
+            ansonsten in einer der 27 koordinierten LEG. Nutzen wir diesen wertvollen Strom gemeinsam.
           </p>
         </div>
 
@@ -274,7 +275,7 @@ export default function Page() {
                   Priorität 3: Koordinierte LEG über alle Trafokreise
                 </div>
                 <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
-                  LEGs sollen koordiniert über die 27 Trafokreise entstehen. Alle Lostorferinnen und Lostorfer, ob Produzent oder Konsument, sollen prinzipiell mittelfristig Zugang zu Energiegemeinschaften erhalten. Private LEGs informieren via Homepage die Arbeitsgruppe Energiestadt.
+                  Liegenschaften mit PV-Überschuss und solche ohne PV-Anlage teilen Solarstrom in einer LEG, auch über das Quartier hinweg. Die LEG-Zonen richten sich nach dem Stromnetz: Die 27 Trafostationen ergeben 27 mögliche LEG-Zonen mit 40 % Rabatt auf die Netznutzung. Damit nicht unzählige, überlappende Zonen entstehen, werden die 27 LEG koordiniert aufgebaut. Alle Lostorferinnen und Lostorfer, ob Produzent oder Konsument, sollen so Zugang zu Energiegemeinschaften erhalten. Die entstehenden LEG werden auf dieser Homepage publiziert, damit sich Private anmelden können.
                 </div>
               </div>
             </div>
@@ -286,14 +287,14 @@ export default function Page() {
               <div style={{ marginBottom: 14 }}><Building2 size={22} color="#9A7B2E" /></div>
               <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>Rolle der Gemeinde</div>
               <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
-                Die Gemeinde integriert, wo möglich, die eigenen Gebäude inklusive der zukünftigen Fotovoltaikanlagen in Energiegemeinschaften (vZEV und LEG).
+                Die Gemeinde tritt in den LEG als Konsumentin und künftig auch als Produzentin auf: Sie will Solarstrom lokal beziehen und den Überschuss eigener PV-Anlagen bestmöglich verkaufen. In 12 der 27 Trafokreise besitzt sie Liegenschaften oder Stromanschlüsse, darunter Reservoire, Pumpwerke und Zivilschutzanlagen, und kann dort teilnehmen. Bei den eigenen Gebäuden sollen Speicher, Energiemanagement und vZEV-Möglichkeiten in der Umgebung gleich mit der Planung der PV-Anlagen geprüft werden. Nach der Aufbauphase übernimmt die Gemeindeverwaltung den Betrieb der 27 LEG, insbesondere die Mutationen der Teilnehmenden (Ein- und Austritte).
               </div>
             </div>
             <div className="scroll-fade scroll-fade-d3 hover-lift" style={S.card}>
               <div style={{ marginBottom: 14 }}><Handshake size={22} color="#9A7B2E" /></div>
               <div style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 17, color: '#1A1510', marginBottom: 8 }}>Rolle der Arbeitsgruppe Energiestadt</div>
               <div style={{ fontFamily: 'var(--font-nunito)', fontSize: 14, color: '#5C5248', lineHeight: 1.65 }}>
-                Die Arbeitsgruppe Energiestadt unterstützt, informiert die Bevölkerung, koordiniert wo möglich und hält den Kontakt zum Verteilnetzbetreiber Primeo.
+                Die Arbeitsgruppe Energiestadt baut die 27 LEG in Eigenleistung auf, ohne dass dafür Kosten anfallen, und koordiniert die Gründungen. Ziel ist, den Aufbau in 1 bis 2 Jahren abzuschliessen und die LEG danach der Gemeinde für den Betrieb zu übergeben. Bei Batteriespeichern und vZEV informiert und berät sie, übernimmt aber keine operative Tätigkeit: Die Einrichtung ist Sache der Eigentümerinnen und Eigentümer. Um Erfahrungen zu sammeln, richtet sie derzeit selbst zwei vZEV ein und informiert die Bevölkerung Ende 2026 über die Ergebnisse. Sie hält den Kontakt zum Verteilnetzbetreiber Primeo.
               </div>
             </div>
           </div>
@@ -543,6 +544,27 @@ export default function Page() {
             }}>
               Ich will auch dabei sein <ArrowRight size={16} />
             </a>
+          </div>
+
+          {/* Live-Ansicht LEG Lostorf Demo 2.0 */}
+          <div id="leg-live" className="scroll-fade" style={{ marginTop: 56 }}>
+            <h3 style={{ fontFamily: 'var(--font-baskerville)', fontWeight: 600, fontSize: 20, color: '#1A1510', marginBottom: 8 }}>
+              LEG 2.0: mit Live-Daten der Konsumenten
+            </h3>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 12, maxWidth: 'none' }}>
+              So könnte die Zukunft aussehen: Wenn Konsumentinnen und Konsumenten live sehen, wann Solarstrom im Überschuss vorhanden ist, können sie ihren Verbrauch danach richten. Waschmaschine, Wärmepumpe oder Elektroauto laufen dann, wenn die Sonne scheint. So wird der Strom verbraucht, wenn er im Überschuss vorhanden ist, das Netz wird entlastet, und Quartierspeicher werden attraktiver.
+            </p>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 12, maxWidth: 'none' }}>
+              Dafür braucht es zwei Bausteine. Erstens ein Gerät, das die Live-Daten des Smartmeters ausliest und in die Cloud überträgt, zum Beispiel{' '}
+              <a href="https://wattling.ch/" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E', fontWeight: 600 }}>Wattling</a>.
+              Den Zugang zum Smartmeter schaltet Primeo auf Anfrage frei. Zweitens eine übergeordnete Intelligenz, die die Daten aller Teilnehmenden zusammenführt und zeigt, wann Überschuss vorhanden ist. Das könnte zum Beispiel{' '}
+              <a href="https://lastamina.ch/" target="_blank" rel="noopener noreferrer" style={{ color: '#9A7B2E', fontWeight: 600 }}>lastamina.ch</a>{' '}
+              übernehmen. Beide Beispiele stammen vom selben Schweizer Anbieter.
+            </p>
+            <p style={{ ...S.lead, fontSize: 15, marginBottom: 20, maxWidth: 'none' }}>
+              Die Grafik zeigt ein Beispiel mit drei Produzenten (zwei davon mit Batteriespeicher) und zwei Konsumenten. Die untersten 30 % jeder Batterie (gestrichelte Linie) bleiben für den Eigenverbrauch reserviert und stehen der LEG nicht zur Verfügung. Wähle ein Szenario, um zu sehen, wie sich der Stromfluss verändert.
+            </p>
+            <LegLiveAnsicht />
           </div>
         </div>
       </section>
